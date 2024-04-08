@@ -7,6 +7,10 @@
     font-family: "Inter", sans-serif;
 }
 
+.menu{
+    display: none;
+}
+
 img.mobile-avatar{
     display: none;
 }
@@ -147,6 +151,7 @@ input#toggle{
 .wrapper>.layout>.content{
     background-color: #F9F9FB;
     height: 100%;
+    border-radius: 15px 0 0 0;
 }
 
 @media (max-width: 992px) {
