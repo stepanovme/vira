@@ -1,0 +1,243 @@
+@import url(varriables.css);
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+.content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.content>.background-image>img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content>.form-register{
+    display: none;
+}
+
+.content>.form-auth{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content>.form-auth>form{
+    display: grid;
+    width: 340px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.content>.form-auth>form>h1{
+    color: var(--var-main-color);
+    font-size: 32px;
+    padding-bottom: 30px;
+    border: 0;
+}
+
+.content>.form-auth>form>p{
+    text-align: left;
+    padding-bottom: 10px;
+    color: var(--grey);
+    font-size: 12px;
+}
+
+.content>.form-auth>form>input{
+    padding: 12px 18px;
+    outline: none;
+    border-radius: 7px;
+    border: 1px solid var(--light-grey);
+    margin-bottom: 26px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.content>.form-auth>form>input:focus{
+    border: 1px solid var(--var-main-color);
+}
+
+.content>.form-auth>form>a{
+    text-decoration: none;
+    outline: none;
+    padding-bottom: 26px;
+    color: var(--grey);
+}
+
+.content>.form-auth>form>a:hover{
+    color: var(--grey-hover);
+}
+
+.content>.form-auth>form>a:hover{
+    color: var(--grey-active);
+}
+
+.content>.form-auth>form>button{
+    background-color: var(--var-main-color);
+    padding: 14px 0;
+    font-size: 14px;
+    border: 0;
+    border-radius: 100px;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.content>.form-auth>form>button:hover{
+    background-color: var(--var-main-color-hover);
+}
+
+.content>.form-auth>form>button:active{
+    background-color: var(--var-main-color-active);
+}
+
+
+
+
+.content>.form-register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.content>.form-register>form{
+    display: grid;
+    width: 340px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.content>.form-register>form>h1{
+    color: var(--var-main-color);
+    font-size: 32px;
+    padding-bottom: 30px;
+    border: 0;
+}
+
+.content>.form-register>form>p{
+    text-align: left;
+    padding-bottom: 10px;
+    color: var(--grey);
+    font-size: 12px;
+}
+
+.content>.form-register>form>input{
+    padding: 12px 18px;
+    outline: none;
+    border-radius: 7px;
+    border: 1px solid var(--light-grey);
+    margin-bottom: 26px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.content>.form-register>form>input:focus{
+    border: 1px solid var(--var-main-color);
+}
+
+.content>.form-register>form>a{
+    text-decoration: none;
+    outline: none;
+    padding-bottom: 26px;
+    color: var(--grey);
+}
+
+.content>.form-register>form>a:hover{
+    color: var(--grey-hover);
+}
+
+.content>.form-register>form>a:hover{
+    color: var(--grey-active);
+}
+
+.content>.form-register>form>button{
+    background-color: var(--var-main-color);
+    padding: 14px 0;
+    font-size: 14px;
+    border: 0;
+    border-radius: 100px;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.content>.form-register>form>button:hover{
+    background-color: var(--var-main-color-hover);
+}
+
+.content>.form-register>form>button:active{
+    background-color: var(--var-main-color-active);
+}
+
+.fill-screen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--var-main-color);
+    z-index: 9999;
+    animation: fillAnimation 0.3s forwards;
+}
+
+@keyframes fillAnimation {
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes fillAnimationReverse {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+        right: 100%;
+    }
+}
+
+
+@media (max-width: 1023px) {
+    .content{
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 100vh;
+    }
+    .content>.background-image{
+        display: none;
+    }
+}
+
+@media (max-width: 374px) {
+    .content{
+        display: grid;
+        grid-template-columns: 1fr;
+        height: 100vh;
+    }
+    .content>.background-image{
+        display: none;
+    }
+    .content>.form-auth>form{
+        display: grid;
+        width: 300px;
+        text-align: center;
+        font-weight: 600;
+    }
+    .content>.form-register>form{
+        display: grid;
+        width: 300px;
+        text-align: center;
+        font-weight: 600;
+    }
+}
+
