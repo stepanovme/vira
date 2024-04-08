@@ -1,19 +1,33 @@
 <?php
-session_start(); // Начало сессии
+session_start();
 
-// Проверка наличия ключа user_id в сессии
 if (!isset($_SESSION['user_id'])) {
-    // Если ключ не существует, перенаправляем пользователя на страницу авторизации
     header('Location: auth.php');
     exit;
 }
 
-// Если пользователь аутентифицирован, вы можете получить его ID из сессии и выполнить другие действия, например, выводить контент для авторизованных пользователей
 $user_id = $_SESSION['user_id'];
 
-// Здесь может быть ваш код для вывода контента или выполнения других действий на странице index.php
+require 'database/db_connection.php';
 
-echo "Добро пожаловать! Ваш ID пользователя: $user_id";
+$sql = "SELECT * FROM user WHERE userId = $user_id";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $name = $row['name'];
+    $surname = $row['surname'];
+    $roleId = $row['roleId'];
+}
+
+$sql = "SELECT * FROM role WHERE roleId = $roleId";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $roleName = $row['roleName'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -35,14 +49,34 @@ echo "Добро пожаловать! Ваш ID пользователя: $user
             <div class="logo">VIRA</div>
             <img src="/assets/images/mobile_logo.png" alt="" class="logo_mobile">
             <nav>
-                <p class="title">ГЛАВНОЕ МЕНЮ</p>
-                <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
-                <a href=""><img src="/assets/images/pencil.svg" alt="">Гибка металла</a>
-                <p class="title">ИНФОРМАЦИЯ</p>
-                <a href=""><img src="/assets/images/people.svg" alt="">Сотрудники</a>
-                <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
-                <a href="" class="mobile_link"><img src="/assets/images/mobile_pencil.svg" alt=""></a>
-                <a href="" class="mobile_link"><img src="/assets/images/mobile_people.svg" alt=""></a>
+                <?php 
+                if($roleId == 1){
+                    echo '
+                        <p class="title">ГЛАВНОЕ МЕНЮ</p>
+                        <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
+                        <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
+                    ';
+                } else if($roleId == 3 || $roleId == 4){
+                    echo '
+                        <p class="title">ГЛАВНОЕ МЕНЮ</p>
+                        <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
+                        <a href=""><img src="/assets/images/pencil.svg" alt="">Гибка металла</a>
+                        <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
+                        <a href="" class="mobile_link"><img src="/assets/images/mobile_pencil.svg" alt=""></a>
+                    ';
+                } else if($roleId == 2 || $roleId == 5){
+                    echo '
+                    <p class="title">ГЛАВНОЕ МЕНЮ</p>
+                    <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
+                    <a href=""><img src="/assets/images/pencil.svg" alt="">Гибка металла</a>
+                    <p class="title">ИНФОРМАЦИЯ</p>
+                    <a href=""><img src="/assets/images/people.svg" alt="">Сотрудники</a>
+                    <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
+                    <a href="" class="mobile_link"><img src="/assets/images/mobile_pencil.svg" alt=""></a>
+                    <a href="" class="mobile_link"><img src="/assets/images/mobile_people.svg" alt=""></a>
+                    ';
+                }
+                ?>
             </nav>
         </div>
         <div class="layout">
@@ -52,8 +86,8 @@ echo "Добро пожаловать! Ваш ID пользователя: $user
                         <img src="/assets/images/avatar.png" alt="">
                     </div>
                     <div class="info">
-                        <p class="name">Денис Кузнецов</p>
-                        <p class="role">Руководитель проекта</p>
+                        <p class="name"><?php echo $name ." ". $surname;?></p>
+                        <p class="role"><?php echo $roleName;?></p>
                     </div>
                 </div>
                 <img class="mobile-avatar" src="/assets/images/small_logo.svg" alt="">
@@ -66,6 +100,43 @@ echo "Добро пожаловать! Ваш ID пользователя: $user
             </header>
             <div class="content">
                 <div class="menu" id="menu">
+
+                <?php 
+                if($roleId == 1){
+                    echo '
+                    <div class="link">
+                        <div class="head">
+                            <img src="/assets/images/dashboard_mobile.svg" alt="">
+                        </div>
+                        <div class="body">
+                            <p>Дашборд</p>
+                            <img src="/assets/images/arrow.svg" alt="">
+                        </div>
+                    </div>
+                    ';
+                } else if($roleId == 3 || $roleId == 4){
+                    echo '
+                    <div class="link">
+                        <div class="head">
+                            <img src="/assets/images/dashboard_mobile.svg" alt="">
+                        </div>
+                        <div class="body">
+                            <p>Дашборд</p>
+                            <img src="/assets/images/arrow.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="link">
+                        <div class="head">
+                            <img src="/assets/images/pencil_mobile.svg" alt="">
+                        </div>
+                        <div class="body">
+                            <p>Гибка металла</p>
+                            <img src="/assets/images/arrow.svg" alt="">
+                        </div>
+                    </div>
+                    ';
+                } else if($roleId == 2 || $roleId == 5){
+                    echo '
                     <div class="link">
                         <div class="head">
                             <img src="/assets/images/dashboard_mobile.svg" alt="">
@@ -93,6 +164,9 @@ echo "Добро пожаловать! Ваш ID пользователя: $user
                             <img src="/assets/images/arrow.svg" alt="">
                         </div>
                     </div>
+                    ';
+                }
+                ?>
                 </div>
             </div>
         </div>
