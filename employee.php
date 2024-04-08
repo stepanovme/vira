@@ -28,6 +28,11 @@ if ($result->num_rows > 0) {
     $roleName = $row['roleName'];
 }
 
+if ($roleId != 2 && $roleId != 5) {
+    header('Location: index.php');
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>

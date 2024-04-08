@@ -9,17 +9,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $login = $_POST['login'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM user WHERE login='$login' AND password='$password'";
+    $sql = "SELECT * FROM user WHERE login='$login'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Успешная авторизация
+        // Пользователь найден
         $user = $result->fetch_assoc();
-        $_SESSION['user_id'] = $user['userId'];
-        header('Location: index.php'); // Перенаправление на index.php
-        exit;
+        $hashed_password = $user['password'];
+
+        // Сравнение хэшированного пароля с введенным паролем
+        if (password_verify($password, $hashed_password)) {
+            // Успешная авторизация
+            $_SESSION['user_id'] = $user['userId'];
+            header('Location: index.php'); // Перенаправление на index.php
+            exit;
+        } else {
+            // Неверный пароль
+            // echo "Неверный логин или пароль";
+        }
     } else {
-        // Неверный логин или пароль
+        // Пользователь не найден
         // echo "Неверный логин или пароль";
     }
 }
@@ -33,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $login = $_POST['login'];
     $password = $_POST['password'];
 
+    // Хеширование пароля
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
     // Проверка наличия пользователя с таким логином
     $check_sql = "SELECT * FROM user WHERE login='$login'";
     $check_result = $conn->query($check_sql);
@@ -41,8 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         // Пользователь с таким логином уже существует
         // echo "Пользователь с таким логином уже существует";
     } else {
-        // Вставка новой записи в базу данных
-        $insert_sql = "INSERT INTO user (name, surname, login, password) VALUES ('$name', '$surname', '$login', '$password')";
+        // Вставка новой записи в базу данных с хешированным паролем
+        $insert_sql = "INSERT INTO user (name, surname, login, password) VALUES ('$name', '$surname', '$login', '$hashed_password')";
 
         if ($conn->query($insert_sql) === TRUE) {
             // Успешная регистрация
