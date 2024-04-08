@@ -40,7 +40,7 @@ if ($result->num_rows > 0) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
-    <title>Дашборд</title>
+    <title>Сотрудники</title>
 </head>
 <body>
     
@@ -81,6 +81,6 @@ if ($result->num_rows > 0) {
 
 
     <script src="/js/mobile.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="js/employee.js"></script>
 </body>
 </html>

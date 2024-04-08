@@ -211,7 +211,7 @@ input#toggle{
         border-bottom: 1px solid #D2D3D7;
         justify-content:space-between;
         align-items: center;
-        padding: 10px;
+        padding: 22px;
     }
     .wrapper>.layout>header>.profile{
         display: none;
