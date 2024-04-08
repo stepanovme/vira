@@ -1,3 +1,55 @@
+<?php
+require 'database/db_connection.php';
+
+// Обработка авторизации
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    // Код для авторизации
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM user WHERE login='$login' AND password='$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Успешная авторизация
+        // echo "Успешная авторизация";
+    } else {
+        // Неверный логин или пароль
+        // echo "Неверный логин или пароль";
+    }
+}
+
+
+// Обработка регистрации
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+    // Код для регистрации
+    $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+
+    // Проверка наличия пользователя с таким логином
+    $check_sql = "SELECT * FROM user WHERE login='$login'";
+    $check_result = $conn->query($check_sql);
+
+    if ($check_result->num_rows > 0) {
+        // Пользователь с таким логином уже существует
+        // echo "Пользователь с таким логином уже существует";
+    } else {
+        // Вставка новой записи в базу данных
+        $insert_sql = "INSERT INTO user (name, surname, login, password) VALUES ('$name', '$surname', '$login', '$password')";
+
+        if ($conn->query($insert_sql) === TRUE) {
+            // Успешная регистрация
+            // echo "Успешная регистрация";
+        } else {
+            // Ошибка при регистрации
+            // echo "Ошибка при регистрации: " . $conn->error;
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -16,32 +68,30 @@
             <img src="/assets/images/auth.jpg" alt="">
         </div>
         <div class="form-auth">
-            <form action="" method="post">
+            <form  method="post">
                 <h1>Авторизация</h1>
                 <p>Логин</p>
-                <input type="text" placeholder="Логин">
+                <input type="text" name="login" placeholder="Логин">
                 <p>Пароль</p>
-                <input type="password" placeholder="********">
+                <input type="password" name="password" placeholder="********">
                 <a href="#" id="showRegister">Ещё нет аккаунта?</a>
                 <button type="submit">Войти</button>
             </form>
         </div>
 
         <div class="form-register">
-            <form action="" method="post">
+            <form method="post">
                 <h1>Регистрация</h1>
                 <p>Имя</p>
-                <input type="text" placeholder="Сергей">
+                <input type="text" name="name" placeholder="Сергей">
                 <p>Фамилия</p>
-                <input type="text" placeholder="Логинов">
+                <input type="text" name="surname" placeholder="Логинов">
                 <p>Логин</p>
-                <input type="text" placeholder="Логин">
+                <input type="text" name="login" placeholder="Логин">
                 <p>Пароль</p>
-                <input type="password" placeholder="********">
-                <p>Повторить пароль</p>
-                <input type="password" placeholder="********">
+                <input type="password" name="password" placeholder="********">
                 <a href="#" id="showAuth">Уже есть аккаунт?</a>
-                <button type="submit">Войти</button>
+                <button type="submit" name="register">Зарегистрироваться</button>
             </form>
         </div>
     </div>
