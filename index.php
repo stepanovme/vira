@@ -49,34 +49,7 @@ if ($result->num_rows > 0) {
             <div class="logo">VIRA</div>
             <img src="/assets/images/mobile_logo.png" alt="" class="logo_mobile">
             <nav>
-                <?php 
-                if($roleId == 1){
-                    echo '
-                        <p class="title">ГЛАВНОЕ МЕНЮ</p>
-                        <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
-                        <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
-                    ';
-                } else if($roleId == 3 || $roleId == 4){
-                    echo '
-                        <p class="title">ГЛАВНОЕ МЕНЮ</p>
-                        <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
-                        <a href=""><img src="/assets/images/pencil.svg" alt="">Гибка металла</a>
-                        <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
-                        <a href="" class="mobile_link"><img src="/assets/images/mobile_pencil.svg" alt=""></a>
-                    ';
-                } else if($roleId == 2 || $roleId == 5){
-                    echo '
-                    <p class="title">ГЛАВНОЕ МЕНЮ</p>
-                    <a href="" class="active"><img src="/assets/images/dashboard.svg" alt="">Дашборд</a>
-                    <a href=""><img src="/assets/images/pencil.svg" alt="">Гибка металла</a>
-                    <p class="title">ИНФОРМАЦИЯ</p>
-                    <a href=""><img src="/assets/images/people.svg" alt="">Сотрудники</a>
-                    <a href="" class="mobile_link active-mobile"><img src="/assets/images/mobile_dashboard.svg" alt=""></a>
-                    <a href="" class="mobile_link"><img src="/assets/images/mobile_pencil.svg" alt=""></a>
-                    <a href="" class="mobile_link"><img src="/assets/images/mobile_people.svg" alt=""></a>
-                    ';
-                }
-                ?>
+                <?php include 'components/nav.php';?>
             </nav>
         </div>
         <div class="layout">
@@ -100,73 +73,7 @@ if ($result->num_rows > 0) {
             </header>
             <div class="content">
                 <div class="menu" id="menu">
-
-                <?php 
-                if($roleId == 1){
-                    echo '
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/dashboard_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Дашборд</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    ';
-                } else if($roleId == 3 || $roleId == 4){
-                    echo '
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/dashboard_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Дашборд</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/pencil_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Гибка металла</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    ';
-                } else if($roleId == 2 || $roleId == 5){
-                    echo '
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/dashboard_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Дашборд</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/pencil_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Гибка металла</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    <div class="link">
-                        <div class="head">
-                            <img src="/assets/images/people_mobile.svg" alt="">
-                        </div>
-                        <div class="body">
-                            <p>Сотрудники</p>
-                            <img src="/assets/images/arrow.svg" alt="">
-                        </div>
-                    </div>
-                    ';
-                }
-                ?>
+                    <?php include 'components/nav_mobile.php';?>
                 </div>
             </div>
         </div>
