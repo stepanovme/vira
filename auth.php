@@ -1,4 +1,6 @@
 <?php
+session_start(); // Начало сессии
+
 require 'database/db_connection.php';
 
 // Обработка авторизации
@@ -12,7 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
 
     if ($result->num_rows > 0) {
         // Успешная авторизация
-        // echo "Успешная авторизация";
+        $user = $result->fetch_assoc();
+        $_SESSION['user_id'] = $user['userId'];
+        header('Location: index.php'); // Перенаправление на index.php
+        exit;
     } else {
         // Неверный логин или пароль
         // echo "Неверный логин или пароль";
