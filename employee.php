@@ -75,6 +75,39 @@ if ($result->num_rows > 0) {
                 <div class="menu" id="menu">
                     <?php include 'components/nav_mobile.php';?>
                 </div>
+                <div class="content-header">
+                    <h1>Сотрудники</h1>
+                    <button>Добавить</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Сотрудник</th>
+                            <th>Логин</th>
+                            <th>Пароль</th>
+                            <th>Роль</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                            $sql = "SELECT u.userId, u.name, u.surname, u.login, u.password, u.roleId, r.roleName
+                                    FROM user u
+                                    INNER JOIN role r ON u.roleId = r.roleId";
+                            $result = $conn->query($sql);
+                            
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<tr>
+                                            <td>'.$row['name'].' '.$row['surname'].'</td>
+                                            <td>'.$row['login'].'</td>
+                                            <td>'.$row['password'].'</td>
+                                            <td>'.$row['roleName'].'</td>
+                                        </tr>';
+                                }
+                            }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

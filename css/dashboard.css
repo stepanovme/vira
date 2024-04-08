@@ -152,6 +152,102 @@ input#toggle{
     background-color: #F9F9FB;
     height: 100%;
     border-radius: 15px 0 0 0;
+    padding: 30px 40px;
+}
+
+.wrapper>.layout>.content>.content-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wrapper>.layout>.content>.content-header>button{
+    background-color: var(--var-main-color);
+    color: white;
+    padding: 12px 38px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-style: 14px;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.content-header>button:hover{
+    background-color: var(--var-main-color-hover);
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.content-header>button:active{
+    background-color: var(--var-main-color-active);
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>table{
+    width: 100%;
+    padding: 0;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+    border-spacing: 0;
+}
+
+.wrapper>.layout>.content>table>tbody>tr{
+    background-color: white;
+}
+
+.wrapper>.layout>.content>table>thead>tr{
+    background-color: white;
+}
+
+.wrapper>.layout>.content>table>thead>tr>th{
+    padding: 8px 0;
+    border: 1px solid #E0E4E8;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight:600;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>table>tbody>tr>td{
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>table>thead>tr:first-child>th:first-child{
+    border-top-left-radius: 10px;
+}
+
+.wrapper>.layout>.content>table>thead>tr:first-child>th:last-child{
+    border-top-right-radius: 10px;
+}
+
+.wrapper>.layout>.content>table>tbody>tr:last-child>td:first-child{
+    border-bottom-left-radius: 10px;
+}
+
+.wrapper>.layout>.content>table>tbody>tr:last-child>td:last-child{
+    border-bottom-right-radius: 10px;
+}
+
+.wrapper>.layout>.content>table>tbody>tr>td{
+    padding: 8px 0;
+    border: 1px solid #E0E4E8;  
+    font-size: 14px;
+    color: #6A6A6A;
+    font-weight: 500;
+}
+
+.wrapper>.layout>.content>table>tbody>tr:hover{
+    background-color: #F6F6F6;
+    box-shadow: 0 7px 10px #cecece;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>table>thead>tr:hover{
+    background-color: #F6F6F6;
+    box-shadow: 0 7px 10px #cecece;
+    cursor: pointer;
 }
 
 @media (max-width: 992px) {
