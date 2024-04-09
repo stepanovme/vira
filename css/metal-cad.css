@@ -155,3 +155,59 @@ button#mobile-add{
     color: white;
 }
 
+.wrapper>.layout>.content>.table{
+    display: none;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px 10px;
+    border-radius: 8px;
+    border: 1px solid #E0E4E8;
+}
+
+.wrapper>.layout>.content>.table>table{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.wrapper>.layout>.content>.table>table>thead>tr>th{
+    border-bottom: 1px solid #ECECEC;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr{
+    cursor: pointer;
+    transition: .3s all;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr:hover{
+    background-color: #F6F8FA;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr>td{
+    padding: 15px 0;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status{
+    display: inline;
+    padding: 5px 10px;
+    background-color: #F6F8FA;
+    border-radius: 6px;
+}
+
+/* Стилизация статусов */
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.plan{
+    color: #BE9AE4;
+}
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.work{
+    color: #849FF4;
+}
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.sent{
+    color: #D8BFD8;
+}
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.shipped{
+    color: #AFDAFC;
+}
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.completed{
+    color: #71BC78;
+}

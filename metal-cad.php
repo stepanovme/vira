@@ -117,6 +117,69 @@ if ($roleId != 2 && $roleId != 5) {
                         <div class="status">Планирование</div>
                     </div>
                 </div>
+
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Проект</th>
+                                <th>План</th>
+                                <th>Факт</th>
+                                <th>Дата создания</th>
+                                <th>Ответственный</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Многоэтажка на Дмитривском шоссе</td>
+                                <td>10000</td>
+                                <td>14000</td>
+                                <td>14.05.2024г.</td>
+                                <td>Евгений Прищеп</td>
+                                <td><div class="status plan">Планирование</div></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Многоэтажка на Дмитривском шоссе</td>
+                                <td>10000</td>
+                                <td>14000</td>
+                                <td>14.05.2024г.</td>
+                                <td>Евгений Прищеп</td>
+                                <td><div class="status work">В работе  – 45%</div></td>
+                            </tr>   
+                            <tr>
+                                <td>3</td>
+                                <td>Многоэтажка на Дмитривском шоссе</td>
+                                <td>10000</td>
+                                <td>14000</td>
+                                <td>14.05.2024г.</td>
+                                <td>Евгений Прищеп</td>
+                                <td><div class="status sent">Отправлено</div></td>
+                            </tr> 
+                            <tr>
+                                <td>4</td>
+                                <td>Многоэтажка на Дмитривском шоссе</td>
+                                <td>10000</td>
+                                <td>14000</td>
+                                <td>14.05.2024г.</td>
+                                <td>Евгений Прищеп</td>
+                                <td><div class="status shipped">Отгружен</div></td>
+                            </tr> 
+                            <tr>
+                                <td>5</td>
+                                <td>Многоэтажка на Дмитривском шоссе</td>
+                                <td>10000</td>
+                                <td>14000</td>
+                                <td>14.05.2024г.</td>
+                                <td>Евгений Прищеп</td>
+                                <td><div class="status completed">Завершено</div></td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
