@@ -211,3 +211,97 @@ button#mobile-add{
 .wrapper>.layout>.content>.table>table>tbody>tr>td>.status.completed{
     color: #71BC78;
 }
+
+div#modal{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    background: rgba(217, 217, 217, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+div#modal>form{
+    padding: 40px;
+    background-color: white;
+    border: 0;
+    border-radius: 33px;
+    box-shadow: 0px 10px 78px 3px rgba(0, 0, 0, 0.1);
+    display: grid;
+}
+
+div#modal>form>.modal-title{
+    font-size: 32px;
+    color: black;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+div#modal>form>label{
+    color: #565555;
+    font-weight: 600;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+
+div#modal>form>input{
+    border: 1px solid #D2D3D7;
+    border-radius: 7px;
+    padding: 12px 18px;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 26px;
+    outline: none;
+}
+
+div#modal>form>select{
+    border: 1px solid #D2D3D7;
+    border-radius: 7px;
+    padding: 12px 18px;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 26px;
+    outline: none;
+    cursor: pointer;
+}
+
+div#modal>form>button{
+    padding: 14px 0;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 100px;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+div#modal>form>button#modal-add{
+    margin-bottom: 26px;
+    background-color: #59B077;
+}
+
+div#modal>form>button#modal-add:hover{
+    background-color: var(--var-main-color-hover);
+}
+
+div#modal>form>button#modal-add:active{
+    background-color: var(--var-main-color-active);
+}
+
+div#modal>form>button.close{
+    background-color: #F95B5E;
+}
+
+div#modal>form>button.close:hover{
+    background-color: #E2494C;
+}
+
+div#modal>form>button.close:active{
+    background-color: #D4474A;
+}

@@ -61,6 +61,30 @@ $(document).ready(function() {
     });
 });
 
+// Получаем кнопку "Добавить"
+var addButton = document.getElementById('add');
 
+// Получаем модальное окно
+var modal = document.getElementById('modal');
+
+// Получаем элемент закрытия модального окна
+var closeBtn = document.getElementsByClassName('close')[0];
+
+// Добавляем обработчик события click на кнопку "Добавить"
+addButton.addEventListener('click', function() {
+    modal.style.display = 'flex'; // Отображаем модальное окно при нажатии на кнопку
+});
+
+// Добавляем обработчик события click на элемент закрытия модального окна
+closeBtn.addEventListener('click', function() {
+    modal.style.display = 'none'; // Скрываем модальное окно при нажатии на элемент закрытия
+});
+
+// Закрываем модальное окно при клике вне его области
+window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+        modal.style.display = 'none'; // Скрываем модальное окно при клике вне его области
+    }
+});
 
 

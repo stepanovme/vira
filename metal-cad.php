@@ -33,7 +33,6 @@ if ($roleId != 2 && $roleId != 5) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -48,7 +47,6 @@ if ($roleId != 2 && $roleId != 5) {
     <title>Сотрудники</title>
 </head>
 <body>
-    
     <div class="wrapper">
         <div class="navbar">
             <div class="logo">VIRA</div>
@@ -126,6 +124,30 @@ if ($roleId != 2 && $roleId != 5) {
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <form>
+            <p class="modal-title">Создание проекта</p>
+            <label class="label">Название проекта</label>
+            <input type="text" name="" id="" placeholder="Катунино">
+            <label class="label">Объект</label>
+            <input type="text" name="" id="" placeholder="Кактунино">
+            <label class="label">Цвет</label>
+            <select name="" id="">
+                <option value="" selected disabled>Цвет</option>
+            </select>
+            <label class="label">Толщина</label>
+            <select name="" id="">
+                <option value="" selected disabled>Толщина</option>
+            </select>
+            <label class="label">Ответственный</label>
+            <select name="" id="">
+                <option value="" selected disabled>Ответственный</option>
+            </select>
+            <button id="modal-add" type="submit">Добавить</button>
+            <button class="close" type="button">Отменить</button>
+        </form>
     </div>
 
     <script src="/js/jquery.js"></script>
