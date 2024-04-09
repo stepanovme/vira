@@ -87,31 +87,11 @@ if ($roleId != 2 && $roleId != 5) {
                 </div>
                 <div class="search-header">
                     <p class="actual">Актуальные 6</p>
-                    <button class="slide active"></button>
-                    <button class="table"></button>
-                </div>
+                    <button class="slide" id="slide"></button>
+                    <button class="table-btn"></button>
+                </div>  
                 <div class="slide-list">
                     <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide work">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide sent">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide shipped">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide completed">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
                         <div class="status">Планирование</div>
@@ -141,42 +121,6 @@ if ($roleId != 2 && $roleId != 5) {
                                 <td>Евгений Прищеп</td>
                                 <td><div class="status plan">Планирование</div></td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Многоэтажка на Дмитривском шоссе</td>
-                                <td>10000</td>
-                                <td>14000</td>
-                                <td>14.05.2024г.</td>
-                                <td>Евгений Прищеп</td>
-                                <td><div class="status work">В работе  – 45%</div></td>
-                            </tr>   
-                            <tr>
-                                <td>3</td>
-                                <td>Многоэтажка на Дмитривском шоссе</td>
-                                <td>10000</td>
-                                <td>14000</td>
-                                <td>14.05.2024г.</td>
-                                <td>Евгений Прищеп</td>
-                                <td><div class="status sent">Отправлено</div></td>
-                            </tr> 
-                            <tr>
-                                <td>4</td>
-                                <td>Многоэтажка на Дмитривском шоссе</td>
-                                <td>10000</td>
-                                <td>14000</td>
-                                <td>14.05.2024г.</td>
-                                <td>Евгений Прищеп</td>
-                                <td><div class="status shipped">Отгружен</div></td>
-                            </tr> 
-                            <tr>
-                                <td>5</td>
-                                <td>Многоэтажка на Дмитривском шоссе</td>
-                                <td>10000</td>
-                                <td>14000</td>
-                                <td>14.05.2024г.</td>
-                                <td>Евгений Прищеп</td>
-                                <td><div class="status completed">Завершено</div></td>
-                            </tr> 
                         </tbody>
                     </table>
                 </div>
@@ -184,11 +128,8 @@ if ($roleId != 2 && $roleId != 5) {
         </div>
     </div>
 
-
+    <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
     <script src="./js/metal-cad.js"></script>
-    <script>
-        
-    </script>
 </body>
 </html>

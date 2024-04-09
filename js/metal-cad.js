@@ -4,6 +4,9 @@ employee.classList.add("active");
 var employeeMobile = document.getElementById("metal-cad-mobile");
 employeeMobile.classList.add("active-mobile");
 
+var slide = document.getElementById("slide");
+slide.classList.add("active");
+
 document.addEventListener("DOMContentLoaded", function(event) {
     // Проверьте, есть ли состояние анимации в локальном хранилище
     var animationState = localStorage.getItem('animationState');
@@ -25,3 +28,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
         localStorage.removeItem('animationState');
     }
 });
+
+$(document).ready(function() {
+    $(".table-btn").on("click", function() {
+        var isActive = $(this).hasClass("active");
+        $(".slide").removeClass("active");
+        if (!isActive) {
+            $(this).addClass("active");
+        }
+        if ($(".slide-list").is(":visible")) {
+            $(".slide-list").slideUp("middle", function() {
+                $(".table").slideDown();
+            });
+        } else if (!$(".table").is(":visible")) {
+            $(".table").slideToggle();
+        }
+    });
+
+    $(".slide").on("click", function() {
+        var isActive = $(this).hasClass("active");
+        $(".table-btn").removeClass("active");
+        if (!isActive) {
+            $(this).addClass("active");
+        }
+        if ($(".table").is(":visible")) {
+            $(".table").slideUp("middle", function() {
+                $(".slide-list").slideDown();
+            });
+        } else if (!$(".slide-list").is(":visible")) {
+            $(".slide-list").slideToggle();
+        }
+    });
+});
+
+
+
+

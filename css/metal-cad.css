@@ -40,19 +40,19 @@ button#mobile-add{
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.search-header>button.table{
+.wrapper>.layout>.content>.search-header>button.table-btn{
     background-image: url(../assets/images/table.svg);
     background-size: cover;
     filter: contrast(0);
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.search-header>button.table:hover{
+.wrapper>.layout>.content>.search-header>button.table-btn:hover{
     filter: contrast(1);
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.search-header>button.table.active{
+.wrapper>.layout>.content>.search-header>button.table-btn.active{
     filter: contrast(1);
 }
 
