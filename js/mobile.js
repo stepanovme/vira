@@ -12,7 +12,7 @@ toggle.addEventListener('click', function() {
     }
 });
 
-window.addEventListener("beforeunload", function(event) {
+window.addEventListener("DOMContentLoaded", function(event) {
     var fillScreen = document.createElement("div");
     fillScreen.classList.add("fill-screen");
     document.body.appendChild(fillScreen);
@@ -23,4 +23,3 @@ window.addEventListener("beforeunload", function(event) {
 
     localStorage.setItem('animationState', 'fillAnimation');
 });
-

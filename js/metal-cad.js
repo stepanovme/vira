@@ -29,6 +29,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 });
 
+// document.addEventListener("DOMContentLoaded", function(event) {
+//     var animationState = localStorage.getItem('animationState');
+//     if (animationState === 'fillAnimation') {
+//         var fillScreen = document.createElement("div");
+//         fillScreen.classList.add("fill-screen");
+//         document.body.appendChild(fillScreen);
+
+//         setTimeout(function() {
+//             fillScreen.style.animation = "fillAnimationReverse 0.3s forwards";
+//             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
+//             document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
+//             document.querySelector('.wrapper>.layout>.content>.slide-list').style.display = 'grid';
+//         }, 200); 
+        
+//         localStorage.removeItem('animationState');
+//     }
+// });
+
 $(document).ready(function() {
     $(".table-btn").on("click", function() {
         var isActive = $(this).hasClass("active");
@@ -63,6 +81,7 @@ $(document).ready(function() {
 
 // Получаем кнопку "Добавить"
 var addButton = document.getElementById('add');
+var addButtonMobile = document.getElementById('mobile-add');
 
 // Получаем модальное окно
 var modal = document.getElementById('modal');
@@ -72,6 +91,11 @@ var closeBtn = document.getElementsByClassName('close')[0];
 
 // Добавляем обработчик события click на кнопку "Добавить"
 addButton.addEventListener('click', function() {
+    modal.style.display = 'flex'; // Отображаем модальное окно при нажатии на кнопку
+});
+
+// Добавляем обработчик события click на кнопку "Добавить"
+addButtonMobile.addEventListener('click', function() {
     modal.style.display = 'flex'; // Отображаем модальное окно при нажатии на кнопку
 });
 

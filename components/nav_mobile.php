@@ -34,7 +34,7 @@ if($roleId == 1){
     ';
 } else if($roleId == 2 || $roleId == 5){
     echo '
-    <div class="link" onclick="window.location.href = \'../index.php\'">
+    <div class="link" id="dash-btn-mobile" onclick="window.location.href = \'../index.php\'">
         <div class="head">
             <img src="/assets/images/dashboard_mobile.svg" alt="">
         </div>

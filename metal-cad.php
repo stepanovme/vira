@@ -145,24 +145,24 @@ if ($roleId != 2 && $roleId != 5) {
                     <table>
                         <thead>
                             <tr>
-                                <th>№</th>
-                                <th>Проект</th>
-                                <th>План</th>
-                                <th>Факт</th>
-                                <th>Дата создания</th>
-                                <th>Ответственный</th>
-                                <th>Статус</th>
+                                <th id="table-num">№</th>
+                                <th id="table-project">Проект</th>
+                                <th id="table-plan">План</th>
+                                <th id="table-fact">Факт</th>
+                                <th id="table-date">Дата создания</th>
+                                <th id="table-responseble">Ответственный</th>
+                                <th id="table-status">Статус</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
-                                <td>Многоэтажка на Дмитривском шоссе</td>
-                                <td>10000</td>
-                                <td>14000</td>
-                                <td>14.05.2024г.</td>
-                                <td>Евгений Прищеп</td>
-                                <td><div class="status plan">Планирование</div></td>
+                                <td id="table-num-value">1</td>
+                                <td id="table-project-value">Многоэтажка на Дмитривском шоссе</td>
+                                <td id="table-plan-value">10000</td>
+                                <td id="table-fact-value">14000</td>
+                                <td id="table-date-value">14.05.2024г.</td>
+                                <td id="table-responseble-value">Евгений Прищеп</td>
+                                <td id="table-status-value"><div class="status plan">Планирование</div></td>
                             </tr>
                         </tbody>
                     </table>
