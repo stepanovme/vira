@@ -156,7 +156,8 @@ input#toggle{
 }
 
 .wrapper>.layout>.content>.content-header{
-    display: flex;
+    display: none;
+    /* flex */
     justify-content: space-between;
     align-items: center;
 }
@@ -185,6 +186,8 @@ input#toggle{
 }
 
 .wrapper>.layout>.content>table{
+    display: none;
+    /* table */
     width: 100%;
     padding: 0;
     border-radius: 10px;
@@ -264,6 +267,34 @@ select.role-select {
     outline: none;
     cursor: pointer;
 }
+
+.fill-screen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--var-main-color);
+    z-index: 9999;
+    animation: fillAnimation 0.3s forwards;
+}
+
+@keyframes fillAnimation {
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes fillAnimationReverse {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+        right: 100%;
+    }
+}
+
 
 @media (max-width: 1024px) {
     .wrapper{

@@ -11,3 +11,16 @@ toggle.addEventListener('click', function() {
         menu.style.right = '0';
     }
 });
+
+window.addEventListener("beforeunload", function(event) {
+    var fillScreen = document.createElement("div");
+    fillScreen.classList.add("fill-screen");
+    document.body.appendChild(fillScreen);
+
+    fillScreen.addEventListener("animationend", function() {
+        fillScreen.style.animation = "fillAnimationReverse 0.2s forwards";
+    }, { once: true });
+
+    localStorage.setItem('animationState', 'fillAnimation');
+});
+

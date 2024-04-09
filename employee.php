@@ -128,8 +128,8 @@ if ($roleId != 2 && $roleId != 5) {
     </div>
 
 
-    <script src="/js/mobile.js"></script>
-    <script src="js/employee.js"></script>
+    <script src="./js/mobile.js"></script>
+    <script src="./js/employee.js"></script>
     <script>
         document.querySelectorAll('.role-select').forEach(select => {
             select.addEventListener('change', function() {

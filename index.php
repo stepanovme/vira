@@ -80,7 +80,7 @@ if ($result->num_rows > 0) {
     </div>
 
 
-    <script src="/js/mobile.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script src="./js/mobile.js"></script>
+    <script src="./js/dashboard.js"></script>
 </body>
 </html>
