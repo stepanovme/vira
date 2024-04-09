@@ -370,6 +370,7 @@ select.role-select {
 
     input#toggle:checked ~ .layout .content .menu {
         right: 0;
+
     }
     
 
@@ -406,7 +407,7 @@ select.role-select {
 
       .menu {
         position: fixed;
-        top: 57;
+        top: 57px;
         right: -100vw;
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -416,6 +417,7 @@ select.role-select {
         height: 100%;
         background-color: #F7F7F7;
         padding: 22px;
+        z-index: 100;
         transition: all 0.3s ease;
       }
 

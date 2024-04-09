@@ -94,6 +94,51 @@ if ($roleId != 2 && $roleId != 5) {
                         <div class="responsible">Евгений Прищеп</div>
                         <div class="status">Планирование</div>
                     </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
                 </div>
 
                 <div class="table">
