@@ -51,7 +51,7 @@ if ($roleId != 2 && $roleId != 5) {
     
     <div class="wrapper">
         <div class="navbar">
-            <div class="logo">VIRA</div>
+            <div class="logo" onclick="window.location.href = 'index.php'">VIRA</div>
             <img src="/assets/images/mobile_logo.png" alt="" class="logo_mobile">
             <nav>
                 <?php include 'components/nav.php';?>

@@ -49,7 +49,7 @@ if ($roleId != 2 && $roleId != 5) {
 <body>
     <div class="wrapper">
         <div class="navbar">
-            <div class="logo">VIRA</div>
+            <div class="logo" onclick="window.location.href = 'index.php'">VIRA</div>
             <img src="/assets/images/mobile_logo.png" alt="" class="logo_mobile">
             <nav>
                 <?php include 'components/nav.php';?>
@@ -94,50 +94,40 @@ if ($roleId != 2 && $roleId != 5) {
                         <div class="responsible">Евгений Прищеп</div>
                         <div class="status">Планирование</div>
                     </div>
-                    <div class="slide plan">
+                    <div class="slide completed">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
+                        <div class="status">Завершено</div>
+                    </div>
+                    <div class="slide shipped">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Отгружено</div>
+                    </div>
+                    <div class="slide sent">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Отправлено</div>
                     </div>
                     <div class="slide plan">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
                         <div class="status">Планирование</div>
                     </div>
-                    <div class="slide plan">
+                    <div class="slide work">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
+                        <div class="status">В работе - 45%</div>
                     </div>
-                    <div class="slide plan">
+                    <div class="slide shipped">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
+                        <div class="status">Отгружено</div>
                     </div>
-                    <div class="slide plan">
+                    <div class="slide sent">
                         <div class="title">Многоэтажка на Дмитривском шоссе</div>
                         <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
+                        <div class="status">Отправлено</div>
                     </div>
                 </div>
 
