@@ -1,0 +1,39 @@
+button#mobile-add{
+    display: none;
+}
+
+@media (max-width: 630px){
+    th#login-th{
+        display: none;
+    }
+    th#password-th{
+        display: none;
+    }
+    td#login{
+        display: none;
+    }
+    td#password{
+        display: none;
+    }
+}
+@media (max-width: 425px){
+    button#mobile-add{
+        display: block;
+        padding: 12px 16px;
+    }
+    button#add{
+        display: none;
+    }
+}
+
+@media (max-width: 320px){
+    h1{
+        font-size: 28px;
+    }
+    .wrapper>.layout>.content>table>tbody>tr>td{
+        font-size: 12px;
+    }
+    select.role-select{
+        font-size: 12px;
+    }
+}

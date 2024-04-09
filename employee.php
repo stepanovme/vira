@@ -32,7 +32,6 @@ if ($roleId != 2 && $roleId != 5) {
     header('Location: index.php');
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +44,7 @@ if ($roleId != 2 && $roleId != 5) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/employee.css">
     <title>Сотрудники</title>
 </head>
 <body>
@@ -82,14 +82,15 @@ if ($roleId != 2 && $roleId != 5) {
                 </div>
                 <div class="content-header">
                     <h1>Сотрудники</h1>
-                    <button>Добавить</button>
+                    <button id="add">Добавить</button>
+                    <button id="mobile-add">+</button>
                 </div>
                 <table>
                     <thead>
                         <tr>
                             <th>Сотрудник</th>
-                            <th>Логин</th>
-                            <th>Пароль</th>
+                            <th id="login-th">Логин</th>
+                            <th id="password-th">Пароль</th>
                             <th>Роль</th>
                         </tr>
                     </thead>
@@ -104,9 +105,18 @@ if ($roleId != 2 && $roleId != 5) {
                                 while ($row = $result->fetch_assoc()) {
                                     echo '<tr>
                                             <td>'.$row['name'].' '.$row['surname'].'</td>
-                                            <td>'.$row['login'].'</td>
-                                            <td>'.$row['password'].'</td>
-                                            <td>'.$row['roleName'].'</td>
+                                            <td id="login">'.$row['login'].'</td>
+                                            <td id="password">'.$row['password'].'</td>
+                                            <td>
+                                                <select class="role-select" data-userid="'.$row['userId'].'">
+                                                    <option value="'.$row['roleId'].'">'.$row['roleName'].'</option>
+                                                    <option value="1">Пользователь</option>
+                                                    <option value="2">Администратор</option>
+                                                    <option value="3">Прораб</option>
+                                                    <option value="4">Бригадир</option>
+                                                    <option value="5">Директор</option>';
+                                    echo '</select>
+                                            </td>
                                         </tr>';
                                 }
                             }
@@ -120,5 +130,24 @@ if ($roleId != 2 && $roleId != 5) {
 
     <script src="/js/mobile.js"></script>
     <script src="js/employee.js"></script>
+    <script>
+        document.querySelectorAll('.role-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const userId = this.dataset.userid;
+                const roleId = this.value;
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'function/updateUserRole.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        console.log('Роль пользователя обновлена');
+                    } else {
+                        console.error('Произошла ошибка при обновлении роли пользователя');
+                    }
+                };
+                xhr.send('userId=' + userId + '&roleId=' + roleId);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -244,13 +244,28 @@ input#toggle{
     cursor: pointer;
 }
 
+.wrapper>.layout>.content>table>tbody>tr:hover select.role-select{
+    background-color: #F6F6F6;
+    cursor: pointer;
+}
+
 .wrapper>.layout>.content>table>thead>tr:hover{
     background-color: #F6F6F6;
     box-shadow: 0 7px 10px #cecece;
     cursor: pointer;
 }
 
-@media (max-width: 992px) {
+select.role-select {
+    width: 100%; /* Занимает всю доступную ширину столбца */
+    height: 100%; /* Занимает всю доступную высоту столбца */
+    padding: 5px; /* Добавляет немного отступа вокруг текста внутри select */
+    box-sizing: border-box; /* Учитывает padding в общей ширине и высоте элемента */
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
     .wrapper{
         grid-template-columns: 57px 1fr;
     }
