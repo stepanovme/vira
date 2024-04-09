@@ -1,7 +1,7 @@
-var employee = document.getElementById("employee");
+var employee = document.getElementById("metal-cad");
 employee.classList.add("active");
 
-var employeeMobile = document.getElementById("employee-mobile");
+var employeeMobile = document.getElementById("metal-cad-mobile");
 employeeMobile.classList.add("active-mobile");
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -15,29 +15,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         fillScreen.addEventListener("animationend", function() {
             fillScreen.style.animation = "fillAnimationReverse 0.2s forwards";
-            document.querySelector('.wrapper>.layout>.content>table').style.display = 'table';
+            // document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
+            document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
+            document.querySelector('.wrapper>.layout>.content>.slide-list').style.display = 'grid';
         }, { once: true });
 
         // Удалите состояние анимации из локального хранилища, чтобы оно не воспроизводилось вновь
         localStorage.removeItem('animationState');
     }
-});
-
-document.querySelectorAll('.role-select').forEach(select => {
-    select.addEventListener('change', function() {
-        const userId = this.dataset.userid;
-        const roleId = this.value;
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'function/updateUserRole.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                console.log('Роль пользователя обновлена');
-            } else {
-                console.error('Произошла ошибка при обновлении роли пользователя');
-            }
-        };
-        xhr.send('userId=' + userId + '&roleId=' + roleId);
-    });
 });

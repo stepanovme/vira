@@ -22,7 +22,7 @@ if($roleId == 1){
             <img src="/assets/images/arrow.svg" alt="">
         </div>
     </div>
-    <div class="link">
+    <div class="link" onclick="window.location.href = \'../metal-cad.php\'">
         <div class="head">
             <img src="/assets/images/pencil_mobile.svg" alt="">
         </div>
@@ -43,7 +43,7 @@ if($roleId == 1){
             <img src="/assets/images/arrow.svg" alt="">
         </div>
     </div>
-    <div class="link">
+    <div class="link" onclick="window.location.href = \'../metal-cad.php\'">
         <div class="head">
             <img src="/assets/images/pencil_mobile.svg" alt="">
         </div>

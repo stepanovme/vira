@@ -1,0 +1,157 @@
+button#mobile-add{
+    display: none;
+}
+
+.wrapper>.layout>.content>.search-header{
+    display: none;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.wrapper>.layout>.content>.search-header>p{
+    font-size: 14px;
+    color: #6A6A6A;
+    font-weight: 700;
+}
+
+.wrapper>.layout>.content>.search-header>button{
+    height: 18px;
+    width: 18px;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>.search-header>button.slide{
+    background-image: url(../assets/images/slide.svg);
+    filter: contrast(0);
+    background-size: cover;
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.search-header>button.slide.active{
+    filter: contrast(1);
+}
+
+.wrapper>.layout>.content>.search-header>button.slide:hover{
+    filter: contrast(1);
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.search-header>button.table{
+    background-image: url(../assets/images/table.svg);
+    background-size: cover;
+    filter: contrast(0);
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.search-header>button.table:hover{
+    filter: contrast(1);
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.search-header>button.table.active{
+    filter: contrast(1);
+}
+
+.wrapper>.layout>.content>.slide-list{
+    display: none;
+    padding-top: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide{
+    padding: 25px;
+    /* margin-bottom: 20px; */
+    background-color: white;
+    width: 285px;
+    height: 260px;
+    border-radius: 6px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide>.title{
+    color: #3C3C3C;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide>.responsible{
+    color: #C4CACD;
+    font-weight: 700;
+    font-size: 14px;
+    padding-bottom: 38px;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide>.status{
+    display: inline;
+    padding: 5px 10px;
+    background-color: #F6F8FA;
+    border-radius: 6px;
+}
+
+/* Стилизация отдельных карточек */
+/* Планирование */
+.wrapper>.layout>.content>.slide-list>.slide.plan{
+    border-bottom: 10px solid #BE9AE4;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.plan>.status{
+    color: #BE9AE4;
+}
+/* В работе */
+.wrapper>.layout>.content>.slide-list>.slide.work{
+    border-bottom: 10px solid #849FF4;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.work>.status{
+    color: #849FF4;
+}
+/* Отправлено */
+.wrapper>.layout>.content>.slide-list>.slide.sent{
+    border-bottom: 10px solid #D8BFD8;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.sent>.status{
+    color: #D8BFD8;
+}
+/* Отгружен */
+.wrapper>.layout>.content>.slide-list>.slide.shipped{
+    border-bottom: 10px solid #AFDAFC;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.shipped>.status{
+    color: #AFDAFC;
+}
+/* Завершено */
+.wrapper>.layout>.content>.slide-list>.slide.completed{
+    border-bottom: 10px solid #71BC78;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.completed>.status{
+    color: #71BC78;
+}
+
+/* Анимация карточки */
+
+.wrapper>.layout>.content>.slide-list>.slide:hover{
+    background-color: #59B077;
+    border-bottom: 0;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide:hover .responsible{
+    display: none;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide:hover .status{
+    display: none;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide:hover .title{
+    color: white;
+}
+

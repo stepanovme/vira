@@ -44,7 +44,7 @@ if ($roleId != 2 && $roleId != 5) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="css/employee.css">
+    <link rel="stylesheet" href="css/metal-cad.css">
     <title>Сотрудники</title>
 </head>
 <body>
@@ -81,55 +81,49 @@ if ($roleId != 2 && $roleId != 5) {
                     <?php include 'components/nav_mobile.php';?>
                 </div>
                 <div class="content-header">
-                    <h1>Сотрудники</h1>
+                    <h1>Проекты по гибке металла</h1>
                     <button id="add">Добавить</button>
                     <button id="mobile-add">+</button>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Сотрудник</th>
-                            <th id="login-th">Логин</th>
-                            <th id="password-th">Пароль</th>
-                            <th>Роль</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                            $sql = "SELECT u.userId, u.name, u.surname, u.login, u.password, u.roleId, r.roleName
-                                    FROM user u
-                                    INNER JOIN role r ON u.roleId = r.roleId";
-                            $result = $conn->query($sql);
-                            
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<tr>
-                                            <td>'.$row['name'].' '.$row['surname'].'</td>
-                                            <td id="login">'.$row['login'].'</td>
-                                            <td id="password">'.$row['password'].'</td>
-                                            <td>
-                                                <select class="role-select" data-userid="'.$row['userId'].'">
-                                                    <option value="'.$row['roleId'].'">'.$row['roleName'].'</option>
-                                                    <option value="1">Пользователь</option>
-                                                    <option value="2">Администратор</option>
-                                                    <option value="3">Прораб</option>
-                                                    <option value="4">Бригадир</option>
-                                                    <option value="5">Директор</option>';
-                                    echo '</select>
-                                            </td>
-                                        </tr>';
-                                }
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                <div class="search-header">
+                    <p class="actual">Актуальные 6</p>
+                    <button class="slide active"></button>
+                    <button class="table"></button>
+                </div>
+                <div class="slide-list">
+                    <div class="slide plan">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide work">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide sent">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide shipped">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                    <div class="slide completed">
+                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
+                        <div class="responsible">Евгений Прищеп</div>
+                        <div class="status">Планирование</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 
     <script src="./js/mobile.js"></script>
-    <script src="./js/employee.js"></script>
+    <script src="./js/metal-cad.js"></script>
     <script>
         
     </script>
