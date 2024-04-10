@@ -228,16 +228,162 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                             <tr>
                                 <th id="table-num">№</th>
                                 <th id="table-project">Проект</th>
+                                <th id="table-responseble">Ответственный</th>
                                 <th id="table-plan">План</th>
                                 <th id="table-fact">Факт</th>
                                 <th id="table-date">Дата создания</th>
-                                <th id="table-responseble">Ответственный</th>
                                 <th id="table-status">Статус</th>
                             </tr>
                         </thead>
                         <tbody>
 
                             <?php
+                                if($roleId == 2 || $roleId == 5){
+                                    $sql = "SELECT pmc.ProjectName, pmc.ProjectPlan, pmc.ProjectFact, pmc.StatusId, pmc.ProjectDateCreated, GROUP_CONCAT(u.name, ' ', u.surname) AS responsible_names
+                                        FROM ProjectMetalCad AS pmc
+                                        JOIN ProjectMetalCadResponsible AS pmcr ON pmc.ProjectId = pmcr.ProjectMetalCadId
+                                        JOIN user AS u ON pmcr.userId = u.userId
+                                        GROUP BY pmc.ProjectId, pmc.ProjectName";
+
+                                    $result = $conn->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        $num = 0;
+                                        while ($row = $result->fetch_assoc()){
+                                            $num = $num + 1;
+                                            $dateString = $row['ProjectDateCreated'];
+                                            $dateTimestamp = strtotime($dateString);
+                                            $formattedDate = date('d.m.20y', $dateTimestamp);
+                                            if($row['StatusId'] == 1){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status plan">Планирование</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 2){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status work">В работе</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 3){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status sent">Отправлено</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 4){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status shipped">Отгружен</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 5){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status completed">Завершено</div></td>
+                                                    </tr>';
+                                            }
+                                        }
+                                    }
+                                } elseif($roleId == 3 || $roleId == 4){
+                                    $sql = "SELECT pmc.ProjectName, pmc.ProjectPlan, pmc.ProjectFact, pmc.ProjectDateCreated, pmc.StatusId, GROUP_CONCAT(u.name, ' ', u.surname) AS responsible_names
+                                            FROM ProjectMetalCad AS pmc
+                                            JOIN ProjectMetalCadResponsible AS pmcr ON pmc.ProjectId = pmcr.ProjectMetalCadId
+                                            JOIN user AS u ON pmcr.userId = u.userId
+                                            WHERE pmcr.ProjectMetalCadId IN (
+                                                SELECT pmcr_inner.ProjectMetalCadId
+                                                FROM ProjectMetalCadResponsible AS pmcr_inner
+                                                WHERE pmcr_inner.userId = $user_id
+                                            )
+                                            GROUP BY pmc.ProjectId, pmc.ProjectName";
+
+                                    $result = $conn->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        $num = 0;
+                                        while ($row = $result->fetch_assoc()){
+                                            $num = $num + 1;
+                                            $dateString = $row['ProjectDateCreated'];
+                                            $dateTimestamp = strtotime($dateString);
+                                            $formattedDate = date('d.m.20y', $dateTimestamp);
+                                            if($row['StatusId'] == 1){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status plan">Планирование</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 2){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status work">В работе</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 3){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status sent">Отправлено</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 4){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status shipped">Отгружен</div></td>
+                                                    </tr>';
+                                            } elseif($row['StatusId'] == 5){
+                                                echo '<tr>
+                                                        <td id="table-num-value">'.$num.'</td>
+                                                        <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                                        <td id="table-responseble-value">'.$row['responsible_names'].'</td>
+                                                        <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                                        <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                                        <td id="table-date-value">'.$formattedDate.'г.</td>
+                                                        <td id="table-status-value"><div class="status completed">Завершено</div></td>
+                                                    </tr>';
+                                            }
+                                        }
+                                    }
+                                }
+                                    
+
                             // if($roleId == 2 || $roleId == 5){
                             //     $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
                             //         FROM ProjectMetalCad
@@ -254,15 +400,15 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
 
                             //             $num = $num + 1;
                             //             if($row['StatusId'] == 1) {
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status plan">Планирование</div></td>
-                            //                     </tr>';
+                                            // echo '<tr>
+                                            //         <td id="table-num-value">'.$num.'</td>
+                                            //         <td id="table-project-value">'.$row['ProjectName'].'</td>
+                                            //         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
+                                            //         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
+                                            //         <td id="table-date-value">'.$formattedDate.'г.</td>
+                                            //         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
+                                            //         <td id="table-status-value"><div class="status plan">Планирование</div></td>
+                                            //     </tr>';
                             //             } elseif($row['StatusId'] == 2){
                             //                 echo '<tr>
                             //                         <td id="table-num-value">'.$num.'</td>
