@@ -110,3 +110,37 @@
 .wrapper>.layout>.content>.table-process>table>tbody>tr>td{
     padding: 15px 0;
 }
+
+@media (max-width:768px){
+    .wrapper>.layout>.content>.analyt{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width:535px){
+    .wrapper>.layout>.content>.table>table>thead>tr>th#analyt-num{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#analyt-num-value{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table-process>table>thead>tr>th#analyt-num{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table-process>table>tbody>tr>td#analyt-num-value{
+        display: none;
+    }
+}
+
+@media (max-width: 425px) {
+    .wrapper>.layout>.content>.table, .wrapper>.layout>.content>.table-process{
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .wrapper>.layout>.content>.table>table, .wrapper>.layout>.content>.table-process>table,
+    .wrapper>.layout>.content>.table>p, .wrapper>.layout>.content>.table-process>p.title{
+        display: none;
+    }
+}
