@@ -90,6 +90,11 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                         <button onclick="window.location.href = 'metal-cad-settings.php'">Настройки</button>
                         <button class="active">Аналитика</button>
                     </div>
+                    <div class="mobile-project-nav">
+                        <button onclick="window.location.href = 'metal-cad-project.php'">З</button>
+                        <button onclick="window.location.href = 'metal-cad-settings.php'">Н</button>
+                        <button class="active">А</button>
+                    </div>
                 </div>
 
                 <div class="analyt">

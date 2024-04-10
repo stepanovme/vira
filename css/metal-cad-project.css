@@ -1,6 +1,10 @@
 @import url(./dashboard.css);
 @import url(./metal-cad.css);
 
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.mobile-add-ticket{
+    display: none;
+}
+
 .wrapper>.layout>.content>.content-header{
     display: none;
 }
@@ -97,6 +101,50 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav{
+    display: none;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button{
+    padding: 10px 15px;
+    color: black;
+    font-weight: 500;
+    border: 1px solid #E0E4E8;
+    background-color: white;
+    cursor: pointer;
+    transition: .1s all;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button.active{
+    background-color: var(--var-main-color);
+    border: 1px solid var(--var-main-color);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button:hover{
+    background-color: var(--var-main-color);
+    border: 1px solid var(--var-main-color);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button:active{
+    background-color: var(--var-main-color-active);
+    border: 1px solid var(--var-main-color-active);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.wrapper>.layout>.content>.subtitle>.mobile-project-nav>button:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
 
 .wrapper>.layout>.content>.subtitle>.ticket-select{
     display: flex;
@@ -208,4 +256,106 @@
 .wrapper>.layout>.content>.table>.table-information-bars>.bar>.progress-bar{
     height: 10px;
     background-color: #59B077;
+}
+
+@media (max-width:1600px) {
+    .wrapper>.layout>.content>.information-bars{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .wrapper>.layout>.content>.subtitle>.project-nav>button{
+        width: 160px;   
+    }
+}
+
+@media (max-width:1280px) {
+    .wrapper>.layout>.content>.information-bars{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .wrapper>.layout>.content>.subtitle>.ticket-select>button.add-ticket{
+        display: none;
+    }
+    .wrapper>.layout>.content>.subtitle>.ticket-select>button.mobile-add-ticket{
+        display: block;
+        padding: 15px;
+        background-color: var(--var-main-color);
+        color: white;
+        font-weight: 500;
+        border: 0;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+        transition: .2s all;
+    }
+}
+
+@media (max-width: 1150px) {
+    .wrapper>.layout>.content>.content-header>.status-project{
+        display: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .wrapper>.layout>.content>.subtitle>.project-nav>button{
+        width: 140px;
+    }
+}
+
+@media (max-width: 720px) {
+    .wrapper>.layout>.content>.subtitle>.project-nav>button{
+        width: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .wrapper>.layout>.content>.information-bars{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .wrapper>.layout>.content>.subtitle>.project-nav>button{
+        width: 100px;
+    }
+}
+
+@media (max-width: 772px) {
+    .wrapper>.layout>.content>.content-header>.title>h1{
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 640px) {
+    .wrapper>.layout>.content>.content-header>.title>h1{
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 560px) {
+    .wrapper>.layout>.content>.content-header>.title>h1{
+        font-size: 20px;
+    }
+    .wrapper>.layout>.content>.subtitle{
+        display: block;
+    }
+    .wrapper>.layout>.content>.subtitle>.ticket-select{
+        justify-content: end;
+    }
+}
+
+@media (max-width: 525px) {
+    .wrapper>.layout>.content>.subtitle>.project-nav{
+        display: none;
+    }
+    .wrapper>.layout>.content>.subtitle>.mobile-project-nav{
+        display: flex;
+    }
+}
+
+@media (max-width: 410px){
+    .wrapper>.layout>.content>.content-header>.title>h1{
+        padding-left: 10px;
+    }
+}
+
+@media (max-width: 300px){
+    .wrapper>.layout>.content>.subtitle>.ticket-select{
+        gap: 10px;
+    }
 }

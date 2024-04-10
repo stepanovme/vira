@@ -3,11 +3,13 @@ employee.classList.add("active");
 
 var employeeMobile = document.getElementById("metal-cad-mobile");
 employeeMobile.classList.add("active-mobile");
+var screenWidth = window.innerWidth;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     var animationState = localStorage.getItem('animationState');
     if (animationState === 'fillAnimation') {
         var fillScreen = document.createElement("div");
+
         fillScreen.classList.add("fill-screen");
         document.body.appendChild(fillScreen);
 

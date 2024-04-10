@@ -85,6 +85,11 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                     <div class="status-project plan">Планирование</div>
                 </div>
                 <div class="subtitle">
+                    <div class="mobile-project-nav">
+                        <button onclick="window.location.href = 'metal-cad-project.php'">З</button>
+                        <button onclick="window.location.href = 'metal-cad-settings.php'">Н</button>
+                        <button class="active">А</button>
+                    </div>
                     <div class="project-nav">
                         <button class="active">Заявка</button>
                         <button onclick="window.location.href = 'metal-cad-settings.php'">Настройки</button>
@@ -94,6 +99,7 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                         <button class="slide"></button>
                         <button class="table-btn"></button>
                         <button class="add-ticket">Добавить</button>
+                        <button class="mobile-add-ticket">+</button>
                     </div>
                 </div>
 
