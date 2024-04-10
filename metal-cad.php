@@ -84,7 +84,31 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                     <button id="mobile-add">+</button>
                 </div>
                 <div class="search-header">
-                    <p class="actual">Актуальные 6</p>
+                    <?php 
+                        if($roleId == 2 || $roleId == 5){
+                            $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
+                                FROM ProjectMetalCad
+                                INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId";
+                            $result = $conn->query($sql);
+                            $num_actual = 0;
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $num_actual = $num_actual + 1;
+                            }
+                        } else if($roleId == 3 || $roleId == 4){
+                            $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
+                                FROM ProjectMetalCad
+                                INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId
+                                WHERE ProjectResponsible = $user_id";
+                            $result = $conn->query($sql);
+                            $num_actual = 0;
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $num_actual = $num_actual + 1;
+                            }
+                        }
+                    ?>
+                    <p class="actual">Актуальные <?php echo $num_actual;?></p>
                     <button class="slide" id="slide"></button>
                     <button class="table-btn"></button>
                 </div>
