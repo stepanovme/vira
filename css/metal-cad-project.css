@@ -294,6 +294,63 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-metr{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-metr-value{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-num{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-num-value{
+        display: none;
+    }
+}   
+
+@media (max-width: 820px){
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-date{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-date-value{
+        display: none;
+    }
+}
+
+@media (max-width: 660px) {
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-status{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-status-value{
+        display: none;
+    }
+}
+
+@media (max-width: 526px) {
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-responsible{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-responsible-value{
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-thikness{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-thikness-value{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>thead>tr>th#ticket-color{
+        display: none;
+    }
+    .wrapper>.layout>.content>.table>table>tbody>tr>td#ticket-color-value{
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .wrapper>.layout>.content>.content-header>.status-project{
         display: none;
