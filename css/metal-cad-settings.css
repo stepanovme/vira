@@ -84,3 +84,12 @@
 .wrapper>.layout>.content>.buttons>button.delete:hover{
     background-color: #D4474A;
 }
+
+@media (max-width: 768px) {
+    .wrapper>.layout>.content>.buttons{
+        flex-direction: column;
+    }
+    .wrapper>.layout>.content>.buttons>button{
+        width: 100%;
+    }
+}

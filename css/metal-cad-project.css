@@ -289,6 +289,12 @@
 }
 
 @media (max-width: 1150px) {
+    .wrapper>.layout>.content>.content-header>.title>h1{
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 768px) {
     .wrapper>.layout>.content>.content-header>.status-project{
         display: none;
     }
