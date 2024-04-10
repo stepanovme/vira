@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
     $roleName = $row['roleName'];
 }
 
-if ($roleId != 2 && $roleId != 5) {
+if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
     header('Location: index.php');
     exit;
 }
@@ -87,48 +87,95 @@ if ($roleId != 2 && $roleId != 5) {
                     <p class="actual">Актуальные 6</p>
                     <button class="slide" id="slide"></button>
                     <button class="table-btn"></button>
-                </div>  
+                </div>
                 <div class="slide-list">
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide completed">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Завершено</div>
-                    </div>
-                    <div class="slide shipped">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Отгружено</div>
-                    </div>
-                    <div class="slide sent">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Отправлено</div>
-                    </div>
-                    <div class="slide plan">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                    <div class="slide work">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">В работе - 45%</div>
-                    </div>
-                    <div class="slide shipped">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Отгружено</div>
-                    </div>
-                    <div class="slide sent">
-                        <div class="title">Многоэтажка на Дмитривском шоссе</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="status">Отправлено</div>
-                    </div>
+                    <?php
+                        if($roleId == 2 || $roleId == 5){
+                            $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
+                                FROM ProjectMetalCad
+                                INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId";
+
+                            $result = $conn->query($sql);
+                        
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                if($row['StatusId'] == 1) {
+                                    echo '<div class="slide plan">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Планирование</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 2){
+                                    echo '<div class="slide work">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">В работе</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 3){
+                                    echo '<div class="slide sent">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Отправлено</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 4){
+                                    echo '<div class="slide shipped">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Отгружен</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 5){
+                                    echo '<div class="slide completed">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Завершено</div>
+                                    </div>';
+                                }
+                            }
+                        } else if($roleId == 3 || $roleId == 4){
+                            $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
+                                    FROM ProjectMetalCad
+                                    INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId
+                                    WHERE ProjectResponsible = $user_id";
+
+                            $result = $conn->query($sql);
+                        
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                if($row['StatusId'] == 1) {
+                                    echo '<div class="slide plan">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Планирование</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 2){
+                                    echo '<div class="slide work">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">В работе</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 3){
+                                    echo '<div class="slide sent">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Отправлено</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 4){
+                                    echo '<div class="slide shipped">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Отгружен</div>
+                                    </div>';
+                                } elseif($row['StatusId'] == 5){
+                                    echo '<div class="slide completed">
+                                        <div class="title">'.$row['ProjectName'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="status">Завершено</div>
+                                    </div>';
+                                }
+                            }
+                        }
+                        
+                    ?>
                 </div>
 
                 <div class="table">
