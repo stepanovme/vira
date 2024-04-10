@@ -1,0 +1,187 @@
+@import url(./dashboard.css);
+@import url(./metal-cad.css);
+
+.wrapper>.layout>.content>.content-header{
+    display: flex;
+}
+
+.wrapper>.layout>.content>.content-header>.title{
+    display: flex;
+    align-items: center;
+}
+
+.wrapper>.layout>.content>.content-header>.title>.back{
+    background-image: url(../assets/images/back-arrow.svg);
+    width: 26px;
+    height: 26px;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.wrapper>.layout>.content>.content-header>.status-project{
+    padding: 6px 16px;
+    font-weight: 700;
+    border-radius: 6px;
+    outline: none;
+}
+/* Стилизация статусов проектов */
+.wrapper>.layout>.content>.content-header>.status-project.plan{
+    background-color: #F2E7FF;
+    color: #BE9AE4;
+}
+.wrapper>.layout>.content>.content-header>.status-project.work{
+    background-color: #E8ECF9;
+    color: #849FF4;
+}
+.wrapper>.layout>.content>.content-header>.status-project.sent{
+    background-color: #F1E7F1;
+    color: #D8BFD8;
+}
+.wrapper>.layout>.content>.content-header>.status-project.shipped{
+    background-color: #E5F2FC;
+    color: #AFDAFC;
+}
+.wrapper>.layout>.content>.content-header>.status-project.completed{
+    background-color: #CEF6D2;
+    color: #71BC78;
+}
+
+.wrapper>.layout>.content>.subtitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav{
+    display: flex;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button{
+    width: 178px;
+    padding: 10px 0;
+    color: black;
+    font-weight: 500;
+    border: 1px solid #E0E4E8;
+    background-color: white;
+    cursor: pointer;
+    transition: .1s all;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button.active{
+    background-color: var(--var-main-color);
+    border: 1px solid var(--var-main-color);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button:hover{
+    background-color: var(--var-main-color);
+    border: 1px solid var(--var-main-color);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button:active{
+    background-color: var(--var-main-color-active);
+    border: 1px solid var(--var-main-color-active);
+    color: white;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.wrapper>.layout>.content>.subtitle>.project-nav>button:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.slide{
+    background-image: url(../assets/images/slide.svg);
+    background-size: cover;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 0;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.table{
+    background-image: url(../assets/images/table.svg);
+    background-size: cover;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 0;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.add-ticket{
+    padding: 12px;
+    width: 144px;
+    background-color: var(--var-main-color);
+    color: white;
+    font-weight: 500;
+    border: 0;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.add-ticket:hover{
+    background-color: var(--var-main-color-hover);
+}
+
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.add-ticket:active{
+    background-color: var(--var-main-color-active);
+}
+
+.wrapper>.layout>.content>.information-bars{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 50px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #E0E4E8;
+}
+
+.wrapper>.layout>.content>.information-bars>.bar>.name{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.information-bars>.bar>.name>p{
+    color: #6A6A6A;
+    font-weight: 500;
+}
+
+.wrapper>.layout>.content>.information-bars>.bar>.progress-bar{
+    height: 10px;
+    background-color: #59B077;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide>.color{
+    color: #C4CACD;
+    font-weight: 700;
+    font-size: 14px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide:hover .color{
+    display: none;
+}
