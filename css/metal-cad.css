@@ -215,6 +215,17 @@ button#mobile-add{
     color: #71BC78;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
 div#modal{
     position: absolute;
     width: 100vw;
@@ -225,6 +236,21 @@ div#modal{
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+
+.modal-hide {
+    animation: fadeOut 0.3s ease-in-out; /* Анимация исчезновения */
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 div#modal>form{

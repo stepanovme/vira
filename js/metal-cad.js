@@ -8,44 +8,22 @@ var slide = document.getElementById("slide");
 slide.classList.add("active");
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    // Проверьте, есть ли состояние анимации в локальном хранилище
     var animationState = localStorage.getItem('animationState');
     if (animationState === 'fillAnimation') {
-        // Если анимация была активна, восстановите её
         var fillScreen = document.createElement("div");
         fillScreen.classList.add("fill-screen");
         document.body.appendChild(fillScreen);
 
         fillScreen.addEventListener("animationend", function() {
             fillScreen.style.animation = "fillAnimationReverse 0.2s forwards";
-            // document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>.slide-list').style.display = 'grid';
         }, { once: true });
 
-        // Удалите состояние анимации из локального хранилища, чтобы оно не воспроизводилось вновь
         localStorage.removeItem('animationState');
     }
 });
-
-// document.addEventListener("DOMContentLoaded", function(event) {
-//     var animationState = localStorage.getItem('animationState');
-//     if (animationState === 'fillAnimation') {
-//         var fillScreen = document.createElement("div");
-//         fillScreen.classList.add("fill-screen");
-//         document.body.appendChild(fillScreen);
-
-//         setTimeout(function() {
-//             fillScreen.style.animation = "fillAnimationReverse 0.3s forwards";
-//             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
-//             document.querySelector('.wrapper>.layout>.content>.search-header').style.display = 'flex';
-//             document.querySelector('.wrapper>.layout>.content>.slide-list').style.display = 'grid';
-//         }, 200); 
-        
-//         localStorage.removeItem('animationState');
-//     }
-// });
 
 $(document).ready(function() {
     $(".table-btn").on("click", function() {
@@ -100,14 +78,22 @@ addButtonMobile.addEventListener('click', function() {
 });
 
 // Добавляем обработчик события click на элемент закрытия модального окна
-closeBtn.addEventListener('click', function() {
-    modal.style.display = 'none'; // Скрываем модальное окно при нажатии на элемент закрытия
+closeBtn.addEventListener('click', function(event) { // Добавляем параметр event
+    modal.style.animation = 'fadeOut 0.3s ease-in-out';
+    setTimeout(function() {
+        modal.style.animation = '';
+        modal.style.display = 'none'; // После окончания анимации скрываем модальное окно
+    }, 200);
 });
 
 // Закрываем модальное окно при клике вне его области
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function(event) { // Добавляем параметр event
     if (event.target == modal) {
-        modal.style.display = 'none'; // Скрываем модальное окно при клике вне его области
+        modal.style.animation = 'fadeOut 0.3s ease-in-out';
+        setTimeout(function() {
+            modal.style.animation = '';
+            modal.style.display = 'none'; // После окончания анимации скрываем модальное окно
+        }, 200);
     }
 });
 
