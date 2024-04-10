@@ -15,8 +15,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             fillScreen.style.animation = "fillAnimationReverse 0.2s forwards";
             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>.subtitle').style.display = 'flex';
-            document.querySelector('.wrapper>.layout>.content>.slide-list').style.display = 'grid';
-            document.querySelector('.wrapper>.layout>.content>.information-bars').style.display = 'grid';
+            document.querySelector('.wrapper>.layout>.content>.analyt').style.display = 'grid';
+            document.querySelector('.wrapper>.layout>.content>.table').style.display = 'block';
+            document.querySelector('.wrapper>.layout>.content>.table-process').style.display = 'block';
         }, { once: true });
 
         localStorage.removeItem('animationState');

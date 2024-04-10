@@ -86,88 +86,107 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                 </div>
                 <div class="subtitle">
                     <div class="project-nav">
-                        <button class="active" onclick="window.location.href = 'metal-cad.php'">Заявка</button>
+                        <button onclick="window.location.href = 'metal-cad-project.php'">Заявка</button>
                         <button onclick="window.location.href = 'metal-cad-settings.php'">Настройки</button>
-                        <button>Аналитика</button>
-                    </div>
-                    <div class="ticket-select">
-                        <button class="slide"></button>
-                        <button class="table-btn"></button>
-                        <button class="add-ticket">Добавить</button>
+                        <button class="active">Аналитика</button>
                     </div>
                 </div>
 
-                <div class="information-bars">
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
-                        </div>
-                        <div class="progress-bar"></div>
+                <div class="analyt">
+                    <div class="information-project">
+                        <p class="title">Информация по проекту</p>
+                        <p>Ответственный:<span>Евгений Прищеп</span></p>
+                        <p>Дата начала: <span>12.05.2024</span></p>
+                        <p>Заявок произведено: <span>30</span></p>
+                        <p>План по проекту:<span>100 м2</span></p>
+                        <p>Фактическое по проекту:<span>50 м2</span></p>
+                        <p>План по RAL 7024: <span>100 м2</span></p>
+                        <p>Фактическое по RAL 7024:<span>100 м2</span></p>
                     </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
+
+                    <div class="information-bars">
+                        <p class="title-information-bars">Выроботка</p>
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
                         </div>
-                        <div class="progress-bar"></div>
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="slide-list">
-                    <div class="slide plan">
-                        <div class="title">Заявка на гибку №1</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="color">RAL 7024 0,5 мм</div>
-                        <div class="status">Планирование</div>
-                    </div>
-                </div>
-
-                <div class="table"> 
+                <div class="table">
+                    <p class="title">Изготовленные изделия</p>
                     <table>
                         <thead>
                             <tr>
-                                <th id="ticket-num">№</th>
-                                <th id="ticket-name">Название</th>
-                                <th id="ticket-date">Дата</th>
-                                <th id="ticket-color">Цвет</th>
-                                <th id="ticket-thikness">Толщина</th>
-                                <th id="ticket-metr">пог.м.</th>
-                                <th id="ticket-responsible">Ответственный</th>
-                                <th id="ticket-status">Статус</th>
+                                <th id="analyt-num">№</th>
+                                <th id="analyt-name">Название</th>
+                                <th id="analyt-color">Цвет</th>
+                                <th id="analyt-thikness">Толщина</th>
+                                <th id="analyt-quantity">Количество</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="ticket-num-value">1</td>
-                                <td id="ticket-name-value">NEXT 2</td>
-                                <td id="ticket-date-value">25.04.2024г.</td>
-                                <td id="ticket-color-value">RAL 7024</td>
-                                <td id="ticket-thikness-value">0.7</td>
-                                <td id="ticket-metr-value">14</td>
-                                <td id="ticket-responsible-value">Евгений Прищеп</td>
-                                <td id="ticket-status-value"><div class="status plan">Планирование</div></td>
+                                <td id="analyt-num-value">1</td>
+                                <td id="analyt-name-value">NEXT 2</td>
+                                <td id="analyt-color-value">RAL 7024</td>
+                                <td id="analyt-thikness-value">0.7</td>
+                                <td id="analyt-quantity-value">200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-process">
+                    <p class="title">Изделия в процессе</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="analyt-num">№</th>
+                                <th id="analyt-name">Название</th>
+                                <th id="analyt-color">Цвет</th>
+                                <th id="analyt-thikness">Толщина</th>
+                                <th id="analyt-quantity">Количество</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="analyt-num-value">1</td>
+                                <td id="analyt-name-value">NEXT 2</td>
+                                <td id="analyt-color-value">RAL 7024</td>
+                                <td id="analyt-thikness-value">0.7</td>
+                                <td id="analyt-quantity-value">200</td>
                             </tr>
                         </tbody>
                     </table>

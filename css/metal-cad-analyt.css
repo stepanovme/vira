@@ -1,1 +1,112 @@
 @import url(./metal-cad-project.css);
+
+.wrapper>.layout>.content>.analyt{
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-project, .wrapper>.layout>.content>.analyt>.information-bars{
+    padding: 20px 10px;
+    background-color: white;
+    border: 1px solid #E0E4E8;
+    border-radius: 8px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-project>.title, .wrapper>.layout>.content>.analyt>.information-bars>.title-information-bars{
+    font-size: 24px;
+    font-weight: 700;
+    color: black;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-bars>.title-information-bars{
+    padding-bottom: 0;
+}
+
+.wrapper>.layout>.content>.analyt>.information-project>p{
+    color: black;
+    font-weight: 500;
+    padding-bottom: 8px;
+    font-size: 16px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-project>p:last-child{
+    padding-bottom: 0;
+}
+
+.wrapper>.layout>.content>.analyt>.information-project>p>span{
+    color: #6A6A6A;
+    font-weight: 500;
+    font-size: 14px;
+    padding-left: 5px;
+}
+
+
+
+
+.wrapper>.layout>.content>.analyt>.information-bars{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #E0E4E8;  
+    row-gap: 10px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-bars>.bar>.name{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.analyt>.information-bars>.bar>.name>p{
+    color: #6A6A6A;
+    font-weight: 500;
+}
+
+.wrapper>.layout>.content>.analyt>.information-bars>.bar>.progress-bar{
+    height: 10px;
+    background-color: #59B077;
+}
+
+.wrapper>.layout>.content>.table>p.title, .wrapper>.layout>.content>.table-process>p.title{
+    color: black;
+    font-size: 24px;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+
+.wrapper>.layout>.content>.table-process{
+    display: none;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px 10px;
+    border-radius: 8px;
+    border: 1px solid #E0E4E8;
+}
+
+.wrapper>.layout>.content>.table-process>table{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.wrapper>.layout>.content>.table-process>table>thead>tr>th{
+    border-bottom: 1px solid #ECECEC;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.table-process>table>tbody>tr{
+    cursor: pointer;
+    transition: .3s all;
+}
+
+.wrapper>.layout>.content>.table-process>table>tbody>tr:hover{
+    background-color: #F6F8FA;
+}
+
+.wrapper>.layout>.content>.table-process>table>tbody>tr>td{
+    padding: 15px 0;
+}
