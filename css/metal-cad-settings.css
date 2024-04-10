@@ -1,0 +1,86 @@
+@import url(./metal-cad-project.css);
+
+.wrapper>.layout>.content>.settings{
+    display: none;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.wrapper>.layout>.content>.settings>form{
+    display: grid;
+}
+
+.wrapper>.layout>.content>.settings>form>label{
+    color: #6A6A6A;
+    font-weight: 500;
+    padding-bottom: 13px;
+}
+
+.wrapper>.layout>.content>.settings>form>input{
+    padding: 12px 22px;
+    background-color: #F6F8FA;
+    border: 1px solid #E0E4E8;
+    color: #6A6A6A;
+    font-weight: 500;
+    border-radius: 7px;
+    outline: none;
+    cursor: auto;
+    margin-bottom: 20px;
+}
+
+.wrapper>.layout>.content>.settings>form>input:focus{
+    border: 1px solid var(--var-main-color);
+}
+
+.wrapper>.layout>.content>.settings>form>select{
+    padding: 12px 22px;
+    background-color: #F6F8FA;
+    border: 1px solid #E0E4E8;
+    color: #6A6A6A;
+    font-weight: 500;
+    border-radius: 7px;
+    outline: none;
+    cursor: auto;
+    margin-bottom: 20px;
+}
+
+.wrapper>.layout>.content>.buttons{
+    display: none;
+    gap: 25px;
+    padding-top: 20px;
+}
+
+.wrapper>.layout>.content>.buttons>button{
+    width: 270px;
+    padding: 12px;
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.wrapper>.layout>.content>.buttons>button.save{
+    background-color: var(--var-main-color);
+}
+
+.wrapper>.layout>.content>.buttons>button.save:hover{
+    background-color: var(--var-main-color-hover);
+}
+
+.wrapper>.layout>.content>.buttons>button.save:active{
+    background-color: var(--var-main-color-active);
+}
+
+.wrapper>.layout>.content>.buttons>button.delete{
+    background-color: #F95B5E;
+}
+
+.wrapper>.layout>.content>.buttons>button.delete:hover{
+    background-color: #E2494C;
+}
+
+.wrapper>.layout>.content>.buttons>button.delete:hover{
+    background-color: #D4474A;
+}

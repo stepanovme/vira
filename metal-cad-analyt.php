@@ -42,8 +42,8 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/metal-cad-project.css">
-    <title>Проекты по гибке</title>
+    <link rel="stylesheet" href="css/metal-cad-analyt.css">
+    <title>Аналитика</title>
 </head>
 <body>
     <div class="wrapper">
@@ -86,9 +86,9 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                 </div>
                 <div class="subtitle">
                     <div class="project-nav">
-                        <button class="active">Заявка</button>
+                        <button class="active" onclick="window.location.href = 'metal-cad.php'">Заявка</button>
                         <button onclick="window.location.href = 'metal-cad-settings.php'">Настройки</button>
-                        <button onclick="window.location.href = 'metal-cad-analyt.php'">Аналитика</button>
+                        <button>Аналитика</button>
                     </div>
                     <div class="ticket-select">
                         <button class="slide"></button>
@@ -178,6 +178,6 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
 
     <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
-    <script src="/js/metal-cad-project.js"></script>
+    <script src="/js/metal-cad-analyt.js"></script>
 </body>
 </html>
