@@ -100,20 +100,12 @@ window.addEventListener('click', function(event) { // Добавляем пар�
 
 
 // Цвета
+// Получение цветов из сервера
 function getColors() {
     fetch('function/get_colors.php')
       .then(response => response.json())
       .then(colors => {
-        // Добавляем цвета в выпадающий список
-        const dropdownContent = document.getElementById("colorDropdown");
-        colors.forEach(color => {
-          const colorOption = document.createElement("div");
-          colorOption.textContent = color;
-          colorOption.addEventListener("click", () => {
-            selectColor(color);
-          });
-          dropdownContent.appendChild(colorOption);
-        });
+        showColors(colors);
       })
       .catch(error => {
         console.error('Error fetching colors:', error);
@@ -132,34 +124,38 @@ const colors = [];
   }
   
   // Обработчик события для выбора цвета
-function selectColor(color) {
+  function selectColor(colorObject) {
     const input = document.getElementById("colorInput");
     const selectedColors = input.value.split(',').map(color => color.trim());
+    const selectedColorIds = input.dataset.colorIds ? input.dataset.colorIds.split(',') : [];
+    const color = colorObject.name;
+    const colorId = colorObject.id;
     
     // Проверяем, был ли выбран цвет ранее
     const index = selectedColors.indexOf(color);
     if (index !== -1) {
-      // Если цвет уже выбран, удаляем его из списка выбранных цветов
+      // Если цвет уже выбран, удаляем его из списка выбранных цветов и соответствующий ему ColorId
       selectedColors.splice(index, 1);
+      selectedColorIds.splice(index, 1);
     } else {
-      // Если цвет не выбран, добавляем его в список
+      // Если цвет не выбран, добавляем его в список и сохраняем его ColorId
       selectedColors.push(color);
+      selectedColorIds.push(colorId);
     }
   
-    // Обновляем значение input
+    // Обновляем значение input и атрибут data-id-цвет
     input.value = selectedColors.join(', ').replace(/^, /, ''); // Убираем запятую перед первым элементом
+    input.dataset.colorIds = selectedColorIds.join(',');
   
     // Применяем стили к выбранным элементам в выпадающем списке
     const dropdownContent = document.getElementById("colorDropdown");
     const dropdownOptions = dropdownContent.getElementsByTagName("div");
     for (let option of dropdownOptions) {
-      if (selectedColors.includes(option.textContent)) {
-        option.classList.add("selected");
-      } else {
-        option.classList.remove("selected");
+      if (option.textContent === color) {
+        option.classList.toggle("selected");
       }
     }
-  }
+}
 
   
   // Генерируем элементы для списка цветов
@@ -179,6 +175,21 @@ function selectColor(color) {
     dropdown.classList.toggle("show");
 }
   
+
+// Отображение цветов в выпадающем списке
+function showColors(colors) {
+    const dropdownContent = document.getElementById("colorDropdown");
+    dropdownContent.innerHTML = ""; // Очистка содержимого перед добавлением новых цветов
+    
+    colors.forEach(colorObject => {
+        const colorOption = document.createElement("div");
+        colorOption.textContent = colorObject.name;
+        colorOption.addEventListener("click", () => {
+            selectColor(colorObject);
+        });
+        dropdownContent.appendChild(colorOption);
+    });
+}
 
 
 //   Толщины
