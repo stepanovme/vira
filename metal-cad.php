@@ -382,145 +382,6 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                                         }
                                     }
                                 }
-                                    
-
-                            // if($roleId == 2 || $roleId == 5){
-                            //     $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
-                            //         FROM ProjectMetalCad
-                            //         INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId";
-
-                            //     $result = $conn->query($sql);
-                            
-                            //     if ($result->num_rows > 0) {
-                            //         $num = 0;
-                            //         while ($row = $result->fetch_assoc()){
-                            //             $dateString = $row['ProjectDateCreated'];
-                            //             $dateTimestamp = strtotime($dateString);
-                            //             $formattedDate = date('d.m.20y', $dateTimestamp);
-
-                            //             $num = $num + 1;
-                            //             if($row['StatusId'] == 1) {
-                                            // echo '<tr>
-                                            //         <td id="table-num-value">'.$num.'</td>
-                                            //         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                                            //         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                                            //         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                                            //         <td id="table-date-value">'.$formattedDate.'г.</td>
-                                            //         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                                            //         <td id="table-status-value"><div class="status plan">Планирование</div></td>
-                                            //     </tr>';
-                            //             } elseif($row['StatusId'] == 2){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status work">В работе</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 3){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status sent">Отправлено</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 4){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status shipped">Отгружен</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 5){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status completed">Завершено</div></td>
-                            //                     </tr>';
-                            //             }
-                            //         }
-                            //     }
-                            // } else if($roleId == 3 || $roleId == 4){
-                            //     $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
-                            //             FROM ProjectMetalCad
-                            //             INNER JOIN user ON ProjectMetalCad.ProjectResponsible = user.userId
-                            //             WHERE ProjectResponsible = $user_id";
-
-                            //     $result = $conn->query($sql);
-
-                            //     $num = 0;
-                            
-                            //     if ($result->num_rows > 0) {
-                            //         while ($row = $result->fetch_assoc()){ 
-                            //             $dateString = $row['ProjectDateCreated'];
-                            //             $dateTimestamp = strtotime($dateString);
-                            //             $formattedDate = date('d.m.20y', $dateTimestamp);
-                            //             if($row['StatusId'] == 1) {
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status plan">Планирование</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 2){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status work">В работе</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 3){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status sent">Отправлено</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 4){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status shipped">Отгружен</div></td>
-                            //                     </tr>';
-                            //             } elseif($row['StatusId'] == 5){
-                            //                 echo '<tr>
-                            //                         <td id="table-num-value">'.$num.'</td>
-                            //                         <td id="table-project-value">'.$row['ProjectName'].'</td>
-                            //                         <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                            //                         <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                            //                         <td id="table-date-value">'.$formattedDate.'г.</td>
-                            //                         <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                            //                         <td id="table-status-value"><div class="status completed">Завершено</div></td>
-                            //                     </tr>';
-                            //             }
-                            //         }
-                            //     }      
-                            // }
                         ?>
                         </tbody>
                     </table>
@@ -533,21 +394,24 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
         <form>
             <p class="modal-title">Создание проекта</p>
             <label class="label">Название проекта</label>
-            <input type="text" name="" id="" placeholder="Катунино">
+            <input type="text" name="projectName" id="">
             <label class="label">Объект</label>
-            <input type="text" name="" id="" placeholder="Кактунино">
+            <input type="text" name="projectObject" id="">
             <label class="label">Цвет</label>
-            <select name="" id="">
-                <option value="" selected disabled>Цвет</option>
-            </select>
+            <div class="dropdown">
+                <input type="text" id="colorInput" onclick="toggleColorDropdown()" readonly>
+                <div id="colorDropdown" class="dropdown-content"></div>
+            </div>
             <label class="label">Толщина</label>
-            <select name="" id="">
-                <option value="" selected disabled>Толщина</option>
-            </select>
+            <div class="dropdown">
+                <input type="text" id="thicknessInput" onclick="toggleThicknessDropdown()" readonly>
+                <div id="thicknessDropdown" class="dropdown-content"></div>
+            </div>
             <label class="label">Ответственный</label>
-            <select name="" id="">
-                <option value="" selected disabled>Ответственный</option>
-            </select>
+            <div class="dropdown">
+                <input type="text" id="responsibleInput" onclick="toggleResponsibleDropdown()" readonly>
+                <div id="responsibleDropdown" class="dropdown-content"></div>
+            </div>
             <button id="modal-add" type="submit">Добавить</button>
             <button class="close" type="button">Отменить</button>
         </form>

@@ -337,6 +337,81 @@ div#modal>form>button.close:active{
     background-color: #D4474A;
 }
 
+
+
+
+
+
+
+
+
+/* Стили для выпадающего списка */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 48px;
+    background-color: white;
+    width: 100%;
+    border: 1px solid #D2D3D7;
+    border-radius: 7px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content div {
+    padding: 12px 16px;
+    cursor: pointer;
+    /* transition: .2s all; */
+  }
+  
+  .dropdown-content div:hover {
+    background-color: var(--var-main-color);
+    color: white;
+  }
+
+  .dropdown-content div:last-child:hover {
+    background-color: var(--var-main-color);
+    color: white;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
+
+  .dropdown-content div:first-child:hover {
+    background-color: var(--var-main-color);
+    color: white;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+  
+  .show {
+    display: block;
+  }
+  .selected{
+    background-color: var(--var-main-color);
+    color: white;
+  }
+
+  input#thicknessInput, input#responsibleInput, input#colorInput{
+    border: 1px solid #D2D3D7;
+    border-radius: 7px;
+    padding: 12px 18px;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 26px;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+
+
+
 @media (min-width: 2560px) {
     .wrapper>.layout>.content>.slide-list{
         grid-template-columns: repeat(7, 1fr);
