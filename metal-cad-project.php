@@ -145,27 +145,38 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                 </div>
 
                 <div class="table">
+                    <div class="table-information-bars">
+                        <div class="bar">
+                            <div class="name">
+                                <p>Проекта</p>
+                                <p class="value">80/100 м.пог.</p>
+                            </div>
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
                     <table>
                         <thead>
                             <tr>
-                                <th id="table-num">№</th>
-                                <th id="table-project">Проект</th>
-                                <th id="table-plan">План</th>
-                                <th id="table-fact">Факт</th>
-                                <th id="table-date">Дата создания</th>
-                                <th id="table-responseble">Ответственный</th>
-                                <th id="table-status">Статус</th>
+                                <th id="ticket-num">№</th>
+                                <th id="ticket-name">Название</th>
+                                <th id="ticket-date">Дата</th>
+                                <th id="ticket-color">Цвет</th>
+                                <th id="ticket-thikness">Толщина</th>
+                                <th id="ticket-metr">пог.м.</th>
+                                <th id="ticket-responsible">Ответственный</th>
+                                <th id="ticket-status">Статус</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="table-num-value">'.$num.'</td>
-                                <td id="table-project-value">'.$row['ProjectName'].'</td>
-                                <td id="table-plan-value">'.$row['ProjectPlan'].'</td>
-                                <td id="table-fact-value">'.$row['ProjectFact'].'</td>
-                                <td id="table-date-value">'.$formattedDate.'г.</td>
-                                <td id="table-responseble-value">'.$row['name'].' '.$row['surname'].'</td>
-                                <td id="table-status-value"><div class="status plan">Планирование</div></td>
+                                <td id="ticket-num-value">1</td>
+                                <td id="ticket-name-value">NEXT 2</td>
+                                <td id="ticket-date-value">25.04.2024г.</td>
+                                <td id="ticket-color-value">RAL 7024</td>
+                                <td id="ticket-thikness-value">0.7</td>
+                                <td id="ticket-metr-value">14</td>
+                                <td id="ticket-responsible-value">Евгений Прищеп</td>
+                                <td id="ticket-status-value"><div class="status plan">Планирование</div></td>
                             </tr>
                         </tbody>
                     </table>

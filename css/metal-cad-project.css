@@ -185,3 +185,27 @@
 .wrapper>.layout>.content>.slide-list>.slide:hover .color{
     display: none;
 }
+
+.wrapper>.layout>.content>.table>.table-information-bars{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 50px;
+    padding-bottom: 25px;
+}
+
+.wrapper>.layout>.content>.table>.table-information-bars>.bar>.name{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.wrapper>.layout>.content>.table>.table-information-bars>.bar>.name>p{
+    color: #6A6A6A;
+    font-weight: 500;
+}
+
+.wrapper>.layout>.content>.table>.table-information-bars>.bar>.progress-bar{
+    height: 10px;
+    background-color: #59B077;
+}
