@@ -92,8 +92,9 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                             $result = $conn->query($sql);
                             $num_actual = 0;
                             if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $num_actual = $num_actual + 1;
+                                while($row = $result->fetch_assoc()){
+                                    $num_actual = $num_actual + 1;
+                                }
                             }
                         } else if($roleId == 3 || $roleId == 4){
                             $sql = "SELECT ProjectMetalCad.*, user.name, user.surname 
@@ -103,8 +104,9 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                             $result = $conn->query($sql);
                             $num_actual = 0;
                             if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $num_actual = $num_actual + 1;
+                                while($row = $result->fetch_assoc()){
+                                    $num_actual = $num_actual + 1;
+                                }
                             }
                         }
                     ?>
