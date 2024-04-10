@@ -92,7 +92,7 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                     </div>
                     <div class="ticket-select">
                         <button class="slide"></button>
-                        <button class="table"></button>
+                        <button class="table-btn"></button>
                         <button class="add-ticket">Добавить</button>
                     </div>
                 </div>
@@ -144,16 +144,7 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                     </div>
                 </div>
 
-                <div class="table">
-                    <div class="table-information-bars">
-                        <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
-                            </div>
-                            <div class="progress-bar"></div>
-                        </div>
-                    </div>
+                <div class="table"> 
                     <table>
                         <thead>
                             <tr>

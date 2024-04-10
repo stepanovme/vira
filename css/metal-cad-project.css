@@ -115,7 +115,7 @@
     cursor: pointer;
 }
 
-.wrapper>.layout>.content>.subtitle>.ticket-select>button.table{
+.wrapper>.layout>.content>.subtitle>.ticket-select>button.table-btn{
     background-image: url(../assets/images/table.svg);
     background-size: cover;
     background-color: transparent;
