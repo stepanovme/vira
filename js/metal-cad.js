@@ -202,9 +202,10 @@ function getThickness() {
             const dropdownContent = document.getElementById("thicknessDropdown");
             thicknesses.forEach(thickness => {
                 const thicknessOption = document.createElement("div");
-                thicknessOption.textContent = thickness;
+                thicknessOption.textContent = thickness.value;
+                thicknessOption.dataset.id = thickness.id; // Сохраняем id толщины в атрибуте data-id
                 thicknessOption.addEventListener("click", () => {
-                    selectThickness(thickness);
+                    selectThickness(thickness.value, thickness.id); // Передаем значение и id толщины в функцию обработки
                 });
                 dropdownContent.appendChild(thicknessOption);
             });
@@ -219,28 +220,35 @@ document.addEventListener("DOMContentLoaded", getThickness);
 
 
 // Функция для выбора толщины
-function selectThickness(thickness) {
+function selectThickness(thickness, thicknessId) {
     const input = document.getElementById("thicknessInput");
     let selectedThicknesses = input.value.trim().split(',').filter(thickness => thickness !== ''); // Удаляем пустые значения
+    let selectedThicknessIds = input.dataset.thicknessIds ? input.dataset.thicknessIds.split(',') : []; // Получаем массив выбранных id толщин
 
     // Проверяем, была ли выбрана толщина ранее
     const index = selectedThicknesses.findIndex(selectedThickness => selectedThickness.trim() === thickness.trim());
     if (index !== -1) {
-        // Если толщина уже выбрана, удаляем ее из списка выбранных толщин
+        // Если толщина уже выбрана, удаляем ее из списка выбранных толщин и соответствующий id из массива id
         selectedThicknesses.splice(index, 1);
+        const idIndex = selectedThicknessIds.indexOf(thicknessId);
+        if (idIndex !== -1) {
+            selectedThicknessIds.splice(idIndex, 1);
+        }
     } else {
-        // Если толщина не выбрана, добавляем ее в список
+        // Если толщина не выбрана, добавляем ее в список и соответствующий id в массив id
         selectedThicknesses.push(thickness);
+        selectedThicknessIds.push(thicknessId);
     }
   
     // Обновляем значение input
     input.value = selectedThicknesses.join(', '); // Обновляем значение input
+    input.dataset.thicknessIds = selectedThicknessIds.join(','); // Обновляем атрибут data-thickness-ids
   
     // Применяем стили к выбранным элементам в выпадающем списке
     const dropdownContent = document.getElementById("thicknessDropdown");
     const dropdownOptions = dropdownContent.getElementsByTagName("div");
     for (let option of dropdownOptions) {
-        if (selectedThicknesses.includes(option.textContent.trim())) {
+        if (selectedThicknessIds.includes(option.dataset.id)) { // Проверяем id толщины
             option.classList.add("selected");
         } else {
             option.classList.remove("selected");
@@ -256,17 +264,14 @@ function toggleThicknessDropdown() {
 
 // Функция для скрытия выпадающего списка при клике вне его области
 document.addEventListener("click", function(event) {
-    const colorDropdown = document.getElementById("colorDropdown");
     const thicknessDropdown = document.getElementById("thicknessDropdown");
-    const colorInput = document.getElementById("colorInput");
     const thicknessInput = document.getElementById("thicknessInput");
-    if (event.target !== colorDropdown && event.target !== colorInput) {
-        colorDropdown.classList.remove("show");
-    }
     if (event.target !== thicknessDropdown && event.target !== thicknessInput) {
         thicknessDropdown.classList.remove("show");
     }
 });
+
+
 
 // Ответственные
 // Функция для получения списка ответственных из БД

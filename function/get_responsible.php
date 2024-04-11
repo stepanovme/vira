@@ -1,7 +1,7 @@
 <?php 
 require '../database/db_connection.php';
 
-$sql = "SELECT name,surname,roleId 
+$sql = "SELECT name,surname,roleId, userId
         FROM user
         WHERE roleId = 2 or roleId = 3 or roleId = 4 or roleId = 5";
 $result = $conn->query($sql);
