@@ -389,3 +389,48 @@ document.getElementById("modal-add").addEventListener("click", function(event) {
     
     // Далее следует ваш код для сравнения цвета и толщины с данными из базы данных и создания новых записей в таблицах
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('modal-add');
+    addButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        
+        // Получаем данные из полей формы
+        const projectName = document.querySelector('input[name="projectName"]').value;
+        const projectObject = document.querySelector('input[name="projectObject"]').value;
+        const colorIds = document.getElementById('colorInput').dataset.colorIds.split(',');
+        const thicknessIds = document.getElementById('thicknessInput').dataset.thicknessIds.split(',');
+        const responsibleIds = document.getElementById('responsibleInput').dataset.responsibleIds.split(',');
+
+        // Создаем новую строку в таблице ProjectMetalCad
+        fetch('function/create_project.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                projectName: projectName,
+                projectObject: projectObject,
+                colorIds: colorIds.join(','),
+                thicknessIds: thicknessIds.join(','),
+                responsibleIds: responsibleIds.join(',')
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.projectId) {
+                // Выводим сообщение об успешном добавлении проекта
+                location.reload();
+            } else {
+                // Выводим сообщение об ошибке
+                alert('Ошибка при добавлении проекта');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ошибка при добавлении проекта');
+        });
+    });
+});
