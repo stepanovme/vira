@@ -295,11 +295,14 @@ if ($result->num_rows > 0) {
                                 echo '
                                     <tr>
                                         <td id="product-num-value">'.$num.'</td>
-                                        <td id="product-name-value" contenteditable="true">'.$row['ProductMetalCadName'].'</td>
+                                        <td id="product-name-value">
+                                            <input type="text" value="'.$row['ProductMetalCadName'].'">
+                                            <canvas></canvas>
+                                        </td>
                                         <td id="product-sum-value">'.$row['ProductMetalCadSum'].'</td>
                                         <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
                                         <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
-                                        <td id="product-place-value">'.$row['ProductMetalCadPlace'].'</td>
+                                        <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
                                     </tr>
                                 ';
                             }
@@ -552,6 +555,33 @@ if ($result->num_rows > 0) {
     }
 
     function updateQuantityOnEnter(event) {
+        if (event.keyCode === 13) {
+            var activeElement = document.activeElement;
+            if (activeElement.contentEditable === 'true') {
+                activeElement.blur();
+            }
+        }
+    }
+
+
+    function updatePlace(productId, cell, event) {
+        if (event.keyCode === 13) {
+            cell.blur();
+            return;
+        }
+
+        var newPlace = cell.textContent;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка ответа от сервера, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_product_place.php?productId=" + productId + "&newPlace=" + newPlace, true);
+        xhttp.send();
+    }
+
+    function updatePlaceOnEnter(event) {
         if (event.keyCode === 13) {
             var activeElement = document.activeElement;
             if (activeElement.contentEditable === 'true') {
