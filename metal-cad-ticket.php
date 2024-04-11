@@ -253,7 +253,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" value="'.$row['TicketMetalCadQuantityProduct'].'" readonly>';
+                                    echo '<input type="text" id="ticketQuantityInput" value="'.$row['TicketMetalCadQuantityProduct'].'" readonly>';
                                 }
                             ?>
                         </div>
@@ -589,6 +589,18 @@ if ($result->num_rows > 0) {
             }
         }
     }
+
+    function updateQuantityOnPage(ticketId) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // Обновляем значение в input после получения ответа от сервера
+            document.getElementById("ticketQuantityInput").value = this.responseText;
+        }
+    };
+    xhttp.open("GET", "function/get_ticket_quantity.php?ticketId=" + ticketId, true);
+    xhttp.send();
+}
 
     </script>
 </body>
