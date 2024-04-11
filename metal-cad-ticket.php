@@ -284,17 +284,27 @@ if ($result->num_rows > 0) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td id="product-num-value">1</td>
-                            <td id="product-name-value">
-                                <input type="text">
-                                <canvas></canvas>
-                            </td>
-                            <td id="product-sum-value">196</td>
-                            <td id="product-length-value">196</td>
-                            <td id="product-quantity-value">196</td>
-                            <td id="product-place-value">1 этаж</td>
-                        </tr>
+                    <?php 
+                        $sql = "SELECT * from ProductMetalCad where TicketMetalCadId = $ticketId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $num = 0;
+                            while($row = $result->fetch_assoc()) {
+                                $num = $num + 1;
+                                echo '
+                                    <tr>
+                                        <td id="product-num-value">'.$num.'</td>
+                                        <td id="product-name-value" contenteditable="true">'.$row['ProductMetalCadName'].'</td>
+                                        <td id="product-sum-value">'.$row['ProductMetalCadSum'].'</td>
+                                        <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
+                                        <td id="product-quantity-value">'.$row['ProductMetalCadQuantity'].'</td>
+                                        <td id="product-place-value">'.$row['ProductMetalCadPlace'].'</td>
+                                    </tr>
+                                ';
+                            }
+                        }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -490,6 +500,37 @@ if ($result->num_rows > 0) {
         };
         xhttp.open("GET", "function/update_date_plan.php?ticketId=" + ticketId + "&newDatePlan=" + newDatePlan, true);
         xhttp.send();
+    }
+
+    function updateLength(productId, cell, event) {
+        // Проверяем, была ли нажата клавиша Enter (код клавиши 13)
+        if (event.keyCode === 13) {
+            // Заканчиваем редактирование ячейки, снимаем с нее фокус
+            cell.blur();
+            return;
+        }
+
+        var newLength = cell.textContent; // Получаем новое значение из редактируемой ячейки
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка ответа от сервера, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_product_length.php?productId=" + productId + "&newLength=" + newLength, true);
+        xhttp.send();
+    }
+
+    function updateLengthOnEnter(event) {
+        // Проверяем, была ли нажата клавиша Enter (код клавиши 13)
+        if (event.keyCode === 13) {
+            // Получаем текущую активную ячейку
+            var activeElement = document.activeElement;
+            // Если текущий активный элемент - это редактируемая ячейка, снимаем с нее фокус
+            if (activeElement.contentEditable === 'true') {
+                activeElement.blur();
+            }
+        }
     }
 
     </script>

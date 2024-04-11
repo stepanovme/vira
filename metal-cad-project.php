@@ -146,7 +146,7 @@ if (isset($_GET['projectId'])) {
                 </div>
 
                 <div class="slide-list">
-                <?php 
+                    <?php 
                         $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                 FROM TicketMetalCad AS tmc
                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
