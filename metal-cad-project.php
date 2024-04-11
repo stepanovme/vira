@@ -32,6 +32,12 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
     header('Location: index.php');
     exit;
 }
+
+if (isset($_GET['projectId'])) {
+    $projectId = $_GET['projectId'];
+} else {
+    echo "Ошибка: Не удалось получить идентификатор проекта из URL.";
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">

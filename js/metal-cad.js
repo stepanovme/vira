@@ -367,12 +367,6 @@ document.addEventListener("click", function(event) {
     }
 });
 
-
-
-
-
-
-
 // Отправка модального окна
 document.getElementById("modal-add").addEventListener("click", function(event) {
     event.preventDefault(); // Предотвращаем стандартное поведение формы
@@ -390,8 +384,7 @@ document.getElementById("modal-add").addEventListener("click", function(event) {
     // Далее следует ваш код для сравнения цвета и толщины с данными из базы данных и создания новых записей в таблицах
 });
 
-
-
+// Создание проекта
 document.addEventListener('DOMContentLoaded', function() {
     const addButton = document.getElementById('modal-add');
     addButton.addEventListener('click', function(event) {
@@ -431,6 +424,30 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             alert('Ошибка при добавлении проекта');
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Находим все элементы с классом "slide" и "tr" и добавляем обработчик события клика
+    const slides = document.querySelectorAll('.slide');
+    const tableRows = document.querySelectorAll('tr');
+
+    slides.forEach(slide => {
+        slide.addEventListener('click', function() {
+            // Получаем значение атрибута "data-project-id"
+            const projectId = this.dataset.projectId;
+            // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
+            window.location.href = 'metal-cad-project.php?projectId=' + projectId;
+        });
+    });
+
+    tableRows.forEach(row => {
+        row.addEventListener('click', function() {
+            // Получаем значение атрибута "data-project-id"
+            const projectId = this.dataset.projectId;
+            // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
+            window.location.href = 'metal-cad-project.php?projectId=' + projectId;
         });
     });
 });
