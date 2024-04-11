@@ -258,6 +258,34 @@
     background-color: #59B077;
 }
 
+.wrapper>.layout>.content>.slide-list>.slide.new{
+    border-bottom: 10px solid #AFDAFC;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.new>.status{
+    color: #AFDAFC;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.agreement{
+    border-bottom: 10px solid #74B1E2;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.agreement>.status{
+    color: #74B1E2;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.new{
+    color: #AFDAFC;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.agreement{
+    color: #74B1E2;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide:hover{
+    border-bottom: 0;
+}
+
 @media (max-width:1600px) {
     .wrapper>.layout>.content>.information-bars{
         grid-template-columns: repeat(3, 1fr);

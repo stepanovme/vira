@@ -32,6 +32,12 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
     header('Location: index.php');
     exit;
 }
+
+if(isset($_GET['projectId'])) {
+    $projectId = $_GET['projectId'];
+} else {
+    echo "projectId не указан";
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -80,20 +86,46 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                 <div class="content-header">
                     <div class="title">
                         <button class="back" onclick="window.location.href = 'metal-cad.php'"></button>
-                        <h1>Многоэтажка на Дмитривском шоссе</h1>
+                        <?php 
+                        $sql = "SELECT ProjectName from ProjectMetalCad where ProjectId = $projectId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            echo '<h1>'.$row['ProjectName'].'</h1>';
+                        }
+                        ?>
                     </div>
-                    <div class="status-project plan">Планирование</div>
+                    <?php 
+                        $sql = "SELECT StatusId from ProjectMetalCad where ProjectId = $projectId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            if($row['StatusId'] == 1){
+                                echo '<div class="status-project plan">Планирование</div>';
+                            } elseif($row['StatusId'] == 2){
+                                echo '<div class="status-project work">В работе</div>';
+                            } elseif($row['StatusId'] == 3){
+                                echo '<div class="status-project sent">Отправлено</div>';
+                            } elseif($row['StatusId'] == 4){
+                                echo '<div class="status-project shipped">Отгружен</div>';
+                            } elseif($row['StatusId'] == 5){
+                                echo '<div class="status-project completed">Завершено</div>';
+                            }
+                        }
+                    ?>
                 </div>
                 <div class="subtitle">
                     <div class="mobile-project-nav">
-                        <button onclick="window.location.href = 'metal-cad-project.php'">З</button>
-                        <button onclick="window.location.href = 'metal-cad-settings.php'">Н</button>
-                        <button class="active">А</button>
+                        <button onclick="window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'">З</button>
+                        <button class="active">Н</button>
+                        <button onclick="window.location.href = 'metal-cad-analyt.php?projectId=<?php echo $projectId;?>'">А</button>
                     </div>
                     <div class="project-nav">
-                        <button onclick="window.location.href = 'metal-cad-project.php'">Заявка</button>
+                        <button onclick="window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'">Заявка</button>
                         <button class="active">Настройки</button>
-                        <button onclick="window.location.href = 'metal-cad-analyt.php'">Аналитика</button>
+                        <button onclick="window.location.href = 'metal-cad-analyt.php?projectId=<?php echo $projectId;?>'">Аналитика</button>
                     </div>
                 </div>
 

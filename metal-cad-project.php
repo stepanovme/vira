@@ -86,20 +86,46 @@ if (isset($_GET['projectId'])) {
                 <div class="content-header">
                     <div class="title">
                         <button class="back" onclick="window.location.href = 'metal-cad.php'"></button>
-                        <h1>Многоэтажка на Дмитривском шоссе</h1>
+                        <?php 
+                        $sql = "SELECT ProjectName from ProjectMetalCad where ProjectId = $projectId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            echo '<h1>'.$row['ProjectName'].'</h1>';
+                        }
+                        ?>
                     </div>
-                    <div class="status-project plan">Планирование</div>
+                    <?php 
+                        $sql = "SELECT StatusId from ProjectMetalCad where ProjectId = $projectId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            if($row['StatusId'] == 1){
+                                echo '<div class="status-project plan">Планирование</div>';
+                            } elseif($row['StatusId'] == 2){
+                                echo '<div class="status-project work">В работе</div>';
+                            } elseif($row['StatusId'] == 3){
+                                echo '<div class="status-project sent">Отправлено</div>';
+                            } elseif($row['StatusId'] == 4){
+                                echo '<div class="status-project shipped">Отгружен</div>';
+                            } elseif($row['StatusId'] == 5){
+                                echo '<div class="status-project completed">Завершено</div>';
+                            }
+                        }
+                    ?>
                 </div>
                 <div class="subtitle">
                     <div class="mobile-project-nav">
-                        <button onclick="window.location.href = 'metal-cad-project.php'">З</button>
-                        <button onclick="window.location.href = 'metal-cad-settings.php'">Н</button>
+                        <button onclick="window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'">З</button>
+                        <button onclick="window.location.href = 'metal-cad-settings.php?projectId=<?php echo $projectId;?>'">Н</button>
                         <button class="active">А</button>
                     </div>
                     <div class="project-nav">
                         <button class="active">Заявка</button>
-                        <button onclick="window.location.href = 'metal-cad-settings.php'">Настройки</button>
-                        <button onclick="window.location.href = 'metal-cad-analyt.php'">Аналитика</button>
+                        <button onclick="window.location.href = 'metal-cad-settings.php?projectId=<?php echo $projectId;?>'">Настройки</button>
+                        <button onclick="window.location.href = 'metal-cad-analyt.php?projectId=<?php echo $projectId;?>'">Аналитика</button>
                     </div>
                     <div class="ticket-select">
                         <button class="slide"></button>
@@ -148,12 +174,39 @@ if (isset($_GET['projectId'])) {
                 </div>
 
                 <div class="slide-list">
-                    <div class="slide plan">
-                        <div class="title">Заявка на гибку №1</div>
-                        <div class="responsible">Евгений Прищеп</div>
-                        <div class="color">RAL 7024 0,5 мм</div>
-                        <div class="status">Планирование</div>
-                    </div>
+                <?php 
+                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()){
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '
+                                        <div class="slide new">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                } elseif($row['TicketMetalCadStatusId'] == 2){
+                                    echo '
+                                        <div class="slide agreement">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                            <div class="status">Согласование</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+                        }
+                    ?>
                 </div>
 
                 <div class="table"> 
@@ -171,16 +224,52 @@ if (isset($_GET['projectId'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="ticket-num-value">1</td>
-                                <td id="ticket-name-value">NEXT 2</td>
-                                <td id="ticket-date-value">25.04.2024г.</td>
-                                <td id="ticket-color-value">RAL 7024</td>
-                                <td id="ticket-thikness-value">0.7</td>
-                                <td id="ticket-metr-value">14</td>
-                                <td id="ticket-responsible-value">Евгений Прищеп</td>
-                                <td id="ticket-status-value"><div class="status plan">Планирование</div></td>
-                            </tr>
+                        <?php 
+                            $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadDateCreate, tmc.TicketMetalCadQuantityMetr, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                    FROM TicketMetalCad AS tmc
+                                    JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                    JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                    JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                    WHERE tmc.ProjectId = $projectId";
+
+                            $result = $conn->query($sql);
+                            $num = 0;
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()){
+                                    $num = $num + 1;
+                                    $dateString = $row['TicketMetalCadDateCreate'];
+                                    $dateTimestamp = strtotime($dateString);
+                                    $formattedDate = date('d.m.20y', $dateTimestamp);
+                                    if($row['TicketMetalCadStatusId'] == 1){
+                                        echo '
+                                            <tr>
+                                                <td id="ticket-num-value">'.$num.'</td>
+                                                <td id="ticket-name-value">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</td>
+                                                <td id="ticket-date-value">'.$formattedDate.'</td>
+                                                <td id="ticket-color-value">'.$row['ColorName'].'</td>
+                                                <td id="ticket-thikness-value">'.$row['ThicknessValue'].'</td>
+                                                <td id="ticket-metr-value">'.$row['TicketMetalCadQuantityMetr'].'</td>
+                                                <td id="ticket-responsible-value">'.$row['name'].' '.$row['surname'].'</td>
+                                                <td id="ticket-status-value"><div class="status new">Новая</div></td>
+                                            </tr>
+                                        ';
+                                    } elseif($row['TicketMetalCadStatusId'] == 2){
+                                        echo '
+                                            <tr>
+                                                <td id="ticket-num-value">'.$num.'</td>
+                                                <td id="ticket-name-value">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</td>
+                                                <td id="ticket-date-value">'.$formattedDate.'</td>
+                                                <td id="ticket-color-value">'.$row['ColorName'].'</td>
+                                                <td id="ticket-thikness-value">'.$row['ThicknessValue'].'</td>
+                                                <td id="ticket-metr-value">'.$row['TicketMetalCadQuantityMetr'].'</td>
+                                                <td id="ticket-responsible-value">'.$row['name'].' '.$row['surname'].'</td>
+                                                <td id="ticket-status-value"><div class="status agreement">Согласование</div></td>
+                                            </tr>
+                                        ';
+                                    }
+                                }
+                            }
+                        ?>
                         </tbody>
                     </table>
                 </div>
