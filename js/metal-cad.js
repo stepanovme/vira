@@ -191,6 +191,16 @@ function showColors(colors) {
     });
 }
 
+// Функция для скрытия выпадающего списка при клике вне его области
+document.addEventListener("click", function(event) {
+    const colorDropdown = document.getElementById("colorDropdown");
+    const colorInput = document.getElementById("colorInput");
+    if (event.target !== colorDropdown && event.target !== colorInput) {
+        colorDropdown.style.animation = "animation: fadeOut 0.3s ease-in-out";
+        colorDropdown.classList.remove("show");
+    }
+});
+
 
 //   Толщины
 // Функция для получения толщин из БД
