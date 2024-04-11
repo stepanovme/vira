@@ -283,9 +283,11 @@ function getResponsible() {
             const dropdownContent = document.getElementById("responsibleDropdown");
             responsible.forEach(person => {
                 const personOption = document.createElement("div");
-                personOption.textContent = person;
+                const fullName = person.name + ' ' + person.surname; // Конкатенируем имя и фамилию
+                personOption.textContent = fullName;
+                personOption.dataset.userId = person.userId; // Добавляем атрибут с userId
                 personOption.addEventListener("click", () => {
-                    selectResponsible(person);
+                    selectResponsible(personOption); // Передаем элемент, а не объект person
                 });
                 dropdownContent.appendChild(personOption);
             });
@@ -305,25 +307,37 @@ function toggleResponsibleDropdown() {
 }
 
 // Функция для выбора ответственного
-function selectResponsible(person) {
+function selectResponsible(personOption) {
     const input = document.getElementById("responsibleInput");
     let selectedResponsible = input.value.trim().split(',').map(item => item.trim()).filter(item => item !== ''); // Удаляем пустые значения и убираем пробелы вокруг
 
+    const personName = personOption.textContent; // Получаем имя и фамилию из выбранного элемента
+    const userId = personOption.dataset.userId; // Получаем userId из dataset
+
+    // Получаем dropdownContent
+    const dropdownContent = document.getElementById("responsibleDropdown");
+
     // Проверяем, был ли выбран ответственный ранее
-    const index = selectedResponsible.indexOf(person);
+    const index = selectedResponsible.indexOf(personName);
     if (index !== -1) {
         // Если ответственный уже выбран, удаляем его из списка выбранных ответственных
         selectedResponsible.splice(index, 1);
     } else {
         // Если ответственный не выбран, добавляем его в список
-        selectedResponsible.push(person);
+        selectedResponsible.push(personName);
     }
   
     // Обновляем значение input
     input.value = selectedResponsible.join(', '); // Обновляем значение input
-  
+
+    // Добавляем userId в data-responsible-ids
+    const responsibleIds = selectedResponsible.map(name => {
+        const option = Array.from(dropdownContent.children).find(child => child.textContent === name);
+        return option.dataset.userId;
+    });
+    input.dataset.responsibleIds = responsibleIds.join(',');
+
     // Применяем стили к выбранным элементам в выпадающем списке
-    const dropdownContent = document.getElementById("responsibleDropdown");
     const dropdownOptions = dropdownContent.getElementsByTagName("div");
     for (let option of dropdownOptions) {
         if (selectedResponsible.includes(option.textContent.trim())) {
@@ -342,6 +356,11 @@ document.addEventListener("click", function(event) {
         dropdown.classList.remove("show");
     }
 });
+
+
+
+
+
 
 
 // Отправка модального окна
