@@ -38,6 +38,15 @@ if (isset($_GET['ticketId'])) {
 } else {
     echo "Ошибка: Не удалось получить идентификатор проекта из URL.";
 }
+
+$sql = "SELECT ProjectId FROM TicketMetalCad WHERE TicketMetalCadId = $ticketId";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $projectId = $row['ProjectId'];
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -85,7 +94,7 @@ if (isset($_GET['ticketId'])) {
                 </div>
                 <div class="content-header">
                     <div class="title">
-                        <button class="back" onclick="window.location.href = 'metal-cad.php'"></button>
+                        <button class="back" onclick="window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'"></button>
                         <?php 
                         $sql = "SELECT TicketMetalCadName, TicketMetalCadNum from TicketMetalCad where TicketMetalCadId = $ticketId";
 
@@ -180,9 +189,15 @@ if (isset($_GET['ticketId'])) {
                         </div>
                         <div class="line">
                             <label for="">Участок:</label>
-                            <select name="" id="">
-                                <option value="">Участок</option>
-                            </select>
+                            <?php 
+                                $sql = "SELECT TicketMetalCadPlace from TicketMetalCad where TicketMetalCadId = $ticketId";
+
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlace(this.value)" onkeypress="handleKeyPress(event)">';
+                                }
+                            ?>
                         </div>
                         <div class="line">
                             <label for="">Бригада:</label>
@@ -192,33 +207,41 @@ if (isset($_GET['ticketId'])) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" name="brigade" value="'.$row['TicketMetalCadBrigade'].'">';
+                                    echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
                                 }
                             ?>
                         </div>
                         <div class="line">
-                            <label for="">Адрес доставки:</label>
-                            <?php 
-                                $sql = "SELECT TicketMetalCadAdress from TicketMetalCad where TicketMetalCadId = $ticketId";
+                        <label for="">Адрес доставки:</label>
+                        <?php 
+                            $sql = "SELECT TicketMetalCadAdress from TicketMetalCad where TicketMetalCadId = $ticketId";
 
-                                $result = $conn->query($sql);
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    echo '<input type="text" name="address" value="'.$row['TicketMetalCadAdress'].'">';
-                                }
-                            ?>
-                        </div>
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
+                            }
+                        ?>
+                    </div>
                     </div>
                     <div class="column">
                         <div class="line">
                             <label for="">Дата план:</label>
                             <?php 
-                                $sql = "SELECT TicketMetalCadDateCreate from TicketMetalCad where TicketMetalCadId = $ticketId";
+                                $sql = "SELECT TicketMetalCadDatePlan from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="date" value="'.$row['TicketMetalCadDateCreate'].'">';
+                                    // Проверяем, является ли значение NULL
+                                    if ($row['TicketMetalCadDatePlan'] !== null) {
+                                        // Если не NULL, то конвертируем значение времени в формат даты
+                                        $date = date('Y-m-d', strtotime($row['TicketMetalCadDatePlan']));
+                                        echo '<input type="date" id="datePlan" value="'.$date.'" onchange="updateDatePlan(this.value)">';
+                                    } else {
+                                        // Если NULL, выводим просто пустое поле
+                                        echo '<input type="date" id="datePlan" value="" onchange="updateDatePlan(this.value)">';
+                                    }
                                 }
                             ?>
                         </div>
@@ -396,13 +419,78 @@ if (isset($_GET['ticketId'])) {
         thicknessSelectOptions.style.display = 'block';
     });
 
-    
 
 
 
+    function updateBrigade(newBrigade) {
+        var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Можно добавить дополнительную обработку здесь, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_brigade.php?ticketId=" + ticketId + "&newBrigade=" + newBrigade, true);
+        xhttp.send();
+    }
+
+    function handleKeyPress(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("brigade").blur(); // Снятие фокуса с input
+        }
+    }
+
+    function updateAddress(newAddress) {
+        var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Можно добавить дополнительную обработку здесь, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_address.php?ticketId=" + ticketId + "&newAddress=" + newAddress, true);
+        xhttp.send();
+    }
+
+    function handleKeyPress(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("address").blur(); // Снятие фокуса с input
+        }
+    }
 
 
+    function updatePlace(newPlace) {
+        var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Можно добавить дополнительную обработку здесь, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_place.php?ticketId=" + ticketId + "&newPlace=" + newPlace, true);
+        xhttp.send();
+    }
 
+    function handleKeyPress(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("place").blur(); // Снятие фокуса с input
+        }
+    }
+
+    function updateDatePlan(newDatePlan) {
+        var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Можно добавить дополнительную обработку здесь, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_date_plan.php?ticketId=" + ticketId + "&newDatePlan=" + newDatePlan, true);
+        xhttp.send();
+    }
 
     </script>
 </body>
