@@ -298,7 +298,7 @@ if ($result->num_rows > 0) {
                                         <td id="product-name-value" contenteditable="true">'.$row['ProductMetalCadName'].'</td>
                                         <td id="product-sum-value">'.$row['ProductMetalCadSum'].'</td>
                                         <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
-                                        <td id="product-quantity-value">'.$row['ProductMetalCadQuantity'].'</td>
+                                        <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
                                         <td id="product-place-value">'.$row['ProductMetalCadPlace'].'</td>
                                     </tr>
                                 ';
@@ -527,6 +527,33 @@ if ($result->num_rows > 0) {
             // Получаем текущую активную ячейку
             var activeElement = document.activeElement;
             // Если текущий активный элемент - это редактируемая ячейка, снимаем с нее фокус
+            if (activeElement.contentEditable === 'true') {
+                activeElement.blur();
+            }
+        }
+    }
+
+
+    function updateQuantity(productId, cell, event) {
+        if (event.keyCode === 13) {
+            cell.blur();
+            return;
+        }
+
+        var newQuantity = cell.textContent;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка ответа от сервера, если нужно
+            }
+        };
+        xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
+        xhttp.send();
+    }
+
+    function updateQuantityOnEnter(event) {
+        if (event.keyCode === 13) {
+            var activeElement = document.activeElement;
             if (activeElement.contentEditable === 'true') {
                 activeElement.blur();
             }
