@@ -118,9 +118,9 @@ if (isset($_GET['projectId'])) {
                 </div>
                 <div class="subtitle">
                     <div class="mobile-project-nav">
-                        <button onclick="window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'">З</button>
+                        <button class="active">З</button>
                         <button onclick="window.location.href = 'metal-cad-settings.php?projectId=<?php echo $projectId;?>'">Н</button>
-                        <button class="active">А</button>
+                        <button onclick="window.location.href = 'metal-cad-analyt.php?projectId=<?php echo $projectId;?>'">А</button>
                     </div>
                     <div class="project-nav">
                         <button class="active">Заявка</button>
@@ -136,34 +136,6 @@ if (isset($_GET['projectId'])) {
                 </div>
 
                 <div class="information-bars">
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
-                        </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
-                        </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
-                        </div>
-                        <div class="progress-bar"></div>
-                    </div>
-                    <div class="bar">
-                        <div class="name">
-                            <p>Проекта</p>
-                            <p class="value">80/100 м.пог.</p>
-                        </div>
-                        <div class="progress-bar"></div>
-                    </div>
                     <div class="bar">
                         <div class="name">
                             <p>Проекта</p>

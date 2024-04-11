@@ -65,18 +65,18 @@ document.addEventListener('DOMContentLoaded', function() {
     slides.forEach(slide => {
         slide.addEventListener('click', function() {
             // Получаем значение атрибута "data-project-id"
-            const projectId = this.dataset.projectId;
+            const ticketId = this.dataset.ticketId;
             // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
-            window.location.href = 'metal-cad-ticket.php?projectId=' + projectId;
+            window.location.href = 'metal-cad-ticket.php?ticketId=' + ticketId;
         });
     });
 
     tableRows.forEach(row => {
         row.addEventListener('click', function() {
             // Получаем значение атрибута "data-project-id"
-            const projectId = this.dataset.projectId;
+            const ticketId = this.dataset.ticketId;
             // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
-            window.location.href = 'metal-cad-ticket.php?projectId=' + projectId;
+            window.location.href = 'metal-cad-ticket.php?ticketId=' + ticketId;
         });
     });
 });

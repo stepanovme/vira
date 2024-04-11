@@ -150,34 +150,6 @@ if(isset($_GET['projectId'])) {
                             </div>
                             <div class="progress-bar"></div>
                         </div>
-                        <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
-                            </div>
-                            <div class="progress-bar"></div>
-                        </div>
-                        <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
-                            </div>
-                            <div class="progress-bar"></div>
-                        </div>
-                        <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
-                            </div>
-                            <div class="progress-bar"></div>
-                        </div>
-                        <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
-                            </div>
-                            <div class="progress-bar"></div>
-                        </div>
                     </div>
                 </div>
 
