@@ -128,7 +128,7 @@ if (isset($_GET['ticketId'])) {
                             <label for="">Цвет:</label>
                             <div class="custom-select">
                                 <input type="text" id="colorTicketInput" readonly placeholder="Выберите цвет">
-                                <div class="select-options">
+                                <div class="select-options color-select-options">
                                     <ul>
                                         <?php 
                                             $sql = "SELECT pc.ColorId, cc.ColorName AS ProjectColorName, ccc.ColorName AS ColorTicketName
@@ -153,9 +153,30 @@ if (isset($_GET['ticketId'])) {
                         </div>
                         <div class="line">
                             <label for="">Толщина:</label>
-                            <select name="" id="">
-                                <option value="">Толщина</option>
-                            </select>
+                            <div class="custom-select">
+                                <input type="text" id="thicknessTicketInput" readonly placeholder="Выберите толщину">
+                                <div class="select-options thickness-select-options">
+                                    <ul>
+                                        <?php 
+                                            $sql = "SELECT pc.ThicknessId, cc.ThicknessValue AS ProjectThicknessValue, ccc.ThicknessValue AS ThicknessValueName
+                                                    FROM ProjectMetalCadThickness pc
+                                                    JOIN ThicknessMetalCad cc ON pc.ThicknessId = cc.ThicknessId
+                                                    JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
+                                                    JOIN ThicknessMetalCad ccc ON t.TicketMetalCadThickness = ccc.ThicknessId
+                                                    WHERE t.TicketMetalCadId = 1";
+
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    // Устанавливаем значение названия цвета напрямую в атрибут value
+                                                    echo '<li data-thickness-id="'.$row['ThicknessId'].'">'.$row['ProjectThicknessValue'].'</li>';
+                                                    echo '<script>document.getElementById("thicknessTicketInput").value = "'.$row['ThicknessValueName'].'";</script>';
+                                                }
+                                            }
+                                        ?>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="line">
                             <label for="">Участок:</label>
@@ -171,7 +192,7 @@ if (isset($_GET['ticketId'])) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" value="'.$row['TicketMetalCadBrigade'].'">';
+                                    echo '<input type="text" name="brigade" value="'.$row['TicketMetalCadBrigade'].'">';
                                 }
                             ?>
                         </div>
@@ -183,7 +204,7 @@ if (isset($_GET['ticketId'])) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" value="'.$row['TicketMetalCadAdress'].'">';
+                                    echo '<input type="text" name="address" value="'.$row['TicketMetalCadAdress'].'">';
                                 }
                             ?>
                         </div>
@@ -261,48 +282,127 @@ if (isset($_GET['ticketId'])) {
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-ticket.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        const input = document.getElementById('colorTicketInput');
-        const selectOptions = document.querySelector('.custom-select .select-options');
-        const colorList = document.querySelectorAll('.custom-select .select-options ul li');
+        const colorInput = document.getElementById('colorTicketInput');
+        const colorSelectOptions = document.querySelector('.color-select-options');
+        const colorList = document.querySelectorAll('.color-select-options ul li');
 
-        input.addEventListener('click', function() {
-            selectOptions.style.display = 'block';
+        document.addEventListener('DOMContentLoaded', function() {
+            colorInput.addEventListener('click', function() {
+                colorSelectOptions.style.display = 'block';
+            });
+
+            colorList.forEach(colorItem => {
+                colorItem.addEventListener('click', function() {
+                    const selectedColorId = this.dataset.colorId;
+                    const selectedColorName = this.textContent;
+
+                    // Отправить выбранный цвет в базу данных TicketMetalCadColor
+                    fetch('function/update_ticket_color.php', { 
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ticketId: <?php echo $ticketId; ?>,
+                            colorId: selectedColorId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Обработать успешный ответ, если необходимо
+                        console.log('Color updated successfully');
+                    })
+                    .catch(error => {
+                        // Обработать ошибку, если необходимо
+                        console.error('Error updating color:', error);
+                    });
+
+                    // Установить выбранный цвет в input и закрыть список
+                    colorInput.value = selectedColorName;
+                    colorSelectOptions.style.display = 'none';
+                });
+            });
         });
 
-        colorList.forEach(colorItem => {
-            colorItem.addEventListener('click', function() {
-                const selectedColorId = this.dataset.colorId;
-                const selectedColorName = this.textContent;
+    const thicknessInput = document.getElementById('thicknessTicketInput');
+    const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+    const thicknessList = document.querySelectorAll('.thickness-select-options ul li');
 
-                console.log(selectedColorId);
-                // Отправить выбранный цвет в базу данных TicketMetalCadColor
-                fetch('function/update_ticket_color.php', { 
+    document.addEventListener('DOMContentLoaded', function() {
+
+        thicknessInput.addEventListener('click', function() {
+            thicknessSelectOptions.style.display = 'block';
+        });
+
+        thicknessList.forEach(thicknessItem => {
+            thicknessItem.addEventListener('click', function() {
+                const selectedThicknessId = this.dataset.thicknessId;
+                const selectedThicknessValue = this.textContent;
+
+                // Отправить выбранную толщину в базу данных TicketMetalCadThickness
+                fetch('function/update_ticket_thickness.php', { 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         ticketId: <?php echo $ticketId; ?>,
-                        colorId: selectedColorId
+                        thicknessId: selectedThicknessId
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
                     // Обработать успешный ответ, если необходимо
-                    console.log('Color updated successfully');
+                    console.log('Thickness updated successfully');
                 })
                 .catch(error => {
                     // Обработать ошибку, если необходимо
-                    console.error('Error updating color:', error);
+                    console.error('Error updating thickness:', error);
                 });
 
-                // Установить выбранный цвет в input и закрыть список
-                input.value = selectedColorName;
-                selectOptions.style.display = 'none';
+                // Установить выбранную толщину в input и закрыть список
+                thicknessInput.value = selectedThicknessValue;
+                thicknessSelectOptions.style.display = 'none';
             });
         });
     });
+
+
+    document.addEventListener('click', function(event) {
+        const target = event.target;
+        const colorInput = document.getElementById('colorTicketInput');
+        const colorSelectOptions = document.querySelector('.color-select-options');
+        const thicknessInput = document.getElementById('thicknessTicketInput');
+        const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+
+        // Проверяем, кликнули ли мы вне выпадающего списка цветов
+        if (!colorSelectOptions.contains(target) && target !== colorInput) {
+            colorSelectOptions.style.display = 'none';
+        }
+
+        // Проверяем, кликнули ли мы вне выпадающего списка толщин
+        if (!thicknessSelectOptions.contains(target) && target !== thicknessInput) {
+            thicknessSelectOptions.style.display = 'none';
+        }
+    });
+
+    colorInput.addEventListener('click', function() {
+        // Показываем выпадающий список цветов при клике на поле ввода
+        colorSelectOptions.style.display = 'block';
+    });
+
+    thicknessInput.addEventListener('click', function() {
+        // Показываем выпадающий список толщин при клике на поле ввода
+        thicknessSelectOptions.style.display = 'block';
+    });
+
+    
+
+
+
+
+
+
 
     </script>
 </body>

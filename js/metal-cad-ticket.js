@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         fillScreen.addEventListener("animationend", function() {
             fillScreen.style.animation = "fillAnimationReverse 0.2s forwards";
             document.querySelector('.wrapper>.layout>.content>.content-header').style.display = 'flex';
+            document.querySelector('.wrapper>.layout>.content>.ticket-info').style.display = 'flex';
             document.querySelector('.wrapper>.layout>.content>table').style.display = 'table';
         }, { once: true });
 
