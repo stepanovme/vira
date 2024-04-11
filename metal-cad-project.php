@@ -175,7 +175,7 @@ if (isset($_GET['projectId'])) {
 
                 <div class="slide-list">
                 <?php 
-                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                 FROM TicketMetalCad AS tmc
                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
                                 JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
@@ -187,7 +187,7 @@ if (isset($_GET['projectId'])) {
                             while($row = $result->fetch_assoc()){
                                 if($row['TicketMetalCadStatusId'] == 1){
                                     echo '
-                                        <div class="slide new">
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
                                             <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
                                             <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
                                             <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
@@ -196,7 +196,7 @@ if (isset($_GET['projectId'])) {
                                     ';
                                 } elseif($row['TicketMetalCadStatusId'] == 2){
                                     echo '
-                                        <div class="slide agreement">
+                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
                                             <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
                                             <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
                                             <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
@@ -225,7 +225,7 @@ if (isset($_GET['projectId'])) {
                         </thead>
                         <tbody>
                         <?php 
-                            $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadDateCreate, tmc.TicketMetalCadQuantityMetr, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                            $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadDateCreate, tmc.TicketMetalCadQuantityMetr, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                     FROM TicketMetalCad AS tmc
                                     JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
                                     JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
@@ -242,7 +242,7 @@ if (isset($_GET['projectId'])) {
                                     $formattedDate = date('d.m.20y', $dateTimestamp);
                                     if($row['TicketMetalCadStatusId'] == 1){
                                         echo '
-                                            <tr>
+                                            <tr data-ticket-id="'.$row['TicketMetalCadId'].'">
                                                 <td id="ticket-num-value">'.$num.'</td>
                                                 <td id="ticket-name-value">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</td>
                                                 <td id="ticket-date-value">'.$formattedDate.'</td>
@@ -255,7 +255,7 @@ if (isset($_GET['projectId'])) {
                                         ';
                                     } elseif($row['TicketMetalCadStatusId'] == 2){
                                         echo '
-                                            <tr>
+                                            <tr data-ticket-id="'.$row['TicketMetalCadId'].'">
                                                 <td id="ticket-num-value">'.$num.'</td>
                                                 <td id="ticket-name-value">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</td>
                                                 <td id="ticket-date-value">'.$formattedDate.'</td>
