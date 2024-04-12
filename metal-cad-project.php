@@ -130,8 +130,8 @@ if (isset($_GET['projectId'])) {
                     <div class="ticket-select">
                         <button class="slide"></button>
                         <button class="table-btn"></button>
-                        <button class="add-ticket">Добавить</button>
-                        <button class="mobile-add-ticket">+</button>
+                        <button class="add-ticket" data-project-id="<?php echo $projectId;?>">Добавить</button>
+                        <button class="mobile-add-ticket" data-project-id="<?php echo $projectId;?>">+</button>
                     </div>
                 </div>
 
@@ -178,6 +178,97 @@ if (isset($_GET['projectId'])) {
                                 }
                             }
                         }
+
+                        $sqlN = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadColor IS NULL";
+
+                        $result = $conn->query($sqlN);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()){
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                } elseif($row['TicketMetalCadStatusId'] == 2){
+                                    echo '
+                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="status">Согласование</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+                        }
+
+                        $sqlT = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL";
+
+                        $result = $conn->query($sqlT);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()){
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].'</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                } elseif($row['TicketMetalCadStatusId'] == 2){
+                                    echo '
+                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].'</div>
+                                            <div class="status">Согласование</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+                        }
+
+                        $sqlH = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadColor IS NULL";
+
+                        $result = $conn->query($sqlH);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()){
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ThicknessValue'].'мм</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                } elseif($row['TicketMetalCadStatusId'] == 2){
+                                    echo '
+                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ThicknessValue'].'мм</div>
+                                            <div class="status">Согласование</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+                        }
+
                     ?>
                 </div>
 
@@ -252,5 +343,26 @@ if (isset($_GET['projectId'])) {
     <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-project.js"></script>
+    <script>
+        document.querySelector('.add-ticket').addEventListener('click', function() {
+        var projectId = this.getAttribute('data-project-id');
+        var user_id = "<?php echo $user_id; ?>"; // Получение ProjectObject из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка успешного ответа
+                console.log("Новая строка TicketMetalCad добавлена успешно");
+                location.reload();
+                // Перезагрузка страницы или обновление интерфейса по вашему желанию
+            } else if (this.readyState == 4 && this.status != 200) {
+                // Обработка ошибки
+                console.error("Произошла ошибка при добавлении строки TicketMetalCad");
+            }
+        };
+        xhttp.open("GET", "function/add_ticket.php?projectId=" + projectId + "&user_id=" + user_id, true);
+        xhttp.send();
+    });
+
+    </script>
 </body>
 </html>
