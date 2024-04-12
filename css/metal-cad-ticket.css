@@ -184,3 +184,16 @@
 .wrapper>.layout>.content>table>tbody>tr>td:focus{
     border: 1px solid var(--var-main-color);
 }
+
+.wrapper>.layout>.content>table>thead>tr>th#product-num, .wrapper>.layout>.content>table>thead>tr>th#product-length,
+.wrapper>.layout>.content>table>thead>tr>th#product-quantity{
+    width: 75px;
+}
+
+.wrapper>.layout>.content>table>thead>tr>th#product-sum{
+    width: 125px;
+}
+
+.wrapper>.layout>.content>table>thead>tr>th#product-place{
+    width: 125px;
+}

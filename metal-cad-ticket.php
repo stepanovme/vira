@@ -286,7 +286,6 @@ if ($result->num_rows > 0) {
                     <tbody>
                     <?php 
                         $sql = "SELECT * from ProductMetalCad where TicketMetalCadId = $ticketId";
-
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             $num = 0;
@@ -297,6 +296,7 @@ if ($result->num_rows > 0) {
                                         <td id="product-num-value">'.$num.'</td>
                                         <td id="product-name-value">
                                             <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                            <canvas width="1000" height="300"></canvas>
                                         </td>
                                         <td id="product-sum-value">'.$row['ProductMetalCadSum'].'</td>
                                         <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
@@ -658,7 +658,88 @@ if ($result->num_rows > 0) {
 
 
     // Рисование чертежей
+    // Добавляем обработчики событий мыши для каждого canvas элемента
+    var canvasList = document.getElementsByTagName('canvas');
+    for (var i = 0; i < canvasList.length; i++) {
+        var canvas = canvasList[i];
+        var context = canvas.getContext('2d');
+        drawGrid(canvas, context); // Рисуем сетку на заднем фоне
+        var canvasData = { lines: [], isDrawing: false }; // Создаем объект данных для каждого canvas
+        canvas.addEventListener('mousedown', startDrawing.bind(null, canvas, canvasData));
+        canvas.addEventListener('mouseup', endDrawing.bind(null, canvas, canvasData));
+        canvas.addEventListener('mousemove', drawTempLine.bind(null, canvas, canvasData));
+    }
 
+    // Функция для рисования сетки на canvas
+    function drawGrid(canvas, context) {
+        var gridSize = 20; // Размер ячейки сетки
+        context.beginPath();
+        for (var x = 0; x <= canvas.width; x += gridSize) {
+            context.moveTo(x, 0);
+            context.lineTo(x, canvas.height);
+        }
+        for (var y = 0; y <= canvas.height; y += gridSize) {
+            context.moveTo(0, y);
+            context.lineTo(canvas.width, y);
+        }
+        context.strokeStyle = 'lightgray'; // Цвет сетки
+        context.lineWidth = 1; // Ширина линии
+        context.stroke();
+    }
+
+    function startDrawing(canvas, data, e) {
+        data.isDrawing = true;
+        var rect = canvas.getBoundingClientRect();
+        var gridSize = 20; // Размер ячейки сетки
+        var mouseX = e.clientX - rect.left;
+        var mouseY = e.clientY - rect.top;
+        var startX = Math.floor(mouseX / gridSize) * gridSize; // Округляем координаты начальной точки до ближайшей сетки
+        var startY = Math.floor(mouseY / gridSize) * gridSize;
+        data.lines.push({ startX: startX, startY: startY, endX: startX, endY: startY }); // Добавляем новую линию в массив
+    }
+
+    function endDrawing(canvas, data) {
+        if (!data.isDrawing) return;
+        data.isDrawing = false;
+    }
+
+    function drawTempLine(canvas, data, e) {
+        if (!data.isDrawing) return;
+        var context = canvas.getContext('2d');
+        var rect = canvas.getBoundingClientRect();
+        var gridSize = 20; // Размер ячейки сетки
+        var mouseX = e.clientX - rect.left;
+        var mouseY = e.clientY - rect.top;
+        var endX = Math.round(mouseX / gridSize) * gridSize; // Округляем координаты конечной точки до ближайшей точки сетки
+        var endY = Math.round(mouseY / gridSize) * gridSize;
+
+        var currentLine = data.lines[data.lines.length - 1];
+        currentLine.endX = endX;
+        currentLine.endY = endY;
+
+        redrawCanvas(canvas, context, data);
+    }
+
+    function redrawCanvas(canvas, context, data) {
+    context.clearRect(0, 0, canvas.width, canvas.height); // Очищаем canvas
+
+    drawGrid(canvas, context); // Рисуем сетку на заднем фоне
+
+    // Рисуем все линии из массива для текущего canvas
+    for (var i = 0; i < data.lines.length; i++) {
+        var line = data.lines[i];
+        context.beginPath();
+        context.moveTo(line.startX, line.startY);
+        context.lineTo(line.endX, line.endY);
+        context.strokeStyle = 'black'; // Цвет линии
+        context.lineWidth = 2; // Ширина линии
+        context.stroke();
+    }
+}
+
+
+
+        
     </script>
 </body>
 </html>
