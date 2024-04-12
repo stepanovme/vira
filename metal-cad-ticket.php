@@ -296,8 +296,7 @@ if ($result->num_rows > 0) {
                                     <tr>
                                         <td id="product-num-value">'.$num.'</td>
                                         <td id="product-name-value">
-                                            <input type="text" value="'.$row['ProductMetalCadName'].'">
-                                            <canvas></canvas>
+                                            <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
                                         </td>
                                         <td id="product-sum-value">'.$row['ProductMetalCadSum'].'</td>
                                         <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
@@ -518,7 +517,7 @@ if ($result->num_rows > 0) {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // Обработка ответа от сервера, если нужно
-                updateTicketMeters(productId);
+                updateTotalMetr();
             }
         };
         xhttp.open("GET", "function/update_product_length.php?productId=" + productId + "&newLength=" + newLength, true);
@@ -575,6 +574,7 @@ if ($result->num_rows > 0) {
             if (this.readyState == 4 && this.status == 200) {
                 // После успешного обновления продукта вызываем скрипт для обновления общего количества продуктов
                 updateTotalQuantity();
+                updateTotalMetr();
             }
         };
         xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
@@ -595,6 +595,22 @@ if ($result->num_rows > 0) {
         xhttp.open("GET", "function/update_total_quantity.php?ticketId=" + ticketId, true);
         xhttp.send();
     }
+
+    function updateTotalMetr() {
+        var ticketMetrInput = document.getElementById("ticketMetrInput");
+        var ticketId = <?php echo $ticketId; ?>; // Предполагая, что $ticketId доступен в JavaScript
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обновляем общее количество продуктов в input
+                ticketMetrInput.value = this.responseText;
+            }
+        };
+        xhttp.open("GET", "function/update_total_metr.php?ticketId=" + ticketId, true);
+        xhttp.send();
+    }
+
 
     function updateTicketData(productId) {
         var xhttp = new XMLHttpRequest();
@@ -617,7 +633,31 @@ if ($result->num_rows > 0) {
         }
     }
 
+    function updateProductName(input) {
+        var productId = input.getAttribute('data-id');
+        var newName = input.value;
+        
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка ответа от сервера, если нужно
+                console.log("Product name updated successfully");
+            }
+        };
+        xhttp.open("GET", "function/update_product_name.php?productId=" + productId + "&newName=" + newName, true);
+        xhttp.send();
+    }
 
+    function updateProductNameOnEnter(event, input) {
+        if (event.keyCode === 13) {
+            input.blur();
+        }
+    }
+
+
+
+
+    // Рисование чертежей
 
     </script>
 </body>

@@ -110,8 +110,6 @@
 }
 
 .wrapper>.layout>.content>table>tbody>tr>td#product-name-value>canvas{
-    width: 100%;
-    height: 300px;
     border: 1px solid black;
 }
 
