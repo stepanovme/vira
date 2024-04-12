@@ -661,6 +661,10 @@ if ($result->num_rows > 0) {
     var tempCanvas = document.createElement('canvas');
     var tempContext = tempCanvas.getContext('2d');
 
+
+    
+
+
     var canvasList = document.getElementsByTagName('canvas');
     for (var i = 0; i < canvasList.length; i++) {
         var canvas = canvasList[i];
@@ -741,7 +745,6 @@ if ($result->num_rows > 0) {
         redrawCanvas(canvas, canvas.getContext('2d'), data);
     }
 
-
     function drawTempLine(canvas, data, e) {
         if (!data.isDrawing) return;
         var rect = canvas.getBoundingClientRect();
@@ -755,15 +758,47 @@ if ($result->num_rows > 0) {
         currentLine.endX = endX;
         currentLine.endY = endY;
 
-        // Очищаем временный холст и рисуем временную линию
-        tempContext.clearRect(0, 0, canvas.width, canvas.height);
-        redrawCanvas(canvas, tempContext, data);
+        // Очищаем временный холст
+        tempContext.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+        // Рисуем основные линии на временном холсте
+        var allLines = [...data.history.lines, ...data.lines];
+        for (var i = 0; i < allLines.length; i++) {
+            var line = allLines[i];
+            tempContext.beginPath();
+            tempContext.moveTo(line.startX, line.startY);
+            tempContext.lineTo(line.endX, line.endY);
+            tempContext.strokeStyle = 'black';
+            tempContext.lineWidth = 2;
+            tempContext.stroke();
+        }
+
+        // Рисуем временную линию на временном холсте
+        tempContext.beginPath();
+        tempContext.moveTo(currentLine.startX, currentLine.startY);
+        tempContext.lineTo(currentLine.endX, currentLine.endY);
+        tempContext.strokeStyle = '#59B077'; // Можно изменить цвет для отличия временной линии
+        tempContext.lineWidth = 2;
+        tempContext.stroke();
+
+        // Отображаем временный холст как задний фон основного холста
+        canvas.style.background = 'url(' + tempCanvas.toDataURL() + ')';
     }
+
+    tempCanvas.addEventListener('mousemove', function(e) {
+        drawTempLine(canvas, canvasHistory[canvas.id], e);
+    });
 
     function redrawCanvas(canvas, context, data) {
         var historyLines = data.history ? data.history.lines : [];
         var allLines = [...historyLines, ...data.lines];
-        for (var i = 0; i < allLines.length; i++) {
+
+        // Копируем основной холст на временный
+        tempContext.clearRect(0, 0, canvas.width, canvas.height);
+        tempContext.drawImage(canvas, 0, 0);
+
+        // Рисуем все линии, кроме временной, на основном холсте
+        for (var i = 0; i < allLines.length - 1; i++) {
             var line = allLines[i];
             context.beginPath();
             context.moveTo(line.startX, line.startY);
@@ -772,6 +807,15 @@ if ($result->num_rows > 0) {
             context.lineWidth = 2;
             context.stroke();
         }
+
+        // Рисуем временную линию на основном холсте из временного холста
+        var currentLine = data.lines[data.lines.length - 1];
+        context.beginPath();
+        context.moveTo(currentLine.startX, currentLine.startY);
+        context.lineTo(currentLine.endX, currentLine.endY);
+        context.strokeStyle = 'black';
+        context.lineWidth = 2;
+        context.stroke();
     }
 
     function cancelLastLine(canvas) {
@@ -820,7 +864,7 @@ if ($result->num_rows > 0) {
             });
         }
     }
-    
+
 
     // Функция для загрузки и рисования линий при загрузке страницы
     function loadLinesAndDraw() {
@@ -847,6 +891,31 @@ if ($result->num_rows > 0) {
     }
 
     window.onload = loadLinesAndDraw;
+
+
+    tempCanvas.addEventListener('mousemove', updateTempLine.bind(null, canvas, tempCanvas, tempContext));
+
+    function updateTempLine(canvas, tempCanvas, tempContext, e) {
+        var data = canvasHistory[canvas.id]; // Получаем объект data для текущего холста
+        if (!data.isDrawing) return;
+        var rect = canvas.getBoundingClientRect();
+        var gridSize = 20;
+        var mouseX = e.clientX - rect.left;
+        var mouseY = e.clientY - rect.top;
+        var endX = Math.round(mouseX / gridSize) * gridSize;
+        var endY = Math.round(mouseY / gridSize) * gridSize;
+
+        var currentLine = data.lines[data.lines.length - 1];
+        currentLine.endX = endX;
+        currentLine.endY = endY;
+
+        // Очищаем временный холст и рисуем временную линию
+        tempContext.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        redrawCanvas(tempCanvas, tempContext, data);
+    }
+
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
             
     </script>
 </body>
