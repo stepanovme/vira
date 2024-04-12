@@ -656,9 +656,10 @@ if ($result->num_rows > 0) {
 
 
 
-
     // Рисование чертежей
     var canvasHistory = {};
+    var tempCanvas = document.createElement('canvas');
+    var tempContext = tempCanvas.getContext('2d');
 
     var canvasList = document.getElementsByTagName('canvas');
     for (var i = 0; i < canvasList.length; i++) {
@@ -701,6 +702,12 @@ if ($result->num_rows > 0) {
         context.stroke();
     }
 
+    function drawGridAndLines(canvas, context, data) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid(canvas, context); // Рисуем сетку
+        redrawCanvas(canvas, context, data); // Перерисовываем все линии
+    }
+
     function startDrawing(canvas, data, e) {
         data.isDrawing = true;
         var rect = canvas.getBoundingClientRect();
@@ -710,11 +717,15 @@ if ($result->num_rows > 0) {
         var startX = Math.round(mouseX / gridSize) * gridSize;
         var startY = Math.round(mouseY / gridSize) * gridSize;
         data.lines.push({ startX: startX, startY: startY, endX: startX, endY: startY });
+
+        // После начала рисования обновляем холст с учетом загруженных линий
+        redrawCanvas(canvas, canvas.getContext('2d'), data);
     }
 
     function endDrawing(canvas, data) {
         if (!data.isDrawing) return;
         data.isDrawing = false;
+        tempContext.clearRect(0, 0, canvas.width, canvas.height);
         
         var history = data.history;
         var lastSavedIndex = history.lastSavedIndex;
@@ -725,12 +736,14 @@ if ($result->num_rows > 0) {
         history.lastSavedIndex = history.lines.length - 1; // Обновляем индекс последнего сохранения
         
         saveLinesToDatabase(canvas, newLines); // Сохраняем только новые линии в базу данных
+
+        // После окончания рисования обновляем холст с учетом загруженных линий
+        redrawCanvas(canvas, canvas.getContext('2d'), data);
     }
 
 
     function drawTempLine(canvas, data, e) {
         if (!data.isDrawing) return;
-        var context = canvas.getContext('2d');
         var rect = canvas.getBoundingClientRect();
         var gridSize = 20;
         var mouseX = e.clientX - rect.left;
@@ -742,15 +755,16 @@ if ($result->num_rows > 0) {
         currentLine.endX = endX;
         currentLine.endY = endY;
 
-        redrawCanvas(canvas, context, data);
+        // Очищаем временный холст и рисуем временную линию
+        tempContext.clearRect(0, 0, canvas.width, canvas.height);
+        redrawCanvas(canvas, tempContext, data);
     }
 
     function redrawCanvas(canvas, context, data) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        drawGrid(canvas, context);
-        var lines = data.lines; // Получаем линии из объекта data
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
+        var historyLines = data.history ? data.history.lines : [];
+        var allLines = [...historyLines, ...data.lines];
+        for (var i = 0; i < allLines.length; i++) {
+            var line = allLines[i];
             context.beginPath();
             context.moveTo(line.startX, line.startY);
             context.lineTo(line.endX, line.endY);
@@ -798,14 +812,15 @@ if ($result->num_rows > 0) {
                 data: lineData,
                 success: function(response) {
                     console.log('Line saved successfully');
+                    loadLinesAndDraw(); // После сохранения каждой линии обновляем линии на холсте
                 },
                 error: function(xhr, status, error) {
                     console.error('Error saving line:', error);
                 }
             });
         }
-    }   
-
+    }
+    
 
     // Функция для загрузки и рисования линий при загрузке страницы
     function loadLinesAndDraw() {
@@ -814,15 +829,14 @@ if ($result->num_rows > 0) {
             var canvas = canvasList[i];
             var productId = canvas.getAttribute('data-id');
             $.ajax({
-                url: 'function/get_lines.php', // Путь к вашему PHP скрипту
+                url: 'function/get_lines.php',
                 method: 'POST',
                 data: { productId: productId },
                 dataType: 'json',
                 success: function(canvas, response) {
                     return function(response) {
                         var context = canvas.getContext('2d');
-                        drawGrid(canvas, context);
-                        redrawCanvas(canvas, context, { lines: response });
+                        drawGridAndLines(canvas, context, { lines: response });
                     };
                 }(canvas),
                 error: function(xhr, status, error) {
@@ -832,7 +846,6 @@ if ($result->num_rows > 0) {
         }
     }
 
-    // Вызываем функцию загрузки при загрузке страницы
     window.onload = loadLinesAndDraw;
             
     </script>
