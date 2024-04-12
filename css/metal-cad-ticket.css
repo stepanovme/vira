@@ -197,3 +197,15 @@
 .wrapper>.layout>.content>table>thead>tr>th#product-place{
     width: 125px;
 }
+
+.wrapper>.layout>.content>table>tbody>tr>td#product-add-button{
+    background-color: #F6F8FA;
+    border: 1px solid #E0E4E8;
+    color: #6A6A6A;
+    cursor: pointer;
+    transition: .2s all;
+}
+
+.wrapper>.layout>.content>table>tbody>tr>td#product-add-button:hover{
+    background-color: #F0F2F3;
+}

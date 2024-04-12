@@ -307,6 +307,9 @@ if ($result->num_rows > 0) {
                             }
                         }
                     ?>
+                        <tr>
+                            <td id="product-add-button" colspan="6" ticket-id="<?php echo $ticketId;?>">+</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -317,6 +320,24 @@ if ($result->num_rows > 0) {
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-ticket.js"></script>
     <script>
+
+        document.getElementById('product-add-button').addEventListener('click', function() {
+            var ticketId = this.getAttribute('ticket-id');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Обработка успешного ответа
+                    // Например, обновление интерфейса или другие действия
+                    location.reload();
+                }
+            };
+            xhttp.open("GET", "function/add_product.php?ticketId=" + ticketId, true);
+            xhttp.send();
+
+            location
+        });
+
+
         const colorInput = document.getElementById('colorTicketInput');
         const colorSelectOptions = document.querySelector('.color-select-options');
         const colorList = document.querySelectorAll('.color-select-options ul li');
