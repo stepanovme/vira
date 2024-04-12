@@ -536,34 +536,6 @@ if ($result->num_rows > 0) {
         }
     }
 
-
-    function updateQuantity(productId, cell, event) {
-        if (event.keyCode === 13) {
-            cell.blur();
-            return;
-        }
-
-        var newQuantity = cell.textContent;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                // Обработка ответа от сервера, если нужно
-            }
-        };
-        xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
-        xhttp.send();
-    }
-
-    function updateQuantityOnEnter(event) {
-        if (event.keyCode === 13) {
-            var activeElement = document.activeElement;
-            if (activeElement.contentEditable === 'true') {
-                activeElement.blur();
-            }
-        }
-    }
-
-
     function updatePlace(productId, cell, event) {
         if (event.keyCode === 13) {
             cell.blur();
@@ -590,7 +562,35 @@ if ($result->num_rows > 0) {
         }
     }
 
-    function updateQuantityOnPage(ticketId) {
+    function updateQuantity(productId, cell, event) {
+    if (event.keyCode === 13) {
+        cell.blur();
+        return;
+    }
+
+    var newQuantity = cell.textContent;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // Обработка ответа от сервера, если нужно
+            // Вызываем функцию updateQuantityOnPage() после успешного обновления
+            updateQuantityOnPage(productId);
+        }
+    };
+    xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
+    xhttp.send();
+}
+
+function updateQuantityOnEnter(event) {
+    if (event.keyCode === 13) {
+        var activeElement = document.activeElement;
+        if (activeElement.contentEditable === 'true') {
+            activeElement.blur();
+        }
+    }
+}
+
+function updateQuantityOnPage(ticketId) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -601,6 +601,7 @@ if ($result->num_rows > 0) {
     xhttp.open("GET", "function/get_ticket_quantity.php?ticketId=" + ticketId, true);
     xhttp.send();
 }
+
 
     </script>
 </body>
