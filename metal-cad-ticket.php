@@ -265,7 +265,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" value="'.$row['TicketMetalCadQuantityMetr'].'" readonly>';
+                                    echo '<input type="text" id="ticketMetrInput" value="'.$row['TicketMetalCadQuantityMetr'].'" readonly>';
                                 }
                             ?>
                         </div> 
@@ -518,6 +518,7 @@ if ($result->num_rows > 0) {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // Обработка ответа от сервера, если нужно
+                updateTicketMeters(productId);
             }
         };
         xhttp.open("GET", "function/update_product_length.php?productId=" + productId + "&newLength=" + newLength, true);
@@ -563,44 +564,59 @@ if ($result->num_rows > 0) {
     }
 
     function updateQuantity(productId, cell, event) {
-    if (event.keyCode === 13) {
-        cell.blur();
-        return;
+        if (event.keyCode === 13) {
+            cell.blur();
+            return;
+        }
+
+        var newQuantity = cell.textContent;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // После успешного обновления продукта вызываем скрипт для обновления общего количества продуктов
+                updateTotalQuantity();
+            }
+        };
+        xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
+        xhttp.send();
     }
 
-    var newQuantity = cell.textContent;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            // Обработка ответа от сервера, если нужно
-            // Вызываем функцию updateQuantityOnPage() после успешного обновления
-            updateQuantityOnPage(productId);
-        }
-    };
-    xhttp.open("GET", "function/update_product_quantity.php?productId=" + productId + "&newQuantity=" + newQuantity, true);
-    xhttp.send();
-}
+    function updateTotalQuantity() {
+        var ticketQuantityInput = document.getElementById("ticketQuantityInput");
+        var ticketId = <?php echo $ticketId; ?>; // Предполагая, что $ticketId доступен в JavaScript
 
-function updateQuantityOnEnter(event) {
-    if (event.keyCode === 13) {
-        var activeElement = document.activeElement;
-        if (activeElement.contentEditable === 'true') {
-            activeElement.blur();
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обновляем общее количество продуктов в input
+                ticketQuantityInput.value = this.responseText;
+            }
+        };
+        xhttp.open("GET", "function/update_total_quantity.php?ticketId=" + ticketId, true);
+        xhttp.send();
+    }
+
+    function updateTicketData(productId) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                updateTicketMeters(productId); // После обновления количества, обновляем метры погонные
+                updateQuantityOnPage(productId); // Обновляем количество на странице
+            }
+        };
+        xhttp.open("GET", "function/update_ticket_data.php?productId=" + productId, true); // Здесь productId или ticketId, в зависимости от вашей логики
+        xhttp.send();
+    }
+
+    function updateQuantityOnEnter(event) {
+        if (event.keyCode === 13) {
+            var activeElement = document.activeElement;
+            if (activeElement.contentEditable === 'true') {
+                activeElement.blur();
+            }
         }
     }
-}
 
-function updateQuantityOnPage(ticketId) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            // Обновляем значение в input после получения ответа от сервера
-            document.getElementById("ticketQuantityInput").value = this.responseText;
-        }
-    };
-    xhttp.open("GET", "function/get_ticket_quantity.php?ticketId=" + ticketId, true);
-    xhttp.send();
-}
 
 
     </script>

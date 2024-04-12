@@ -178,3 +178,11 @@
 .custom-select .select-options ul li:last-child:hover{
     border-radius: 0 0 7px 7px;
 }
+
+.wrapper>.layout>.content>table>tbody>tr>td{
+    outline: none;
+}
+
+.wrapper>.layout>.content>table>tbody>tr>td:focus{
+    border: 1px solid var(--var-main-color);
+}
