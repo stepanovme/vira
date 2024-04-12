@@ -804,8 +804,37 @@ if ($result->num_rows > 0) {
                 }
             });
         }
+    }   
+
+
+    // Функция для загрузки и рисования линий при загрузке страницы
+    function loadLinesAndDraw() {
+        var canvasList = document.getElementsByTagName('canvas');
+        for (var i = 0; i < canvasList.length; i++) {
+            var canvas = canvasList[i];
+            var productId = canvas.getAttribute('data-id');
+            $.ajax({
+                url: 'function/get_lines.php', // Путь к вашему PHP скрипту
+                method: 'POST',
+                data: { productId: productId },
+                dataType: 'json',
+                success: function(canvas, response) {
+                    return function(response) {
+                        var context = canvas.getContext('2d');
+                        drawGrid(canvas, context);
+                        redrawCanvas(canvas, context, { lines: response });
+                    };
+                }(canvas),
+                error: function(xhr, status, error) {
+                    console.error('Error loading lines:', error);
+                }
+            });
+        }
     }
-        
+
+    // Вызываем функцию загрузки при загрузке страницы
+    window.onload = loadLinesAndDraw;
+            
     </script>
 </body>
 </html>
