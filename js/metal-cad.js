@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 $(document).ready(function() {
     $(".table-btn").on("click", function() {
         var isActive = $(this).hasClass("active");
-        $(".slide").removeClass("active");
+        $(".slide-btn").removeClass("active");
         if (!isActive) {
             $(this).addClass("active");
         }
@@ -41,7 +41,7 @@ $(document).ready(function() {
         }
     });
 
-    $(".slide").on("click", function() {
+    $(".slide-btn").on("click", function() {
         var isActive = $(this).hasClass("active");
         $(".table-btn").removeClass("active");
         if (!isActive) {

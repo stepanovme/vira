@@ -24,18 +24,18 @@ button#mobile-add{
     cursor: pointer;
 }
 
-.wrapper>.layout>.content>.search-header>button.slide{
+.wrapper>.layout>.content>.search-header>button.slide-btn{
     background-image: url(../assets/images/slide.svg);
     filter: contrast(0);
     background-size: cover;
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.search-header>button.slide.active{
+.wrapper>.layout>.content>.search-header>button.slide-btn.active{
     filter: contrast(1);
 }
 
-.wrapper>.layout>.content>.search-header>button.slide:hover{
+.wrapper>.layout>.content>.search-header>button.slide-btn:hover{
     filter: contrast(1);
     transition: .2s all;
 }

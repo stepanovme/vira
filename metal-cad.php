@@ -119,7 +119,7 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                         }
                     ?>
                     <p class="actual">Актуальные <?php echo $num_actual;?></p>
-                    <button class="slide" id="slide"></button>
+                    <button class="slide-btn" id="slide"></button>
                     <button class="table-btn"></button>
                 </div>
                 <div class="slide-list">
