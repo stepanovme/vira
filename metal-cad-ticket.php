@@ -140,11 +140,12 @@ if ($result->num_rows > 0) {
                                 <div class="select-options color-select-options">
                                     <ul>
                                         <?php 
+
                                             $sql = "SELECT pc.ColorId, cc.ColorName AS ProjectColorName, ccc.ColorName AS ColorTicketName
                                                     FROM ProjectMetalCadColor pc
                                                     JOIN ColorCad cc ON pc.ColorId = cc.ColorId
-                                                    JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
-                                                    JOIN ColorCad ccc ON t.TicketMetalCadColor = ccc.ColorId
+                                                    LEFT JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
+                                                    LEFT JOIN ColorCad ccc ON t.TicketMetalCadColor = ccc.ColorId
                                                     WHERE t.TicketMetalCadId = $ticketId";
 
                                             $result = $conn->query($sql);
@@ -170,9 +171,9 @@ if ($result->num_rows > 0) {
                                             $sql = "SELECT pc.ThicknessId, cc.ThicknessValue AS ProjectThicknessValue, ccc.ThicknessValue AS ThicknessValueName
                                                     FROM ProjectMetalCadThickness pc
                                                     JOIN ThicknessMetalCad cc ON pc.ThicknessId = cc.ThicknessId
-                                                    JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
-                                                    JOIN ThicknessMetalCad ccc ON t.TicketMetalCadThickness = ccc.ThicknessId
-                                                    WHERE t.TicketMetalCadId = 1";
+                                                    LEFT JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
+                                                    LEFT JOIN ThicknessMetalCad ccc ON t.TicketMetalCadThickness = ccc.ThicknessId
+                                                    WHERE t.TicketMetalCadId = $ticketId";
 
                                             $result = $conn->query($sql);
                                             if ($result->num_rows > 0) {
@@ -365,6 +366,7 @@ if ($result->num_rows > 0) {
                     })
                     .then(response => response.json())
                     .then(data => {
+                        console.log(selectedColorId);
                         // Обработать успешный ответ, если необходимо
                         console.log('Color updated successfully');
                     })
@@ -679,7 +681,7 @@ if ($result->num_rows > 0) {
 
 
 
-    
+
 
     // Рисование чертежей
     var canvasHistory = {};
@@ -829,7 +831,7 @@ if ($result->num_rows > 0) {
             context.moveTo(line.startX, line.startY);
             context.lineTo(line.endX, line.endY);
             context.strokeStyle = 'black';
-            context.lineWidth = 2;
+            context.lineWidth = 4;
             context.stroke();
         }
 
@@ -839,7 +841,7 @@ if ($result->num_rows > 0) {
         context.moveTo(currentLine.startX, currentLine.startY);
         context.lineTo(currentLine.endX, currentLine.endY);
         context.strokeStyle = 'black';
-        context.lineWidth = 2;
+        context.lineWidth = 4;
         context.stroke();
     }
 
