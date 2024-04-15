@@ -195,7 +195,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlace(this.value)" onkeypress="handleKeyPress(event)">';
+                                    echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
                                 }
                             ?>
                         </div>
@@ -494,7 +494,7 @@ if ($result->num_rows > 0) {
     }
 
 
-    function updatePlace(newPlace) {
+    function updatePlaceTicket(newPlace) {
         var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -676,6 +676,10 @@ if ($result->num_rows > 0) {
     }
 
 
+
+
+
+    
 
     // Рисование чертежей
     var canvasHistory = {};

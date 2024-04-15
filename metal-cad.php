@@ -44,7 +44,7 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
     <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/metal-cad.css">
-    <title>Сотрудники</title>
+    <title>Проекты по гибке металла</title>
 </head>
 <body>
     <div class="wrapper">
