@@ -11,6 +11,11 @@
     color: #74B1E2;
 }
 
+.wrapper>.layout>.content>.content-header>.status-project.send-workshop{
+    background-color: #FDDFB6;
+    color: #EFA94A;
+}
+
 .wrapper>.layout>.content>.ticket-info{
     margin-top: 20px;
     padding: 25px 10px;

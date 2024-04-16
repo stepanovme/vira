@@ -274,12 +274,24 @@
     color: #74B1E2;
 }
 
+.wrapper>.layout>.content>.slide-list>.slide.send-workshop{
+    border-bottom: 10px solid #EFA94A;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.send-workshop>.status{
+    color: #EFA94A;
+}
+
 .wrapper>.layout>.content>.table>table>tbody>tr>td>.status.new{
     color: #AFDAFC;
 }
 
 .wrapper>.layout>.content>.table>table>tbody>tr>td>.status.agreement{
     color: #74B1E2;
+}
+
+.wrapper>.layout>.content>.table>table>tbody>tr>td>.status.send-workshop{
+    color: #EFA94A;
 }
 
 .wrapper>.layout>.content>.slide-list>.slide:hover{

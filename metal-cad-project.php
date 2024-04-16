@@ -175,9 +175,18 @@ if (isset($_GET['projectId'])) {
                                             <div class="status">Согласование</div>
                                         </div>
                                     ';
-                                }
+                                } elseif($row['TicketMetalCadStatusId'] == 3){
+                                    echo '
+                                        <div class="slide send-workshop" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                            <div class="status">Отправлено в цех</div>
+                                        </div>
+                                    ';
                             }
                         }
+                    }
 
                         $sqlN = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                 FROM TicketMetalCad AS tmc
@@ -201,6 +210,14 @@ if (isset($_GET['projectId'])) {
                                             <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
                                             <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
                                             <div class="status">Согласование</div>
+                                        </div>
+                                    ';
+                                } elseif($row['TicketMetalCadStatusId'] == 3){
+                                    echo '
+                                        <div class="slide send-workshop" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="status">Отправлено в цех</div>
                                         </div>
                                     ';
                                 }

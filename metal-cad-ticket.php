@@ -115,6 +115,8 @@ if ($result->num_rows > 0) {
                                 echo '<div class="status-project new">Новая</div>';
                             } elseif($row['TicketMetalCadStatusId'] == 2){
                                 echo '<div class="status-project agreement">Cогласование</div>';
+                            } elseif($row['TicketMetalCadStatusId'] == 3){
+                                echo '<div class="status-project send-workshop">Отправлено в цех</div>';
                             }
                         }
                     ?>
@@ -314,8 +316,8 @@ if ($result->num_rows > 0) {
                     </tbody>
                 </table>
                 <div class="buttons-ticket">
-                    <button class="send-to-workshop">Отправить в цех</button>
-                    <button class="send-to-approval">Отправить на согласование</button>
+                    <button class="send-to-workshop" data-ticket-id="<?php echo $ticketId; ?>">Отправить в цех</button>
+                    <button class="send-to-approval" data-ticket-id="<?php echo $ticketId; ?>">Отправить на согласование</button>
                     <button class="delete" data-ticket-id="<?php echo $ticketId; ?>">Удалить заявку</button>
                 </div>
             </div>
@@ -652,6 +654,37 @@ if ($result->num_rows > 0) {
             });
         });
     });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.send-to-approval');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/send_to_approval.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.send-to-workshop');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/send_to_workshop.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
+
+
 
     function updateTicketData(productId) {
         var xhttp = new XMLHttpRequest();
