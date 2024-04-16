@@ -119,11 +119,6 @@ if ($result->num_rows > 0) {
                         }
                     ?>
                 </div>
-                <div class="nav-ticket">
-                    <button class="active">Заявка</button>
-                    <button>Параметры расчёта</button>
-                    <button>Расчёт</button>
-                </div>
                 <div class="ticket-info">
                     <div class="column">
                         <div class="line">
@@ -318,6 +313,11 @@ if ($result->num_rows > 0) {
                         </tr>
                     </tbody>
                 </table>
+                <div class="buttons-ticket">
+                    <button class="send-to-workshop">Отправить в цех</button>
+                    <button class="send-to-approval">Отправить на согласование</button>
+                    <button class="delete" data-ticket-id="<?php echo $ticketId; ?>">Удалить заявку</button>
+                </div>
             </div>
         </div>
     </div>
@@ -639,22 +639,19 @@ if ($result->num_rows > 0) {
         xhttp.send();
     }
 
-    // function updateSumSweep() {
-    //     var productSumValue = document.getElementById("product-sum-value");
-    //     var ticketId = <?php echo $ticketId; ?>; // Предполагая, что $ticketId доступен в JavaScript
-    //     var productId = productSumValue.data
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.delete');
 
-    //     var xhttp = new XMLHttpRequest();
-    //     xhttp.onreadystatechange = function() {
-    //         if (this.readyState == 4 && this.status == 200) {
-    //             // Обновляем общее количество продуктов в input
-    //             ticketMetrInput.value = this.responseText;
-    //         }
-    //     };
-    //     xhttp.open("GET", "function/update_total_metr.php?ticketId=" + ticketId, true);
-    //     xhttp.send();
-    // }
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
 
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/delete_ticket.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
 
     function updateTicketData(productId) {
         var xhttp = new XMLHttpRequest();
