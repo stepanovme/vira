@@ -145,126 +145,128 @@ if (isset($_GET['projectId'])) {
                     </div>
                 </div>
 
-                <div class="slide-list">
+                        
                     <?php 
+                        $atLeastOneResult = false;
+
                         $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                 FROM TicketMetalCad AS tmc
                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
                                 JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
                                 JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
-                                WHERE tmc.ProjectId = $projectId";
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadStatusId = 1";
 
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()){
-                                if($row['TicketMetalCadStatusId'] == 1){
-                                    echo '
-                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
-                                            <div class="status">Новая</div>
-                                        </div>
-                                    ';
-                                } elseif($row['TicketMetalCadStatusId'] == 2){
-                                    echo '
-                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
-                                            <div class="status">Согласование</div>
-                                        </div>
-                                    ';
-                                } elseif($row['TicketMetalCadStatusId'] == 3){
-                                    echo '
-                                        <div class="slide send-workshop" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
-                                            <div class="status">Отправлено в цех</div>
-                                        </div>
-                                    ';
-                            }
+                            $atLeastOneResult = true;
                         }
-                    }
 
                         $sqlN = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
                                 FROM TicketMetalCad AS tmc
                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
-                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadColor IS NULL";
-
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadColor IS NULL AND tmc.TicketMetalCadStatusId = 1";
+                        
                         $result = $conn->query($sqlN);
                         if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()){
-                                if($row['TicketMetalCadStatusId'] == 1){
-                                    echo '
-                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="status">Новая</div>
-                                        </div>
-                                    ';
-                                } elseif($row['TicketMetalCadStatusId'] == 2){
-                                    echo '
-                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="status">Согласование</div>
-                                        </div>
-                                    ';
-                                } elseif($row['TicketMetalCadStatusId'] == 3){
-                                    echo '
-                                        <div class="slide send-workshop" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="status">Отправлено в цех</div>
-                                        </div>
-                                    ';
-                                }
-                            }
+                            $atLeastOneResult = true;
                         }
 
                         $sqlT = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
-                                FROM TicketMetalCad AS tmc
-                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
-                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
-                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL";
+                                 FROM TicketMetalCad AS tmc
+                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                 JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                 WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadStatusId = 1";
 
                         $result = $conn->query($sqlT);
                         if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()){
-                                if($row['TicketMetalCadStatusId'] == 1){
-                                    echo '
-                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ColorName'].'</div>
-                                            <div class="status">Новая</div>
-                                        </div>
-                                    ';
-                                } elseif($row['TicketMetalCadStatusId'] == 2){
-                                    echo '
-                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ColorName'].'</div>
-                                            <div class="status">Согласование</div>
-                                        </div>
-                                    ';
-                                }
-                            }
+                            $atLeastOneResult = true;
                         }
 
                         $sqlH = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
-                                FROM TicketMetalCad AS tmc
-                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
-                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
-                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadColor IS NULL";
+                                 FROM TicketMetalCad AS tmc
+                                 JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                 JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                 WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadColor IS NULL AND tmc.TicketMetalCadStatusId = 1";
 
                         $result = $conn->query($sqlH);
                         if ($result->num_rows > 0) {
+                            $atLeastOneResult = true;
+                        }
+
+                        if($atLeastOneResult == true){
+                            echo '<p class="title-status">Новые заявки</p>';
+                        }
+
+                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadStatusId = 1";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0 || $result->num_rows == 0) {
+
+                            echo '<div class="slide-list">';
                             while($row = $result->fetch_assoc()){
-                                if($row['TicketMetalCadStatusId'] == 1){
+
+                                echo '
+                                    <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                        <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                        <div class="status">Новая</div>
+                                    </div>
+                                ';
+                            }
+
+                            $sqlN = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadColor IS NULL AND tmc.TicketMetalCadStatusId = 1";
+
+                            $result = $conn->query($sqlN);
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()){
+                                    echo '
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+
+                            $sqlT = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadThickness IS NULL AND tmc.TicketMetalCadStatusId = 1";
+
+                            $result = $conn->query($sqlT);
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()){
+                                    echo '
+                                        <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                            <div class="color">'.$row['ColorName'].'</div>
+                                            <div class="status">Новая</div>
+                                        </div>
+                                    ';
+                                }
+                            }
+
+                            $sqlH = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadColor IS NULL AND tmc.TicketMetalCadStatusId = 1";
+
+                            $result = $conn->query($sqlH);
+                            if ($result->num_rows > 0) {
+                                while($row = $result->fetch_assoc()){
                                     echo '
                                         <div class="slide new" data-ticket-id="'.$row['TicketMetalCadId'].'">
                                             <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
@@ -273,21 +275,60 @@ if (isset($_GET['projectId'])) {
                                             <div class="status">Новая</div>
                                         </div>
                                     ';
-                                } elseif($row['TicketMetalCadStatusId'] == 2){
-                                    echo '
-                                        <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
-                                            <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
-                                            <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
-                                            <div class="color">'.$row['ThicknessValue'].'мм</div>
-                                            <div class="status">Согласование</div>
-                                        </div>
-                                    ';
                                 }
                             }
+
+                            echo '</div>';
                         }
 
+                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadStatusId = 2";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            echo '<p class="title-status">Заявки на согласование</p>';
+                            echo '<div class="slide-list">';
+                            while($row = $result->fetch_assoc()){
+                                echo '
+                                    <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                        <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                        <div class="status">На согласование</div>
+                                    </div>
+                                ';
+                            }
+                            echo '</div>';
+                        }
+
+                        $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId AND tmc.TicketMetalCadStatusId = 3";
+
+                        $result = $conn->query($sql);
+                        if ($result->num_rows > 0) {
+                            echo '<p class="title-status">Отправлено в цех</p>';
+                            echo '<div class="slide-list">';
+                            while($row = $result->fetch_assoc()){
+                                echo '
+                                    <div class="slide send-workshop" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                        <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                        <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                        <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                        <div class="status">Отправлено в цех</div>
+                                    </div>
+                                ';
+                            }
+                            echo '</div>';
+                        }
                     ?>
-                </div>
 
                 <div class="table"> 
                     <table>

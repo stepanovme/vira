@@ -75,6 +75,10 @@ if ($result->num_rows > 0) {
                 <div class="menu" id="menu">
                     <?php include 'components/nav_mobile.php';?>
                 </div>
+
+                <div class="metal-binding-content">
+                    
+                </div>
             </div>
         </div>
     </div>
