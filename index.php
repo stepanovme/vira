@@ -76,9 +76,36 @@ if ($result->num_rows > 0) {
                     <?php include 'components/nav_mobile.php';?>
                 </div>
 
-                <div class="metal-binding-content">
+                <?php
+                    $sql = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                    FROM TicketMetalCad AS tmc
+                    JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                    JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                    JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                    WHERE tmc.TicketMetalCadStatusId = 2";
+
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        echo '<p class="metal-binding-title-agreement-manage">Заявки требующие согласования</p>';
+                        echo '<div class="slide-list">';
+                        while($row = $result->fetch_assoc()){
+
+                            echo '
+                                <div class="slide agreement" data-ticket-id="'.$row['TicketMetalCadId'].'">
+                                    <div class="title">'.$row['TicketMetalCadName'].$row['TicketMetalCadNum'].'</div>
+                                    <div class="responsible">'.$row['name'].' '.$row['surname'].'</div>
+                                    <div class="color">'.$row['ColorName'].' '.$row['ThicknessValue'].'мм</div>
+                                    <div class="status">На согласование</div>
+                                </div>
+                            ';
+                        }
+                        echo '</div>';
+                    }
+                ?>
                     
-                </div>
+
+
+                    <!-- <p class="metal-binding-title-agreement">Заявки на согласования</p> -->
             </div>
         </div>
     </div>

@@ -21,3 +21,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
         localStorage.removeItem('animationState');
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Находим все элементы с классом "slide" и "tr" и добавляем обработчик события клика
+    const slides = document.querySelectorAll('.slide');
+    const tableRows = document.querySelectorAll('tr');
+
+    slides.forEach(slide => {
+        slide.addEventListener('click', function() {
+            // Получаем значение атрибута "data-project-id"
+            const ticketId = this.dataset.ticketId;
+            // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
+            window.location.href = 'metal-cad-ticket.php?ticketId=' + ticketId;
+        });
+    });
+
+    tableRows.forEach(row => {
+        row.addEventListener('click', function() {
+            // Получаем значение атрибута "data-project-id"
+            const ticketId = this.dataset.ticketId;
+            // Переходим на страницу metal-cad-project.php, передавая значение data-project-id в качестве параметра
+            window.location.href = 'metal-cad-ticket.php?ticketId=' + ticketId;
+        });
+    });
+});

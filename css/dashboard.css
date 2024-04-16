@@ -1,4 +1,5 @@
 @import url(varriables.css);
+@import url(./metal-cad-project.css);
 
 *{
     padding: 0;
@@ -296,6 +297,12 @@ select.role-select {
         right: 100%;
     }
 }
+
+.wrapper>.layout>.content>p.metal-binding-title-agreement-manage{
+    font-size: 32px;
+    font-weight: 700;
+}
+
 
 
 @media (max-width: 1024px) {
