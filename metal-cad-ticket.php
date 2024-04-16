@@ -125,7 +125,7 @@ if ($result->num_rows > 0) {
                     <div class="column">
                         <div class="line">
                             <label for="">Объект:</label>
-                            <?php 
+                            <?php
                                 $sql = "SELECT TicketMetalCadObject from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                                 $result = $conn->query($sql);
@@ -143,7 +143,7 @@ if ($result->num_rows > 0) {
                                     <ul>
                                         <?php 
 
-                                            $sql = "SELECT pc.ColorId, cc.ColorName AS ProjectColorName, ccc.ColorName AS ColorTicketName
+                                            $sql = "SELECT pc.ColorId, t.TicketMetalCadStatusId, cc.ColorName AS ProjectColorName, ccc.ColorName AS ColorTicketName
                                                     FROM ProjectMetalCadColor pc
                                                     JOIN ColorCad cc ON pc.ColorId = cc.ColorId
                                                     LEFT JOIN TicketMetalCad t ON pc.ProjectMetalCadId = t.ProjectId
@@ -193,36 +193,55 @@ if ($result->num_rows > 0) {
                         <div class="line">
                             <label for="">Участок:</label>
                             <?php 
-                                $sql = "SELECT TicketMetalCadPlace from TicketMetalCad where TicketMetalCadId = $ticketId";
+                                $sql = "SELECT TicketMetalCadPlace, TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
+                                    if($row['TicketMetalCadStatusId'] == 1){
+                                        echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
+                                    } elseif($roleId == 2 || $roleId == 5){
+                                        echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
+                                    } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
+                                        echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)" readonly>';
+                                    }
                                 }
                             ?>
                         </div>
                         <div class="line">
                             <label for="">Бригада:</label>
                             <?php 
-                                $sql = "SELECT TicketMetalCadBrigade from TicketMetalCad where TicketMetalCadId = $ticketId";
+                                $sql = "SELECT TicketMetalCadBrigade, TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
+                                    if($row['TicketMetalCadStatusId'] == 1){
+                                        echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
+                                    } elseif($roleId == 2 || $roleId == 5){
+                                        echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
+                                    } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
+                                        echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)" readonly>';
+                                    }
                                 }
                             ?>
                         </div>
                         <div class="line">
                         <label for="">Адрес доставки:</label>
                         <?php 
-                            $sql = "SELECT TicketMetalCadAdress from TicketMetalCad where TicketMetalCadId = $ticketId";
+                            $sql = "SELECT TicketMetalCadAdress, TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 $row = $result->fetch_assoc();
-                                echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
+
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
+                                } elseif($roleId == 2 || $roleId == 5){
+                                    echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
+                                } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
+                                    echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)" readonly>';
+                                }
                             }
                         ?>
                     </div>
@@ -231,20 +250,44 @@ if ($result->num_rows > 0) {
                         <div class="line">
                             <label for="">Дата план:</label>
                             <?php 
-                                $sql = "SELECT TicketMetalCadDatePlan from TicketMetalCad where TicketMetalCadId = $ticketId";
+                                $sql = "SELECT TicketMetalCadDatePlan, TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    // Проверяем, является ли значение NULL
-                                    if ($row['TicketMetalCadDatePlan'] !== null) {
-                                        // Если не NULL, то конвертируем значение времени в формат даты
-                                        $date = date('Y-m-d', strtotime($row['TicketMetalCadDatePlan']));
-                                        echo '<input type="date" id="datePlan" value="'.$date.'" onchange="updateDatePlan(this.value)">';
-                                    } else {
-                                        // Если NULL, выводим просто пустое поле
-                                        echo '<input type="date" id="datePlan" value="" onchange="updateDatePlan(this.value)">';
+
+                                    if($row['TicketMetalCadStatusId'] == 1){
+                                        // Проверяем, является ли значение NULL
+                                        if ($row['TicketMetalCadDatePlan'] !== null) {
+                                            // Если не NULL, то конвертируем значение времени в формат даты
+                                            $date = date('Y-m-d', strtotime($row['TicketMetalCadDatePlan']));
+                                            echo '<input type="date" id="datePlan" value="'.$date.'" onchange="updateDatePlan(this.value)">';
+                                        } else {
+                                            // Если NULL, выводим просто пустое поле
+                                            echo '<input type="date" id="datePlan" value="" onchange="updateDatePlan(this.value)">';
+                                        }
+                                    } elseif($roleId == 2 || $roleId == 5){ 
+                                        // Проверяем, является ли значение NULL
+                                        if ($row['TicketMetalCadDatePlan'] !== null) {
+                                            // Если не NULL, то конвертируем значение времени в формат даты
+                                            $date = date('Y-m-d', strtotime($row['TicketMetalCadDatePlan']));
+                                            echo '<input type="date" id="datePlan" value="'.$date.'" onchange="updateDatePlan(this.value)">';
+                                        } else {
+                                            // Если NULL, выводим просто пустое поле
+                                            echo '<input type="date" id="datePlan" value="" onchange="updateDatePlan(this.value)">';
+                                        }
+                                    } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){ 
+                                        // Проверяем, является ли значение NULL
+                                        if ($row['TicketMetalCadDatePlan'] !== null) {
+                                            // Если не NULL, то конвертируем значение времени в формат даты
+                                            $date = date('Y-m-d', strtotime($row['TicketMetalCadDatePlan']));
+                                            echo '<input type="date" id="datePlan" value="'.$date.'" onchange="updateDatePlan(this.value)" readonly>';
+                                        } else {
+                                            // Если NULL, выводим просто пустое поле
+                                            echo '<input type="date" id="datePlan" value="" onchange="updateDatePlan(this.value)" readonly>';
+                                        }
                                     }
+                                    
                                 }
                             ?>
                         </div>
@@ -316,7 +359,11 @@ if ($result->num_rows > 0) {
                     </tbody>
                 </table>
                 <div class="buttons-ticket">
-                    <button class="send-to-workshop" data-ticket-id="<?php echo $ticketId; ?>">Отправить в цех</button>
+                    <?php 
+                    if($roleId == 2 || $roleId == 5){
+                        echo '<button class="send-to-workshop" data-ticket-id="'.$ticketId.'">Отправить в цех</button>';
+                    }
+                    ?>
                     <button class="send-to-approval" data-ticket-id="<?php echo $ticketId; ?>">Отправить на согласование</button>
                     <button class="delete" data-ticket-id="<?php echo $ticketId; ?>">Удалить заявку</button>
                 </div>
@@ -345,121 +392,264 @@ if ($result->num_rows > 0) {
             location
         });
 
+        <?php 
 
-        const colorInput = document.getElementById('colorTicketInput');
-        const colorSelectOptions = document.querySelector('.color-select-options');
-        const colorList = document.querySelectorAll('.color-select-options ul li');
+            $sqlCol = "SELECT TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
-        document.addEventListener('DOMContentLoaded', function() {
-            colorInput.addEventListener('click', function() {
-                colorSelectOptions.style.display = 'block';
-            });
+            $result = $conn->query($sqlCol);
+            if ($result->num_rows > 0) {
+               $row = $result->fetch_assoc();
+                    if($row['TicketMetalCadStatusId'] == 1){
+                        echo    "const colorInput = document.getElementById('colorTicketInput');
+                                    const colorSelectOptions = document.querySelector('.color-select-options');
+                                    const colorList = document.querySelectorAll('.color-select-options ul li');
+    
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        colorInput.addEventListener('click', function() {
+                                            colorSelectOptions.style.display = 'block';
+                                        });
+    
+                                        colorList.forEach(colorItem => {
+                                            colorItem.addEventListener('click', function() {
+                                                const selectedColorId = this.dataset.colorId;
+                                                const selectedColorName = this.textContent;
+    
+                                                // Отправить выбранный цвет в базу данных TicketMetalCadColor
+                                                fetch('function/update_ticket_color.php', { 
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        ticketId:".$ticketId.",
+                                                        colorId: selectedColorId
+                                                    })
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    console.log(selectedColorId);
+                                                    // Обработать успешный ответ, если необходимо
+                                                    console.log('Color updated successfully');
+                                                })
+                                                .catch(error => {
+                                                    // Обработать ошибку, если необходимо
+                                                    console.error('Error updating color:', error);
+                                                });
+    
+                                                // Установить выбранный цвет в input и закрыть список
+                                                colorInput.value = selectedColorName;
+                                                colorSelectOptions.style.display = 'none';
+                                            });
+                                        });
+                                    });";
+                    } elseif($roleId == 2 || $roleId == 5){
+                        echo    "const colorInput = document.getElementById('colorTicketInput');
+                                    const colorSelectOptions = document.querySelector('.color-select-options');
+                                    const colorList = document.querySelectorAll('.color-select-options ul li');
+    
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        colorInput.addEventListener('click', function() {
+                                            colorSelectOptions.style.display = 'block';
+                                        });
+    
+                                        colorList.forEach(colorItem => {
+                                            colorItem.addEventListener('click', function() {
+                                                const selectedColorId = this.dataset.colorId;
+                                                const selectedColorName = this.textContent;
+    
+                                                // Отправить выбранный цвет в базу данных TicketMetalCadColor
+                                                fetch('function/update_ticket_color.php', { 
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        ticketId:".$ticketId.",
+                                                        colorId: selectedColorId
+                                                    })
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    console.log(selectedColorId);
+                                                    // Обработать успешный ответ, если необходимо
+                                                    console.log('Color updated successfully');
+                                                })
+                                                .catch(error => {
+                                                    // Обработать ошибку, если необходимо
+                                                    console.error('Error updating color:', error);
+                                                });
+    
+                                                // Установить выбранный цвет в input и закрыть список
+                                                colorInput.value = selectedColorName;
+                                                colorSelectOptions.style.display = 'none';
+                                            });
+                                        });
+                                    });";
+                    }
+                }
+        ?>
 
-            colorList.forEach(colorItem => {
-                colorItem.addEventListener('click', function() {
-                    const selectedColorId = this.dataset.colorId;
-                    const selectedColorName = this.textContent;
+        
 
-                    // Отправить выбранный цвет в базу данных TicketMetalCadColor
-                    fetch('function/update_ticket_color.php', { 
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            ticketId: <?php echo $ticketId; ?>,
-                            colorId: selectedColorId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(selectedColorId);
-                        // Обработать успешный ответ, если необходимо
-                        console.log('Color updated successfully');
-                    })
-                    .catch(error => {
-                        // Обработать ошибку, если необходимо
-                        console.error('Error updating color:', error);
-                    });
+    <?php
+        $sqlThik = "SELECT TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
-                    // Установить выбранный цвет в input и закрыть список
-                    colorInput.value = selectedColorName;
-                    colorSelectOptions.style.display = 'none';
-                });
-            });
-        });
+        $result = $conn->query($sqlThik);
+            if ($result->num_rows > 0) {
+               $row = $result->fetch_assoc();
+               if($row['TicketMetalCadStatusId'] == 1){
+                    echo "
+                        const thicknessInput = document.getElementById('thicknessTicketInput');
+                        const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+                        const thicknessList = document.querySelectorAll('.thickness-select-options ul li');
+                    
+                        document.addEventListener('DOMContentLoaded', function() {
+                    
+                            thicknessInput.addEventListener('click', function() {
+                                thicknessSelectOptions.style.display = 'block';
+                            });
+                    
+                            thicknessList.forEach(thicknessItem => {
+                                thicknessItem.addEventListener('click', function() {
+                                    const selectedThicknessId = this.dataset.thicknessId;
+                                    const selectedThicknessValue = this.textContent;
+                    
+                                    // Отправить выбранную толщину в базу данных TicketMetalCadThickness
+                                    fetch('function/update_ticket_thickness.php', { 
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            ticketId:".$ticketId.",
+                                            thicknessId: selectedThicknessId
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        // Обработать успешный ответ, если необходимо
+                                        console.log('Thickness updated successfully');
+                                    })
+                                    .catch(error => {
+                                        // Обработать ошибку, если необходимо
+                                        console.error('Error updating thickness:', error);
+                                    });
+                    
+                                    // Установить выбранную толщину в input и закрыть список
+                                    thicknessInput.value = selectedThicknessValue;
+                                    thicknessSelectOptions.style.display = 'none';
+                                });
+                            });
+                        });
+                    
+                    
+                        document.addEventListener('click', function(event) {
+                            const target = event.target;
+                            const colorInput = document.getElementById('colorTicketInput');
+                            const colorSelectOptions = document.querySelector('.color-select-options');
+                            const thicknessInput = document.getElementById('thicknessTicketInput');
+                            const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+                    
+                            // Проверяем, кликнули ли мы вне выпадающего списка цветов
+                            if (!colorSelectOptions.contains(target) && target !== colorInput) {
+                                colorSelectOptions.style.display = 'none';
+                            }
+                    
+                            // Проверяем, кликнули ли мы вне выпадающего списка толщин
+                            if (!thicknessSelectOptions.contains(target) && target !== thicknessInput) {
+                                thicknessSelectOptions.style.display = 'none';
+                            }
+                        });
+                    
+                        colorInput.addEventListener('click', function() {
+                            // Показываем выпадающий список цветов при клике на поле ввода
+                            colorSelectOptions.style.display = 'block';
+                        });
+                    
+                        thicknessInput.addEventListener('click', function() {
+                            // Показываем выпадающий список толщин при клике на поле ввода
+                            thicknessSelectOptions.style.display = 'block';
+                        });
+                        ";
+               }elseif($roleId == 2 || $roleId == 5){
+                    echo "
+                        const thicknessInput = document.getElementById('thicknessTicketInput');
+                        const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+                        const thicknessList = document.querySelectorAll('.thickness-select-options ul li');
+                    
+                        document.addEventListener('DOMContentLoaded', function() {
+                    
+                            thicknessInput.addEventListener('click', function() {
+                                thicknessSelectOptions.style.display = 'block';
+                            });
+                    
+                            thicknessList.forEach(thicknessItem => {
+                                thicknessItem.addEventListener('click', function() {
+                                    const selectedThicknessId = this.dataset.thicknessId;
+                                    const selectedThicknessValue = this.textContent;
+                    
+                                    // Отправить выбранную толщину в базу данных TicketMetalCadThickness
+                                    fetch('function/update_ticket_thickness.php', { 
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            ticketId:".$ticketId.",
+                                            thicknessId: selectedThicknessId
+                                        })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        // Обработать успешный ответ, если необходимо
+                                        console.log('Thickness updated successfully');
+                                    })
+                                    .catch(error => {
+                                        // Обработать ошибку, если необходимо
+                                        console.error('Error updating thickness:', error);
+                                    });
+                    
+                                    // Установить выбранную толщину в input и закрыть список
+                                    thicknessInput.value = selectedThicknessValue;
+                                    thicknessSelectOptions.style.display = 'none';
+                                });
+                            });
+                        });
+                    
+                    
+                        document.addEventListener('click', function(event) {
+                            const target = event.target;
+                            const colorInput = document.getElementById('colorTicketInput');
+                            const colorSelectOptions = document.querySelector('.color-select-options');
+                            const thicknessInput = document.getElementById('thicknessTicketInput');
+                            const thicknessSelectOptions = document.querySelector('.thickness-select-options');
+                    
+                            // Проверяем, кликнули ли мы вне выпадающего списка цветов
+                            if (!colorSelectOptions.contains(target) && target !== colorInput) {
+                                colorSelectOptions.style.display = 'none';
+                            }
+                    
+                            // Проверяем, кликнули ли мы вне выпадающего списка толщин
+                            if (!thicknessSelectOptions.contains(target) && target !== thicknessInput) {
+                                thicknessSelectOptions.style.display = 'none';
+                            }
+                        });
+                    
+                        colorInput.addEventListener('click', function() {
+                            // Показываем выпадающий список цветов при клике на поле ввода
+                            colorSelectOptions.style.display = 'block';
+                        });
+                    
+                        thicknessInput.addEventListener('click', function() {
+                            // Показываем выпадающий список толщин при клике на поле ввода
+                            thicknessSelectOptions.style.display = 'block';
+                        });  
+                    ";
+               }
+            }
+    ?>
 
-    const thicknessInput = document.getElementById('thicknessTicketInput');
-    const thicknessSelectOptions = document.querySelector('.thickness-select-options');
-    const thicknessList = document.querySelectorAll('.thickness-select-options ul li');
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-        thicknessInput.addEventListener('click', function() {
-            thicknessSelectOptions.style.display = 'block';
-        });
-
-        thicknessList.forEach(thicknessItem => {
-            thicknessItem.addEventListener('click', function() {
-                const selectedThicknessId = this.dataset.thicknessId;
-                const selectedThicknessValue = this.textContent;
-
-                // Отправить выбранную толщину в базу данных TicketMetalCadThickness
-                fetch('function/update_ticket_thickness.php', { 
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        ticketId: <?php echo $ticketId; ?>,
-                        thicknessId: selectedThicknessId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Обработать успешный ответ, если необходимо
-                    console.log('Thickness updated successfully');
-                })
-                .catch(error => {
-                    // Обработать ошибку, если необходимо
-                    console.error('Error updating thickness:', error);
-                });
-
-                // Установить выбранную толщину в input и закрыть список
-                thicknessInput.value = selectedThicknessValue;
-                thicknessSelectOptions.style.display = 'none';
-            });
-        });
-    });
-
-
-    document.addEventListener('click', function(event) {
-        const target = event.target;
-        const colorInput = document.getElementById('colorTicketInput');
-        const colorSelectOptions = document.querySelector('.color-select-options');
-        const thicknessInput = document.getElementById('thicknessTicketInput');
-        const thicknessSelectOptions = document.querySelector('.thickness-select-options');
-
-        // Проверяем, кликнули ли мы вне выпадающего списка цветов
-        if (!colorSelectOptions.contains(target) && target !== colorInput) {
-            colorSelectOptions.style.display = 'none';
-        }
-
-        // Проверяем, кликнули ли мы вне выпадающего списка толщин
-        if (!thicknessSelectOptions.contains(target) && target !== thicknessInput) {
-            thicknessSelectOptions.style.display = 'none';
-        }
-    });
-
-    colorInput.addEventListener('click', function() {
-        // Показываем выпадающий список цветов при клике на поле ввода
-        colorSelectOptions.style.display = 'block';
-    });
-
-    thicknessInput.addEventListener('click', function() {
-        // Показываем выпадающий список толщин при клике на поле ввода
-        thicknessSelectOptions.style.display = 'block';
-    });
+    
 
 
 
