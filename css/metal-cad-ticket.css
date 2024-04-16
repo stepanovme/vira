@@ -16,6 +16,16 @@
     color: #EFA94A;
 }
 
+.wrapper>.layout>.content>.content-header>.status-project.revision{
+    background-color: #B6C2FD;
+    color: #7181D3;
+}
+
+.wrapper>.layout>.content>.content-header>.status-project.deny{
+    background-color: #FFCDCE;
+    color: #F95B5E;
+}
+
 .wrapper>.layout>.content>.ticket-info{
     margin-top: 20px;
     padding: 25px 10px;
@@ -272,38 +282,38 @@
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop, .wrapper>.layout>.content>.buttons-ticket>button.approve{
     background-color: var(--var-main-color);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover, .wrapper>.layout>.content>.buttons-ticket>button.approve:hover{
     background-color: var(--var-main-color-hover);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active, .wrapper>.layout>.content>.buttons-ticket>button.approve:active{
     background-color: var(--var-main-color-active);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision{
     background-color: #EFA94A;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:hover{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:hover, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:hover{
     background-color: #F1BA70;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:active{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:active, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:active{
     background-color: #E59322;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.delete{
+.wrapper>.layout>.content>.buttons-ticket>button.delete, .wrapper>.layout>.content>.buttons-ticket>button.deny{
     background-color: #F95B5E;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.delete:hover{
+.wrapper>.layout>.content>.buttons-ticket>button.delete:hover, .wrapper>.layout>.content>.buttons-ticket>button.deny:hover{
     background-color: #E2494C;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.delete:active{
+.wrapper>.layout>.content>.buttons-ticket>button.delete:active, .wrapper>.layout>.content>.buttons-ticket>button.deny:active{
     background-color: #D4474A;
 }

@@ -117,6 +117,10 @@ if ($result->num_rows > 0) {
                                 echo '<div class="status-project agreement">Cогласование</div>';
                             } elseif($row['TicketMetalCadStatusId'] == 3){
                                 echo '<div class="status-project send-workshop">Отправлено в цех</div>';
+                            } elseif($row['TicketMetalCadStatusId'] == 4){
+                                echo '<div class="status-project revision">На доработке</div>';
+                            } elseif($row['TicketMetalCadStatusId'] == 5){
+                                echo '<div class="status-project deny">Отказано</div>';
                             }
                         }
                     ?>
@@ -198,7 +202,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    if($row['TicketMetalCadStatusId'] == 1){
+                                    if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                                         echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
                                     } elseif($roleId == 2 || $roleId == 5){
                                         echo '<input type="text" name="place" id="place" value="'.$row['TicketMetalCadPlace'].'" onchange="updatePlaceTicket(this.value)" onkeypress="handleKeyPress(event)">';
@@ -216,7 +220,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
-                                    if($row['TicketMetalCadStatusId'] == 1){
+                                    if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                                         echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
                                     } elseif($roleId == 2 || $roleId == 5){
                                         echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
@@ -235,7 +239,7 @@ if ($result->num_rows > 0) {
                             if ($result->num_rows > 0) {
                                 $row = $result->fetch_assoc();
 
-                                if($row['TicketMetalCadStatusId'] == 1){
+                                if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                                     echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
                                 } elseif($roleId == 2 || $roleId == 5){
                                     echo '<input type="text" name="address" id="address" value="'.$row['TicketMetalCadAdress'].'" onchange="updateAddress(this.value)" onkeypress="handleKeyPress(event)">';
@@ -256,7 +260,7 @@ if ($result->num_rows > 0) {
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
 
-                                    if($row['TicketMetalCadStatusId'] == 1){
+                                    if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                                         // Проверяем, является ли значение NULL
                                         if ($row['TicketMetalCadDatePlan'] !== null) {
                                             // Если не NULL, то конвертируем значение времени в формат даты
@@ -331,41 +335,129 @@ if ($result->num_rows > 0) {
                     </thead>
                     <tbody>
                     <?php 
-                        $sql = "SELECT * from ProductMetalCad where TicketMetalCadId = $ticketId";
+                        $sql = "SELECT ProductMetalCad.*, TicketMetalCad.TicketMetalCadStatusId
+                                FROM ProductMetalCad
+                                INNER JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                                WHERE ProductMetalCad.TicketMetalCadId = $ticketId";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             $num = 0;
                             while($row = $result->fetch_assoc()) {
-                                $num = $num + 1;
-                                echo '
-                                    <tr>
-                                        <td id="product-num-value">'.$num.'</td>
-                                        <td id="product-name-value">
-                                            <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
-                                            <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
-                                        </td>
-                                        <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
-                                        <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
-                                        <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
-                                        <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
-                                    </tr>
-                                ';
+                                if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
+                                    $num = $num + 1;
+                                    echo '
+                                        <tr>
+                                            <td id="product-num-value">'.$num.'</td>
+                                            <td id="product-name-value">
+                                                <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                                <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
+                                            </td>
+                                            <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
+                                            <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
+                                            <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
+                                            <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
+                                        </tr>
+                                    ';
+                                } elseif($roleId == 2 || $roleId == 5){ 
+                                    $num = $num + 1;
+                                    echo '
+                                        <tr>
+                                            <td id="product-num-value">'.$num.'</td>
+                                            <td id="product-name-value">
+                                                <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                                <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
+                                            </td>
+                                            <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
+                                            <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
+                                            <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
+                                            <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
+                                        </tr>
+                                    ';
+                                } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){ 
+                                    $num = $num + 1;
+                                    echo '
+                                        <tr>
+                                            <td id="product-num-value">'.$num.'</td>
+                                            <td id="product-name-value">
+                                                <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                                <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
+                                            </td>
+                                            <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
+                                            <td id="product-length-value" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
+                                            <td id="product-quantity-value" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
+                                            <td id="product-place-value" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
+                                        </tr>
+                                    ';
+                                }
+                                
                             }
                         }
                     ?>
-                        <tr>
-                            <td id="product-add-button" colspan="6" ticket-id="<?php echo $ticketId;?>">+</td>
-                        </tr>
+
+                    <?php 
+                        $sqlBtn = "SELECT TicketMetalCadStatusId FROM TicketMetalCad WHERE TicketMetalCadId = $ticketId";
+                        $result = $conn->query($sqlBtn);
+                        if ($result->num_rows > 0) {
+                            $num = 0;
+                            while($row = $result->fetch_assoc()) {
+                                if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
+                                    echo '
+                                            <tr>
+                                                <td id="product-add-button" colspan="6" ticket-id="'.$ticketId.'">+</td>
+                                            </tr>
+                                         ';
+                                } elseif($roleId == 2 || $roleId == 5){ 
+                                    echo '
+                                            <tr>
+                                                <td id="product-add-button" colspan="6" ticket-id="'.$ticketId.'">+</td>
+                                            </tr>
+                                         ';
+                                } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
+                                    echo '
+                                            <tr>
+                                                <td id="product-add-button" style="display:none"; colspan="6" ticket-id="'.$ticketId.'">+</td>
+                                            </tr>
+                                         ';
+                                }
+                            }
+                        }
+
+                    ?>
+                        
                     </tbody>
                 </table>
                 <div class="buttons-ticket">
                     <?php 
-                    if($roleId == 2 || $roleId == 5){
-                        echo '<button class="send-to-workshop" data-ticket-id="'.$ticketId.'">Отправить в цех</button>';
+                    $sqlBtns = "SELECT TicketMetalCadStatusId FROM TicketMetalCad WHERE TicketMetalCadId = $ticketId";
+                    $result = $conn->query($sqlBtns);
+
+                    if ($result->num_rows > 0) { 
+                        while($row = $result->fetch_assoc()){
+                            if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){ 
+                                if($roleId == 2 || $roleId == 5){
+                                    echo '<button class="send-to-workshop" data-ticket-id="'.$ticketId.'">Отправить в цех</button>
+                                          <button class="send-to-approval" data-ticket-id="'.$ticketId.'">Отправить на согласование</button>
+                                          <button class="delete" data-ticket-id="'.$ticketId.'">Удалить заявку</button>        
+                                         ';
+                                } else{
+                                    echo '
+                                          <button class="send-to-approval" data-ticket-id="'.$ticketId.'">Отправить на согласование</button>
+                                          <button class="delete" data-ticket-id="'.$ticketId.'">Удалить заявку</button>        
+                                         ';
+                                }
+                            } elseif($row['TicketMetalCadStatusId'] == 2){
+                                if($roleId == 2 || $roleId == 5){
+                                    echo '<button class="approve" data-ticket-id="'.$ticketId.'">Утвердить</button>
+                                          <button class="send-to-revision" data-ticket-id="'.$ticketId.'">Отправить на доработку</button>
+                                          <button class="deny" data-ticket-id="'.$ticketId.'">Отказать</button>        
+                                         ';
+                                }
+                            }
+                        }
                     }
+                    
                     ?>
-                    <button class="send-to-approval" data-ticket-id="<?php echo $ticketId; ?>">Отправить на согласование</button>
-                    <button class="delete" data-ticket-id="<?php echo $ticketId; ?>">Удалить заявку</button>
+                    
                 </div>
             </div>
         </div>
@@ -399,7 +491,7 @@ if ($result->num_rows > 0) {
             $result = $conn->query($sqlCol);
             if ($result->num_rows > 0) {
                $row = $result->fetch_assoc();
-                    if($row['TicketMetalCadStatusId'] == 1){
+                    if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                         echo    "const colorInput = document.getElementById('colorTicketInput');
                                     const colorSelectOptions = document.querySelector('.color-select-options');
                                     const colorList = document.querySelectorAll('.color-select-options ul li');
@@ -497,7 +589,7 @@ if ($result->num_rows > 0) {
         $result = $conn->query($sqlThik);
             if ($result->num_rows > 0) {
                $row = $result->fetch_assoc();
-               if($row['TicketMetalCadStatusId'] == 1){
+               if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                     echo "
                         const thicknessInput = document.getElementById('thicknessTicketInput');
                         const thicknessSelectOptions = document.querySelector('.thickness-select-options');
@@ -874,6 +966,48 @@ if ($result->num_rows > 0) {
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.approve');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/approve.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.send-to-revision');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/send_to_revision.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.deny');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/deny.php?ticketId=' + ticketId)
+
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+            });
+        });
+    });
+
 
 
     function updateTicketData(productId) {
@@ -957,7 +1091,7 @@ if ($result->num_rows > 0) {
         $result = $conn->query($sqlThik);
             if ($result->num_rows > 0) {
                $row = $result->fetch_assoc();
-               if($row['TicketMetalCadStatusId'] == 1){
+               if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                     echo " 
                         canvas.addEventListener('mousedown', startDrawing.bind(null, canvas, canvasData));
                         canvas.addEventListener('mouseup', endDrawing.bind(null, canvas, canvasData));

@@ -286,6 +286,22 @@
     color: #EFA94A;
 }
 
+.wrapper>.layout>.content>.slide-list>.slide.deny{
+    border-bottom: 10px solid #F95B5E;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.deny>.status{
+    color: #F95B5E;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.revision{
+    border-bottom: 10px solid #7181D3;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.revision>.status{
+    color: #7181D3;
+}
+
 .wrapper>.layout>.content>.table>table>tbody>tr>td>.status.new{
     color: #AFDAFC;
 }
