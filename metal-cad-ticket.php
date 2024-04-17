@@ -1664,9 +1664,45 @@ if ($result->num_rows > 0) {
              $result = $conn->query($sqlPrint);
 
              if ($result->num_rows > 0) { 
-                  while($row = $result->fetch_assoc()){ 
-                    $mader = $row['name'].' '. $row['surname'];
-                  } 
+                while($row = $result->fetch_assoc()){ 
+                $mader = $row['name'].' '. $row['surname'];
+                } 
+            }
+
+            $sqlFile = "SELECT ProjectName FROM ProjectMetalCad WHERE ProjectId = $projectId";
+            $result = $conn->query($sqlFile);
+
+            if ($result->num_rows > 0) { 
+                while($row = $result->fetch_assoc()){ 
+                  $projectName = $row['ProjectName'];
+                } 
+            }
+
+            $sqlNumTicket = "SELECT TicketMetalCadName, TicketMetalCadNum from TicketMetalCad where TicketMetalCadId = $ticketId";
+
+            $result = $conn->query($sqlNumTicket);
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $numTicket =  $row['TicketMetalCadNum'];
+            }
+
+            $sqlPlace = "SELECT * from TicketMetalCad where TicketMetalCadId = $ticketId";
+
+            $result = $conn->query($sqlPlace);
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+
+                // Пример строки даты из базы данных
+                $ticketMetalCadDateCreateT = $row['TicketMetalCadDateCreate'];
+
+                // // Преобразование строки даты во временную метку
+                $timestampT = strtotime($ticketMetalCadDateCreateT);
+
+                // // Форматирование даты в требуемый формат
+                $formattedDateT = date("d.m.Y", $timestampT);
+
+
+                $placeTicket = $row['TicketMetalCadPlace'];
                 
             }
         ?>
@@ -1678,7 +1714,17 @@ if ($result->num_rows > 0) {
         
         // Устанавливаем задержку перед вызовом print()
         setTimeout(function() {
+
+            
+
+            // Указываем имя файла для сохранения
+            printWindow.document.title = '<?php echo $projectName.'_№_'.$numTicket.'_'.$placeTicket.'_'.$formattedDateT ?>';
+            // Добавляем атрибут download с указанием названия файла
+            printWindow.document.body.setAttribute('download', '<?php echo $projectName.'_№_'.$numTicket.'_'.$placeTicket.'_'.$formattedDateT ?>.pdf');
+            // Вызываем функцию сохранения файла как PDF с указанным именем
             printWindow.print();
+
+           
         }, 50); // 10000 миллисекунд = 10 секунд
     }
 
