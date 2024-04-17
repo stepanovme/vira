@@ -298,7 +298,8 @@ select.role-select {
     }
 }
 
-.wrapper>.layout>.content>p.metal-binding-title-agreement-manage{
+.wrapper>.layout>.content>p.metal-binding-title-agreement-manage, .wrapper>.layout>.content>p.metal-binding-title-workshop{
+    margin-top: 10px;
     font-size: 32px;
     font-weight: 700;
 }

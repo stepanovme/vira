@@ -8,6 +8,7 @@
 }
 
 .wrapper>.layout>.content>.content-header>.title>button.printer{
+    margin-left: 10px;
     width: 27px;
     height: 27px;
     background-image: url(../assets/images/printer.svg);
@@ -47,6 +48,11 @@
 .wrapper>.layout>.content>.content-header>.title-button>.status-project.deny{
     background-color: #FFCDCE;
     color: #F95B5E;
+}
+
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.work{
+    background-color: #CAD6FC;
+    color: #849FF4;
 }
 
 .wrapper>.layout>.content>.ticket-info{
@@ -306,29 +312,32 @@
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop, .wrapper>.layout>.content>.buttons-ticket>button.approve,
-.wrapper>.layout>.content>.content-header>.title-button>button{
+.wrapper>.layout>.content>.content-header>.title-button>button, .wrapper>.layout>.content>.buttons-ticket>button.work{
     background-color: var(--var-main-color);
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover, .wrapper>.layout>.content>.buttons-ticket>button.approve:hover,
-.wrapper>.layout>.content>.content-header>.title-button>button:hover{
+.wrapper>.layout>.content>.content-header>.title-button>button:hover, .wrapper>.layout>.content>.buttons-ticket>button.work:hover{
     background-color: var(--var-main-color-hover);
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active, .wrapper>.layout>.content>.buttons-ticket>button.approve:active,
-.wrapper>.layout>.content>.content-header>.title-button>button:active{
+.wrapper>.layout>.content>.content-header>.title-button>button:active, .wrapper>.layout>.content>.buttons-ticket>button.work:active{
     background-color: var(--var-main-color-active);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision,
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-revision-workshop{
     background-color: #EFA94A;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:hover, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:hover{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:hover, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:hover,
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-revision-workshop:hover{
     background-color: #F1BA70;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:active, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:active{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-approval:active, .wrapper>.layout>.content>.buttons-ticket>button.send-to-revision:active,
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-revision-workshop:active{
     background-color: #E59322;
 }
 
@@ -396,4 +405,10 @@
     margin-right: 100px;
     margin-top: 210px;
     font-size: 36px;
+}
+
+.modal-record-production{
+    height: 100vh;
+    width: 100vw;
+    background-color: #D4474A;
 }

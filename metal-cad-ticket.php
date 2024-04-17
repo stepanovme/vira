@@ -123,7 +123,13 @@ if ($result->num_rows > 0) {
                                     echo '<div class="status-project revision">На доработке</div>';
                                 } elseif($row['TicketMetalCadStatusId'] == 5){
                                     echo '<div class="status-project deny">Отказано</div>';
-                                }
+                                } elseif($row['TicketMetalCadStatusId'] == 6){
+                                    echo '<button>Запись о производстве</button>';
+                                    echo '<div class="status-project work">В работе</div>';
+                                } elseif($row['TicketMetalCadStatusId'] == 7){
+                                    echo '<button>Запись о производстве</button>';
+                                    echo '<div class="status-project work">На доработку от цеха</div>';
+                                } 
                             }
                         ?>
                     </div>
@@ -453,6 +459,12 @@ if ($result->num_rows > 0) {
                                     echo '<button class="approve" data-ticket-id="'.$ticketId.'">Утвердить</button>
                                           <button class="send-to-revision" data-ticket-id="'.$ticketId.'">Отправить на доработку</button>
                                           <button class="deny" data-ticket-id="'.$ticketId.'">Отказать</button>        
+                                         ';
+                                }
+                            } elseif($row['TicketMetalCadStatusId'] == 3){
+                                if($roleId == 2 || $roleId == 5 || $roleId == 6){
+                                    echo '<button class="work" data-ticket-id="'.$ticketId.'">Запустить в работу</button>
+                                          <button class="send-to-revision-workshop" data-ticket-id="'.$ticketId.'">Отправить на доработку</button>       
                                          ';
                                 }
                             }
@@ -1025,6 +1037,14 @@ if ($result->num_rows > 0) {
         </div>
     </div>
 
+    <div class="modal-record-production">
+        <div class="modal">
+            <form action="">
+                123
+            </form>
+        </div>
+    </div>
+
     <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-ticket.js"></script>
@@ -1569,6 +1589,35 @@ if ($result->num_rows > 0) {
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.work');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/send_to_work.php?ticketId=' + ticketId)
+
+                location.reload();
+
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.send-to-revision-workshop');
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+
+                var ticketId = this.getAttribute('data-ticket-id');
+                fetch('function/send_to_revision_workshop.php?ticketId=' + ticketId)
+
+            });
+        });
+    });
+
 
 
 
