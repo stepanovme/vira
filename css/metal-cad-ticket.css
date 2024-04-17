@@ -1,27 +1,50 @@
 @import url(./dashboard.css);
 @import url(./metal-cad-project.css);
 
-.wrapper>.layout>.content>.content-header>.status-project.new{
+.wrapper>.layout>.content>.content-header>.title-button{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.wrapper>.layout>.content>.content-header>.title>button.printer{
+    width: 27px;
+    height: 27px;
+    background-image: url(../assets/images/printer.svg);
+    border: 0;
+    cursor: pointer;
+    outline: 0;
+    background-color: transparent;
+}
+
+.wrapper>.layout>.content>.content-header>.title-button>.status-project{
+    padding: 6px 16px;
+    font-weight: 700;
+    border-radius: 6px;
+    outline: none;
+}
+
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.new{
     background-color: #DDEFFE;
     color: #AFDAFC;
 }
 
-.wrapper>.layout>.content>.content-header>.status-project.agreement{
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.agreement{
     background-color: #ABD6FA;
     color: #74B1E2;
 }
 
-.wrapper>.layout>.content>.content-header>.status-project.send-workshop{
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.send-workshop{
     background-color: #FDDFB6;
     color: #EFA94A;
 }
 
-.wrapper>.layout>.content>.content-header>.status-project.revision{
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.revision{
     background-color: #B6C2FD;
     color: #7181D3;
 }
 
-.wrapper>.layout>.content>.content-header>.status-project.deny{
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.deny{
     background-color: #FFCDCE;
     color: #F95B5E;
 }
@@ -271,7 +294,7 @@
     gap: 20px;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button{
+.wrapper>.layout>.content>.buttons-ticket>button, .wrapper>.layout>.content>.content-header>.title-button>button{
     padding: 12px 40px;
     color: white;
     font-weight: 500;
@@ -282,15 +305,18 @@
     transition: .2s all;
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop, .wrapper>.layout>.content>.buttons-ticket>button.approve{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop, .wrapper>.layout>.content>.buttons-ticket>button.approve,
+.wrapper>.layout>.content>.content-header>.title-button>button{
     background-color: var(--var-main-color);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover, .wrapper>.layout>.content>.buttons-ticket>button.approve:hover{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover, .wrapper>.layout>.content>.buttons-ticket>button.approve:hover,
+.wrapper>.layout>.content>.content-header>.title-button>button:hover{
     background-color: var(--var-main-color-hover);
 }
 
-.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active, .wrapper>.layout>.content>.buttons-ticket>button.approve:active{
+.wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active, .wrapper>.layout>.content>.buttons-ticket>button.approve:active,
+.wrapper>.layout>.content>.content-header>.title-button>button:active{
     background-color: var(--var-main-color-active);
 }
 
@@ -316,4 +342,58 @@
 
 .wrapper>.layout>.content>.buttons-ticket>button.delete:active, .wrapper>.layout>.content>.buttons-ticket>button.deny:active{
     background-color: #D4474A;
+}
+
+#printContent{
+    display: none;
+}
+
+*{
+    font-family: 'Inter', sans-serif;
+}
+
+#printContent>.title-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#printContent>.title-content>p.title{
+    margin: auto;
+}
+
+#printContent>table{
+    margin-top: 10px;
+    border: 2px solid black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#printContent>table>tbody>tr>td{
+    border: 2px solid black;
+    padding: 5px;
+}
+
+#printContent>input{
+    width: 100%;
+    border: 0;
+    font-size: 20px;
+}
+
+#printContent>canvas{
+    width: 100%;
+} 
+
+#printContent>.made-up{
+    margin-top: 10px;
+    text-align: right;
+    font-size: 18px;
+}
+
+#printContent>p.length{
+    position: absolute;
+    right: 0;
+    margin-right: 100px;
+    margin-top: 210px;
+    font-size: 36px;
 }

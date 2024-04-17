@@ -104,26 +104,29 @@ if ($result->num_rows > 0) {
                             echo '<h1>'.$row['TicketMetalCadName'].' '.$row['TicketMetalCadNum'].'</h1>';
                         }
                         ?>
+                        <button onclick="printPage()" class="printer"></button>
                     </div>
-                    <?php 
-                        $sql = "SELECT TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
+                    <div class="title-button">
+                        <?php 
+                            $sql = "SELECT TicketMetalCadStatusId from TicketMetalCad where TicketMetalCadId = $ticketId";
 
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            $row = $result->fetch_assoc();
-                            if($row['TicketMetalCadStatusId'] == 1){
-                                echo '<div class="status-project new">Новая</div>';
-                            } elseif($row['TicketMetalCadStatusId'] == 2){
-                                echo '<div class="status-project agreement">Cогласование</div>';
-                            } elseif($row['TicketMetalCadStatusId'] == 3){
-                                echo '<div class="status-project send-workshop">Отправлено в цех</div>';
-                            } elseif($row['TicketMetalCadStatusId'] == 4){
-                                echo '<div class="status-project revision">На доработке</div>';
-                            } elseif($row['TicketMetalCadStatusId'] == 5){
-                                echo '<div class="status-project deny">Отказано</div>';
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                if($row['TicketMetalCadStatusId'] == 1){
+                                    echo '<div class="status-project new">Новая</div>';
+                                } elseif($row['TicketMetalCadStatusId'] == 2){
+                                    echo '<div class="status-project agreement">Cогласование</div>';
+                                } elseif($row['TicketMetalCadStatusId'] == 3){
+                                    echo '<div class="status-project send-workshop">Отправлено в цех</div>';
+                                } elseif($row['TicketMetalCadStatusId'] == 4){
+                                    echo '<div class="status-project revision">На доработке</div>';
+                                } elseif($row['TicketMetalCadStatusId'] == 5){
+                                    echo '<div class="status-project deny">Отказано</div>';
+                                }
                             }
-                        }
-                    ?>
+                        ?>
+                    </div>
                 </div>
                 <div class="ticket-info">
                     <div class="column">
@@ -459,6 +462,565 @@ if ($result->num_rows > 0) {
                     ?>
                     
                 </div>
+            </div>
+            <div id="printContent">
+
+                <style>
+                    @import url(https://myfonts.ru/myfonts?fonts=gost-common);
+                    @page {
+                        size: auto; /* Вы можете установить размер страницы, например, A4 или letter */
+                        margin: 0; /* Убираем отступы по умолчанию */
+                    }
+                    *{
+                        font-family: 'Inter', sans-serif;
+                    }
+
+                    .title-content{
+                        /* font-family: 'GOST Common', Arial; */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 18px;
+                    }
+
+                    .title-content.agree{
+                        padding-top: 40px;
+                    }
+                    
+                    .title-content>p.title{
+                        /* font-family: 'GOST Common', Arial; */
+                        margin: auto;
+                    }
+                    table#print-table{
+                        /* font-family: 'GOST Common', Arial; */
+                        margin-top: 10px;
+                        border: 2px solid black;
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    
+                    table#print-table>tbody>tr>td{
+                        /* font-family: 'GOST Common', Arial; */
+                        border: 2px solid black;
+                        padding: 5px;
+                    }
+                    input.print-input{
+                        /* font-family: 'GOST Common', Arial; */
+                        width: 100%;
+                        border: 0;
+                        font-size: 20px;
+                    }
+                    
+                    canvas.print-canvas{
+                        width: 100%;
+                    }
+                    
+                    .made-up{
+                        /* font-family: 'GOST Common', Arial; */
+                        margin-top: 10px;
+                        text-align: right;
+                        font-size: 18px;
+                    }
+                    p.length{
+                        /* font-family: 'GOST Common', Arial; */
+                        position: absolute;
+                        right: 0;
+                        margin-right: 90px;
+                        margin-top: 106px;
+                        font-size: 24px;
+                    }
+                </style>
+
+                <?php
+                   $sqlPrint = "SELECT * FROM TicketMetalCad WHERE TicketMetalCadId = $ticketId";
+                   $result = $conn->query($sqlPrint);
+
+                   if ($result->num_rows > 0) { 
+                        
+                        while($row = $result->fetch_assoc()){
+                            $ticketMetalCadDateCreate = $row['TicketMetalCadDateCreate'];
+                            $timestamp = strtotime($ticketMetalCadDateCreate);
+                            $formattedDate = date("d.m.Y", $timestamp);
+
+                            $ticketMetalCadDatePlan = $row['TicketMetalCadDatePlan'];
+                            $timestampPlan = strtotime($ticketMetalCadDatePlan);
+                            $formattedDatePlan = date("d.m.Y", $timestampPlan);
+
+                            // echo '<p class="title">Заявка на гибку металла №'.$row['TicketMetalCadNum'].'</p>';
+                            echo '
+                            <div class="title-content">
+                                <p class="title">Заявка на гибку металла №'.$row['TicketMetalCadNum'].'</p>
+                                <p class="date-create">дата: '.$formattedDate.'</p>
+                            </div>
+                            <table id="print-table">
+                                <tr>
+                                    <td>ОБЪЕКТ:</td>
+                                    <td colspan=2>'.$row['TicketMetalCadObject'].'</td>
+                                    <td rowspan=6> КОЛ-ВО ИЗДЕЛИЙ: '.$row['TicketMetalCadQuantityProduct'].' шт.</td>
+                                </tr>
+                                <tr>
+                                    <td>ЦВЕТ/толщ.:</td>
+                                    <td colspan=2>RAL-5005; t=0,7мм</td>
+                                </tr>
+                                <tr>
+                                    <td>УЧАСТОК:</td>
+                                    <td colspan=2>'.$row['TicketMetalCadPlace'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>БРИГАДА:</td>
+                                    <td colspan=2>'.$row['TicketMetalCadBrigade'].'</td>
+                                </tr>
+                                <tr>
+                                    <td>Дата:</td>
+                                    <td>план: '.$formattedDatePlan.'</td>
+                                    <td style="width: 175px;">факт: </td>
+                                </tr>
+                                <tr>
+                                    <td colspan=3>Адрес доставки: '.$row['TicketMetalCadAdress'].'</td>
+                                </tr>
+                                <tr>
+                                    <td colspan=4>Кол-во листов(расчет)</td>
+                                </tr>
+                            </table>
+                            ';
+                        }
+                   }
+                ?>
+
+                
+
+                <?php 
+                    $sql = "SELECT ProductMetalCad.*, TicketMetalCad.TicketMetalCadStatusId
+                            FROM ProductMetalCad
+                            INNER JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                            WHERE ProductMetalCad.TicketMetalCadId = $ticketId";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        $num = 0;
+                        while($row = $result->fetch_assoc()) {
+                            $num = $num + 1;
+                            echo '
+                                <p class="length">L='. $row['ProductMetalCadLength'] .'м - '.$row['ProductMetalCadQuantity'].'шт</p>
+                                <input class="print-input" type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$num.' '.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                <canvas class="print-canvas" width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
+                            ';
+
+                            // Если выводится третья строка, то выводим необходимые элементы
+                            if ($num == 3) {
+                                echo '<p style="opacity: 0;">Пустое место</p>';
+                                echo '
+                                    <div class="title-content agree">
+                                        <p class="title">Продолжение заявки №1</p>
+                                        <p class="date-create">дата: 02.04.2024</p>
+                                    </div>
+                                ';
+                            }
+
+                            // Если выводится четвертая строка, то выводим необходимые элементы
+                            if ($num % 7 == 0 && $num > 3) {
+                                echo '<p style="opacity: 0;">Пустое место</p>';
+                                echo '
+                                    <div class="title-content agree">
+                                        <p class="title">Продолжение заявки №1</p>
+                                        <p class="date-create">дата: 02.04.2024</p>
+                                    </div>
+                                ';
+                            }
+
+                            if ($num % 11 == 0 && $num > 3) {
+                                echo '<p style="opacity: 0;">Пустое место</p>';
+                                echo '
+                                    <div class="title-content agree">
+                                        <p class="title">Продолжение заявки №1</p>
+                                        <p class="date-create">дата: 02.04.2024</p>
+                                    </div>
+                                ';
+                            }
+
+                            if ($num % 15 == 0 && $num > 3) {
+                                echo '<p style="opacity: 0;">Пустое место</p>';
+                                echo '
+                                    <div class="title-content agree">
+                                        <p class="title">Продолжение заявки №1</p>
+                                        <p class="date-create">дата: 02.04.2024</p>
+                                    </div>
+                                ';
+                            }
+
+                            if ($num % 19 == 0 && $num > 3) {
+                                echo '<p style="opacity: 0;">Пустое место</p>';
+                                echo '
+                                    <div class="title-content agree">
+                                        <p class="title">Продолжение заявки №1</p>
+                                        <p class="date-create">дата: 02.04.2024</p>
+                                    </div>
+                                ';
+                            }
+                        }
+                    }
+                ?>
+
+                    
+
+                <script src="/js/jquery.js"></script>
+                <script>
+                        var canvasHistory = {};
+                        var tempCanvas = document.createElement('canvas');
+                        var tempContext = tempCanvas.getContext('2d');
+
+                        var canvasList = document.getElementsByTagName('canvas');
+                        for (var i = 0; i < canvasList.length; i++) {
+                            var canvas = canvasList[i];
+                            var context = canvas.getContext('2d');
+                            drawGrid(canvas, context);
+                            var canvasData = { lines: [], isDrawing: false };
+                            canvasData.history = { lines: [], lastSavedIndex: -1 };
+                            
+                        }
+
+                        document.addEventListener('keydown', function(e) {
+                            if (e.ctrlKey && e.key === 'z') {
+                                e.preventDefault();
+                                cancelLastAction();
+                            }
+                        });
+
+                        function drawGrid(canvas, context) {
+                            var gridSize = 20;
+                            context.beginPath();
+                            for (var x = 0; x <= canvas.width; x += gridSize) {
+                                context.moveTo(x, 0);
+                                context.lineTo(x, canvas.height);
+                            }
+                            for (var y = 0; y <= canvas.height; y += gridSize) {
+                                context.moveTo(0, y);
+                                context.lineTo(canvas.width, y);
+                            }
+                            context.strokeStyle = 'lightgray';
+                            context.lineWidth = 1;
+                            context.stroke();
+                        }
+
+                        function drawGridAndLines(canvas, context, data) {
+                            context.clearRect(0, 0, canvas.width, canvas.height);
+                            drawGrid(canvas, context); 
+                            redrawCanvas(canvas, context, data); 
+                            drawTempLine(canvas, data, { clientX: 0, clientY: 0 }); // Добавляем предварительный просмотр временной линии
+                        }
+
+                        function startDrawing(canvas, data, e) {
+                            data.isDrawing = true;
+                            var rect = canvas.getBoundingClientRect();
+                            var gridSize = 20;
+                            var mouseX = e.clientX - rect.left;
+                            var mouseY = e.clientY - rect.top;
+                            var startX = Math.round(mouseX / gridSize) * gridSize;
+                            var startY = Math.round(mouseY / gridSize) * gridSize;
+                            data.lines.push({ startX: startX, startY: startY, endX: startX, endY: startY });
+                            redrawCanvas(canvas, canvas.getContext('2d'), data);
+                        }
+
+                        function endDrawing(canvas, data) {
+                            if (!data.isDrawing) return;
+                            data.isDrawing = false;
+                            tempContext.clearRect(0, 0, canvas.width, canvas.height);
+
+                            var currentLine = data.lines[data.lines.length - 1];
+                            var midX = (currentLine.startX + currentLine.endX) / 2;
+                            var midY = (currentLine.startY + currentLine.endY) / 2;
+                            
+                            // Проверяем ориентацию линии и корректируем координаты для числа
+                            var offsetX = 0;
+                            var offsetY = 0;
+                            if (Math.abs(currentLine.endY - currentLine.startY) < Math.abs(currentLine.endX - currentLine.startX)) {
+                                // Горизонтальная или почти горизонтальная линия
+                                offsetY = -20; // Поднимаем число на 20 пикселей
+                            } else {
+                                // Вертикальная или почти вертикальная линия
+                                offsetX = -20; // Сдвигаем число влево на 20 пикселей
+                            }
+
+                            drawNumberOnLine(canvas, canvas.getContext('2d'), midX + offsetX, midY + offsetY, '0');
+
+                            var productId = canvas.getAttribute('data-id');
+                            saveNumberToDatabase(productId, midX, midY, 0);
+                            
+                            var history = data.history;
+                            var lastSavedIndex = history.lastSavedIndex;
+                            
+                            var newLines = data.lines.slice(lastSavedIndex + 1); 
+                                
+                            history.lines.push(...newLines); 
+                            history.lastSavedIndex = history.lines.length - 1; 
+                            
+                            saveLinesToDatabase(canvas, newLines); 
+                            redrawCanvas(canvas, canvas.getContext('2d'), data);
+                        }
+
+                        function drawNumberOnLine(canvas, context, x, y, number) {
+                            context.font = '20px Arial';
+                            context.fillStyle = 'black';
+                            context.textAlign = 'center';
+                            context.fillText(number, x - 15, y - 5);
+                        }
+
+
+                        canvas.addEventListener('click', function(e) {
+                            var rect = canvas.getBoundingClientRect();
+                            var mouseX = e.clientX - rect.left;
+                            var mouseY = e.clientY - rect.top;
+
+                            var allNumbers = [...canvasHistory[canvas.id].history.numbers, ...canvasHistory[canvas.id].numbers];
+                            for (var i = 0; i < allNumbers.length; i++) {
+                                var numberData = allNumbers[i];
+                                var dist = Math.sqrt(Math.pow(mouseX - numberData.x, 2) + Math.pow(mouseY - numberData.y, 2));
+                                if (dist < 10) {
+                                    var newNumber = prompt('Enter new number:', numberData.number);
+                                    if (newNumber !== null) {
+                                        updateNumber(numberData.productId, numberData.x, numberData.y, newNumber);
+                                    }
+                                    break;
+                                }
+                            }
+                        });
+
+                        function updateNumberInDatabase(productId, x, y, newNumber) {
+                            var numberData = {
+                                productId: productId,
+                                x: x,
+                                y: y,
+                                number: newNumber
+                            };
+                            $.ajax({
+                                url: 'function/update_number.php', // Путь к скрипту для обновления значения цифры в БД
+                                method: 'POST',
+                                data: numberData,
+                                success: function(response) {
+                                    console.log('Number updated successfully');
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error updating number:', error);
+                                }
+                            });
+                        }
+
+
+                        function saveNumberToDatabase(productId, x, y, number) {
+                            var numberData = {
+                                productId: productId,
+                                x: x,
+                                y: y,
+                                number: number
+                            };
+                            $.ajax({
+                                url: 'function/save_number.php',
+                                method: 'POST',
+                                data: numberData,
+                                success: function(response) {
+                                    console.log('Number saved successfully');
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error saving number:', error);
+                                }
+                            });
+                        }
+
+                        function drawTempLine(canvas, data, e) {
+                            if (!data.isDrawing) return;
+                            var rect = canvas.getBoundingClientRect();
+                            var gridSize = 20;
+                            var mouseX = e.clientX - rect.left;
+                            var mouseY = e.clientY - rect.top;
+                            var endX = Math.round(mouseX / gridSize) * gridSize;
+                            var endY = Math.round(mouseY / gridSize) * gridSize;
+
+                            var currentLine = data.lines[data.lines.length - 1];
+                            currentLine.endX = endX;
+                            currentLine.endY = endY;
+
+                            tempContext.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+                            // Рисуем основные линии на временном холсте
+                            var allLines = [...data.history.lines, ...data.lines];
+                            for (var i = 0; i < allLines.length; i++) {
+                                var line = allLines[i];
+                                tempContext.beginPath();
+                                tempContext.moveTo(line.startX, line.startY);
+                                tempContext.lineTo(line.endX, line.endY);
+                                tempContext.strokeStyle = 'black';
+                                tempContext.lineWidth = 2;
+                                tempContext.stroke();
+                            }
+
+                            // Рисуем временную линию на временном холсте зеленым цветом
+                            tempContext.beginPath();
+                            tempContext.moveTo(currentLine.startX, currentLine.startY);
+                            tempContext.lineTo(currentLine.endX, currentLine.endY);
+                            tempContext.strokeStyle = '#59B077'; // Зеленый цвет для временной линии
+                            tempContext.lineWidth = 2;
+                            tempContext.stroke();
+
+                            // Отображаем временный холст как задний фон основного холста
+                            canvas.style.background = 'url(' + tempCanvas.toDataURL() + ')';
+                        }
+
+
+                        function redrawCanvas(canvas, context, data) {
+                            var historyLines = data.history ? data.history.lines : [];
+                            var allLines = [...historyLines, ...data.lines];
+
+                            tempContext.clearRect(0, 0, canvas.width, canvas.height);
+                            tempContext.drawImage(canvas, 0, 0);
+
+                            for (var i = 0; i < allLines.length - 1; i++) {
+                                var line = allLines[i];
+                                context.beginPath();
+                                context.moveTo(line.startX, line.startY);
+                                context.lineTo(line.endX, line.endY);
+                                context.strokeStyle = 'black';
+                                context.lineWidth = 4;
+                                context.stroke();
+                            }
+
+                            var currentLine = data.lines[data.lines.length - 1];
+                            context.beginPath();
+                            context.moveTo(currentLine.startX, currentLine.startY);
+                            context.lineTo(currentLine.endX, currentLine.endY);
+                            context.strokeStyle = 'black';
+                            context.lineWidth = 4;
+                            context.stroke();
+                        }
+
+                        function cancelLastLine(canvas) {
+                            var history = canvasHistory[canvas.id].lines;
+                            var lastSavedIndex = canvasHistory[canvas.id].lastSavedIndex;
+                            if (!history || lastSavedIndex < 0) return;
+
+                            history.splice(lastSavedIndex + 1);
+                            canvasHistory[canvas.id].lastSavedIndex = history.length - 1;
+                            redrawCanvas(canvas, context, history);
+                        }
+
+                        function cancelLastAction() {
+                            var activeCanvas = document.activeElement;
+                            if (!activeCanvas || !canvasHistory[activeCanvas.id]) return;
+
+                            cancelLastLine(activeCanvas);
+                        }
+
+                        function saveLinesToDatabase(canvas, lines) {
+                            var productId = canvas.getAttribute('data-id');
+                            for (var i = 0; i < lines.length; i++) {
+                                var line = lines[i];
+                                var lineData = {
+                                    productId: productId,
+                                    startX: line.startX,
+                                    startY: line.startY,
+                                    endX: line.endX,
+                                    endY: line.endY
+                                };
+                                $.ajax({
+                                    url: 'function/save_lines.php',
+                                    method: 'POST',
+                                    data: lineData,
+                                    success: function(response) {
+                                        console.log('Line saved successfully');
+                                        loadLinesAndDraw();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Error saving line:', error);
+                                    }
+                                });
+                            }
+                        }
+
+                        function loadLinesAndDraw() {
+                            var canvasList = document.getElementsByTagName('canvas');
+                            for (var i = 0; i < canvasList.length; i++) {
+                                var canvas = canvasList[i];
+                                var productId = canvas.getAttribute('data-id');
+                                $.ajax({
+                                    url: 'function/get_lines_and_numbers.php',
+                                    method: 'POST',
+                                    data: { productId: productId },
+                                    dataType: 'json',
+                                    success: function(canvas, response) {
+                                        return function(response) {
+                                            var context = canvas.getContext('2d');
+                                            drawGridAndLines(canvas, context, { lines: response.lines });
+                                            drawNumbersOnCanvas(canvas, context, response.numbers);
+                                            updateProductSum()
+                                        };
+                                    }(canvas),
+                                    error: function(xhr, status, error) {
+                                        console.error('Error loading lines and numbers:', error);
+                                    }
+                                });
+                            }
+                        }
+
+                        function drawNumbersOnCanvas(canvas, context, numbers) {
+                            for (var i = 0; i < numbers.length; i++) {
+                                var numberData = numbers[i];
+                                var offsetX = 0;
+                                var offsetY = 0;
+
+                                // Если это новая линия, определяем наклон и устанавливаем позицию цифры
+                                if (numberData.hasOwnProperty('lineSlope')) {
+                                    // Определяем наклон линии
+                                    var lineSlope = numberData.lineSlope;
+
+                                    // Устанавливаем позицию в зависимости от наклона линии
+                                    if (lineSlope >= -0.5 && lineSlope <= 0.5) {
+                                        // Горизонтальная линия, добавляем отступ вверх
+                                        offsetY = -20;
+                                    } else if (lineSlope >= 1.5 || lineSlope <= -1.5) {
+                                        // Вертикальная линия, добавляем отступ влево
+                                        offsetX = -20;
+                                    }
+                                }
+
+                                // Устанавливаем позицию цифры с учетом отступа
+                                drawNumberOnLine(canvas, context, numberData.x + offsetX, numberData.y + offsetY, numberData.number);
+                            }
+                        }
+
+                        // Функция для определения наклона линии
+                        function getLineSlope(x1, y1, x2, y2) {
+                            return (y2 - y1) / (x2 - x1);
+                        }
+
+                        function updateTempLine(canvas, tempCanvas, tempContext, e) {
+                            var data = canvasHistory[canvas.id];
+                            if (!data.isDrawing) return;
+                            var rect = canvas.getBoundingClientRect();
+                            var gridSize = 20;
+                            var mouseX = e.clientX - rect.left;
+                            var mouseY = e.clientY - rect.top;
+                            var endX = Math.round(mouseX / gridSize) * gridSize;
+                            var endY = Math.round(mouseY / gridSize) * gridSize;
+
+                            var currentLine = data.lines[data.lines.length - 1];
+                            currentLine.endX = endX;
+                            currentLine.endY = endY;
+
+                            tempContext.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+                            redrawCanvas(tempCanvas, tempContext, data);
+                        }
+
+                        tempCanvas.addEventListener('mousemove', function(e) {
+                            updateTempLine(canvas, tempCanvas, tempContext, e);
+                        });
+
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = canvas.height;
+
+                        window.onload = loadLinesAndDraw;
+
+                        
+
+                </script>
+
             </div>
         </div>
     </div>
@@ -1070,6 +1632,54 @@ if ($result->num_rows > 0) {
                 })
                 .catch(error => console.error('Ошибка при обновлении суммы:', error));
         });
+    }
+
+    function printPage() {
+        // Получаем контейнер с данными для печати
+        var printContent = document.getElementById("printContent");
+        // Открываем новое окно для печати
+        var printWindow = window.open('', '_blank');
+        // Вставляем содержимое для печати
+        printWindow.document.write(printContent.innerHTML);
+
+        // Задаем стили для body в новом окне
+        printWindow.document.body.style.padding = '20px';
+        printWindow.document.body.style.fontFamily = "'GOST Common', Arial";
+
+        // Добавляем нижний колонтитул
+        var footer = printWindow.document.createElement('div');
+        footer.style.position = 'fixed';
+        footer.style.bottom = '0';
+        footer.style.right = '0';
+        footer.style.paddingRight = '25px';
+        footer.style.paddingBottom = '40px';
+        footer.style.backgroundColor = 'black';
+        <?php
+             $sqlPrint = "SELECT tmc.TicketMetalCadName, tmc.TicketMetalCadId, tmc.TicketMetalCadDateCreate, tmc.TicketMetalCadQuantityMetr, tmc.TicketMetalCadApplicant, u.name, u.surname, tmc.TicketMetalCadColor, c.ColorName, tmc.TicketMetalCadThickness, t.ThicknessValue, tmc.TicketMetalCadStatusId, tmc.TicketMetalCadNum
+                                FROM TicketMetalCad AS tmc
+                                JOIN user AS u ON tmc.TicketMetalCadApplicant = u.userId
+                                JOIN ColorCad AS c ON tmc.TicketMetalCadColor = c.ColorId
+                                JOIN ThicknessMetalCad AS t ON tmc.TicketMetalCadThickness = t.ThicknessId
+                                WHERE tmc.ProjectId = $projectId";
+             $result = $conn->query($sqlPrint);
+
+             if ($result->num_rows > 0) { 
+                  while($row = $result->fetch_assoc()){ 
+                    $mader = $row['name'].' '. $row['surname'];
+                  } 
+                
+            }
+        ?>
+        footer.innerHTML = 'СОСТАВИЛ: <?php echo  $mader; ?>';
+        printWindow.document.body.appendChild(footer);
+
+        // Закрываем запись в новом окне
+        printWindow.document.close();
+        
+        // Устанавливаем задержку перед вызовом print()
+        setTimeout(function() {
+            printWindow.print();
+        }, 50); // 10000 миллисекунд = 10 секунд
     }
 
 
