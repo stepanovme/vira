@@ -124,10 +124,9 @@ if ($result->num_rows > 0) {
                                 } elseif($row['TicketMetalCadStatusId'] == 5){
                                     echo '<div class="status-project deny">Отказано</div>';
                                 } elseif($row['TicketMetalCadStatusId'] == 6){
-                                    echo '<button>Запись о производстве</button>';
+                                    echo '<button id="record-product">Запись о производстве</button>';
                                     echo '<div class="status-project work">В работе</div>';
                                 } elseif($row['TicketMetalCadStatusId'] == 7){
-                                    echo '<button>Запись о производстве</button>';
                                     echo '<div class="status-project work">На доработку от цеха</div>';
                                 } 
                             }
@@ -338,6 +337,23 @@ if ($result->num_rows > 0) {
                             <th id="product-name">Изделие</th>
                             <th id="product-sum">Сумма разв.</th>
                             <th id="product-length">L, м</th>
+                            <?php
+                                $sql = "SELECT ProductMetalCad.*, TicketMetalCad.TicketMetalCadStatusId
+                                        FROM ProductMetalCad
+                                        INNER JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                                        WHERE ProductMetalCad.TicketMetalCadId = $ticketId";
+
+                                $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) { 
+                                        $row = $result->fetch_assoc();
+                                        if($row['TicketMetalCadStatusId'] == 6){
+                                            echo '
+                                                <th id="product-manafactured">Произведено изделий</th>
+                                                <th id="product-remains">Осталось</th>
+                                            ';
+                                        }
+                                    }
+                            ?>
                             <th id="product-quantity">кол-во, шт</th>
                             <th id="product-place">Место</th>
                         </tr>
@@ -367,34 +383,21 @@ if ($result->num_rows > 0) {
                                             <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
                                         </tr>
                                     ';
-                                } elseif($roleId == 2 || $roleId == 5){ 
+                                } elseif($row['TicketMetalCadStatusId'] == 6){
                                     $num = $num + 1;
                                     echo '
                                         <tr>
                                             <td id="product-num-value">'.$num.'</td>
                                             <td id="product-name-value">
-                                                <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
+                                                <input type="text" readonly data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
                                                 <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
                                             </td>
-                                            <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
-                                            <td id="product-length-value" contenteditable="true" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
-                                            <td id="product-quantity-value" contenteditable="true" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
-                                            <td id="product-place-value" contenteditable="true" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
-                                        </tr>
-                                    ';
-                                } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){ 
-                                    $num = $num + 1;
-                                    echo '
-                                        <tr>
-                                            <td id="product-num-value">'.$num.'</td>
-                                            <td id="product-name-value">
-                                                <input type="text" data-id="'.$row['ProductMetalCadId'].'" value="'.$row['ProductMetalCadName'].'" onchange="updateProductName(this)" onkeypress="updateProductNameOnEnter(event, this)">
-                                                <canvas width="1000" height="300" tabindex="0" data-id="'.$row['ProductMetalCadId'].'"></canvas>
-                                            </td>
-                                            <td id="product-sum-value" class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
-                                            <td id="product-length-value" onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
-                                            <td id="product-quantity-value" onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
-                                            <td id="product-place-value" onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
+                                            <td id="product-sum-value" readonly class="product-sum-value" data-id="'.$row['ProductMetalCadId'].'">'.$row['ProductMetalCadSum'].'</td>
+                                            <td id="product-length-value" readonly onblur="updateLength(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateLengthOnEnter(event)">' . $row['ProductMetalCadLength'] . '</td>
+                                            <td id="product-manafactured-value">'.$row['ProductMetalCadManufactured'].'</td>
+                                            <td id="product-remains-value">'.$row['ProductMetalCadRemains'].'</td>
+                                            <td id="product-quantity-value" readonly onblur="updateQuantity(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updateQuantityOnEnter(event)">' . $row['ProductMetalCadQuantity'] . '</td>
+                                            <td id="product-place-value" readonly onblur="updatePlace(' . $row['ProductMetalCadId'] . ', this, event)" onkeypress="updatePlaceOnEnter(event)">' . $row['ProductMetalCadPlace'] . '</td>
                                         </tr>
                                     ';
                                 }
@@ -415,19 +418,26 @@ if ($result->num_rows > 0) {
                                                 <td id="product-add-button" colspan="6" ticket-id="'.$ticketId.'">+</td>
                                             </tr>
                                          ';
-                                } elseif($roleId == 2 || $roleId == 5){ 
+                                // } elseif($roleId == 2 || $roleId == 5){ 
+                                //     echo '
+                                //             <tr>
+                                //                 <td id="product-add-button" colspan="6" ticket-id="'.$ticketId.'">+</td>
+                                //             </tr>
+                                //          ';
+                                // } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
+                                //     echo '
+                                //             <tr>
+                                //                 <td id="product-add-button" style="display:none"; colspan="6" ticket-id="'.$ticketId.'">+</td>
+                                //             </tr>
+                                //          ';
+                                } else{
                                     echo '
-                                            <tr>
+                                            <tr style="opacity: 0;">
                                                 <td id="product-add-button" colspan="6" ticket-id="'.$ticketId.'">+</td>
                                             </tr>
                                          ';
-                                } elseif(($roleId !== 2 || $roleId !== 5) && $row['TicketMetalCadStatusId'] !== 1){
-                                    echo '
-                                            <tr>
-                                                <td id="product-add-button" style="display:none"; colspan="6" ticket-id="'.$ticketId.'">+</td>
-                                            </tr>
-                                         ';
                                 }
+                                
                             }
                         }
 
@@ -1037,12 +1047,27 @@ if ($result->num_rows > 0) {
         </div>
     </div>
 
-    <div class="modal-record-production">
-        <div class="modal">
-            <form action="">
-                123
-            </form>
-        </div>
+    <div class="modal-record-production" id="modal-record-production-id">
+        <form action="">
+            <p class="modal-title">Запись о производстве</p>
+            <div class="modal-body">
+                <?php
+                    $sql = "SELECT ProductMetalCad.*, TicketMetalCad.TicketMetalCadStatusId
+                    FROM ProductMetalCad
+                    INNER JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                    WHERE ProductMetalCad.TicketMetalCadId = $ticketId";
+                    $result = $conn->query($sql);
+                    if ($result->num_rows > 0) {
+                        $num = 0;
+                        while($row = $result->fetch_assoc()) { 
+                            echo '<p class="product-name">'.$row['ProductMetalCadName'].'</p> <input type="text" value="0" data-product-id="'.$row['ProductMetalCadId'].'">';
+                        } 
+                    }
+                ?>
+            </div>
+            <button type="submit" class="send">Отправить</button>
+            <button type="button" class="cancel">Отменить</button>
+        </form>
     </div>
 
     <script src="/js/jquery.js"></script>
@@ -1776,6 +1801,84 @@ if ($result->num_rows > 0) {
            
         }, 50); // 10000 миллисекунд = 10 секунд
     }
+
+
+
+    // Получаем кнопку "Добавить"
+    var addButtonRec = document.getElementById('record-product');
+    // var addButtonRecMobile = document.getElementById('mobile-add');
+
+    // Получаем модальное окно
+    var modalRec = document.getElementById('modal-record-production-id');
+
+    // Получаем элемент закрытия модального окна
+    var closeBtnRec = document.getElementsByClassName('cancel')[0];
+
+    // Добавляем обработчик события click на кнопку "Добавить"
+    addButtonRec.addEventListener('click', function() {
+        modalRec.style.display = 'flex'; // Отображаем модальное окно при нажатии на кнопку
+    });
+
+    // Добавляем обработчик события click на элемент закрытия модального окна
+    closeBtnRec.addEventListener('click', function(event) { // Добавляем параметр event
+        modalRec.style.animation = 'fadeOut 0.3s ease-in-out';
+        setTimeout(function() {
+            modalRec.style.animation = '';
+            modalRec.style.display = 'none'; // После окончания анимации скрываем модальное окно
+        }, 200);
+    });
+
+    // Закрываем модальное окно при клике вне его области
+    window.addEventListener('click', function(event) { // Добавляем параметр event
+        if (event.target == modalRec) {
+            modalRec.style.animation = 'fadeOut 0.3s ease-in-out';
+            setTimeout(function() {
+                modalRec.style.animation = '';
+                modalRec.style.display = 'none'; // После окончания анимации скрываем модальное окно
+            }, 200);
+        }
+    });
+
+
+
+    // Находите элементы формы и кнопки отправки
+    var form = document.querySelector('.modal-record-production form');
+    var sendButton = form.querySelector('.send');
+
+    // Назначайте обработчик события на кнопку отправки
+    sendButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+        // Получаем все элементы input внутри формы
+        var inputs = form.querySelectorAll('input[type="text"]');
+
+        // Создаем объект FormData
+        var formData = new FormData();
+
+        // Проходимся по всем элементам input
+        inputs.forEach(function(input) {
+            // Получаем значения product_id и quantity
+            var product_id = input.getAttribute('data-product-id');
+            var quantity = input.value;
+
+            // Добавляем product_id и quantity к formData
+            formData.append('product_id[]', product_id);
+            formData.append('quantity[]', quantity);
+        });
+
+        // Отправляем AJAX запрос
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'function/update_product_manafactured.php', true); // Укажите путь к вашему обработчику на сервере
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Обработка успешного ответа от сервера
+                console.log(xhr.responseText);
+                location.reload();
+                // Можно выполнить дополнительные действия, если нужно
+            }
+        };
+        xhr.send(formData);
+    });
 
 
     // Рисование чертежей
