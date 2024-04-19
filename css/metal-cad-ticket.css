@@ -45,6 +45,11 @@
     color: #7181D3;
 }
 
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.revision-workshop{
+    background-color: #FBEDE1;
+    color: #EBC49F;
+}
+
 .wrapper>.layout>.content>.content-header>.title-button>.status-project.deny{
     background-color: #FFCDCE;
     color: #F95B5E;
@@ -53,6 +58,11 @@
 .wrapper>.layout>.content>.content-header>.title-button>.status-project.work{
     background-color: #CAD6FC;
     color: #849FF4;
+}
+
+.wrapper>.layout>.content>.content-header>.title-button>.status-project.complete{
+    background-color: #C3EED2;
+    color: var(--var-main-color);
 }
 
 .wrapper>.layout>.content>.ticket-info{
@@ -312,17 +322,20 @@
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop, .wrapper>.layout>.content>.buttons-ticket>button.approve,
-.wrapper>.layout>.content>.content-header>.title-button>button, .wrapper>.layout>.content>.buttons-ticket>button.work{
+.wrapper>.layout>.content>.content-header>.title-button>button, .wrapper>.layout>.content>.buttons-ticket>button.work,
+.wrapper>.layout>.content>.buttons-ticket>button.complete-work{
     background-color: var(--var-main-color);
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:hover, .wrapper>.layout>.content>.buttons-ticket>button.approve:hover,
-.wrapper>.layout>.content>.content-header>.title-button>button:hover, .wrapper>.layout>.content>.buttons-ticket>button.work:hover{
+.wrapper>.layout>.content>.content-header>.title-button>button:hover, .wrapper>.layout>.content>.buttons-ticket>button.work:hover,
+.wrapper>.layout>.content>.buttons-ticket>button.complete-work:hover{
     background-color: var(--var-main-color-hover);
 }
 
 .wrapper>.layout>.content>.buttons-ticket>button.send-to-workshop:active, .wrapper>.layout>.content>.buttons-ticket>button.approve:active,
-.wrapper>.layout>.content>.content-header>.title-button>button:active, .wrapper>.layout>.content>.buttons-ticket>button.work:active{
+.wrapper>.layout>.content>.content-header>.title-button>button:active, .wrapper>.layout>.content>.buttons-ticket>button.work:active,
+.wrapper>.layout>.content>.buttons-ticket>button.complete-work:active{
     background-color: var(--var-main-color-active);
 }
 

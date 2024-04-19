@@ -294,6 +294,14 @@
     color: #849FF4;
 }
 
+.wrapper>.layout>.content>.slide-list>.slide.complete{
+    border-bottom: 10px solid var(--var-main-color);
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.complete>.status{
+    color: var(--var-main-color);
+}
+
 .wrapper>.layout>.content>.slide-list>.slide.deny{
     border-bottom: 10px solid #F95B5E;
 }
@@ -308,6 +316,14 @@
 
 .wrapper>.layout>.content>.slide-list>.slide.revision>.status{
     color: #7181D3;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.revision-workshop{
+    border-bottom: 10px solid #EBC49F;
+}
+
+.wrapper>.layout>.content>.slide-list>.slide.revision-workshop>.status{
+    color: #EBC49F;
 }
 
 .wrapper>.layout>.content>.table>table>tbody>tr>td>.status.new{
