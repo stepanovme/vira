@@ -143,7 +143,7 @@ if(isset($_GET['projectId'])) {
                                         <label for="">Название</label>
                                         <input type="text" id="projectName" value="'.$row['ProjectName'].'" onchange="updateNameProject(this.value)" onkeypress="handleKeyPress(event)">
                                         <label for="">Объект</label>
-                                        <input type="text" value="'.$row['ProjectObject'].'">
+                                        <input type="text" id="projectObject" value="'.$row['ProjectObject'].'" onchange="updateObjectProject(this.value)" onkeypress="handleKeyPress(event)">
                                         <label for="">Цвета</label>
                                         <select name="" id="">
                                             <option value="" selected disabled>Цвета</option>
@@ -202,6 +202,25 @@ if(isset($_GET['projectId'])) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 document.getElementById("projectName").blur();
+            }
+        }
+
+        function updateObjectProject(newPlace) {
+            var ticketId = <?php echo $projectId; ?>;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Можно добавить дополнительную обработку здесь, если нужно
+                }
+            };
+            xhttp.open("GET", "function/update_object_project.php?ticketId=" + ticketId + "&newPlace=" + newPlace, true);
+            xhttp.send();
+        }
+
+        function handleKeyPress(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("projectObject").blur();
             }
         }
     </script>
