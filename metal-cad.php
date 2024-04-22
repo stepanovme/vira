@@ -80,8 +80,20 @@ if ($roleId != 2 && $roleId != 5 && $roleId != 3 && $roleId != 4) {
                 </div>
                 <div class="content-header">
                     <h1>Проекты по гибке металла</h1>
-                    <button id="add">Добавить</button>
-                    <button id="mobile-add">+</button>
+                    <?php 
+                        if($roleId == 2 || $roleId == 5){
+                            echo '
+                                    <button id="add">Добавить</button>
+                                    <button id="mobile-add">+</button>
+                                ';
+                        } else{
+                            echo '
+                            <button id="add" style="display:none;">Добавить</button>
+                            <button id="mobile-add" style="display:none;">+</button>
+                        ';
+                        }
+                    ?>
+                    
                 </div>
                 <div class="search-header">
                     <?php 

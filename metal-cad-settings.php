@@ -130,34 +130,49 @@ if(isset($_GET['projectId'])) {
                 </div>
 
                 <div class="settings">
-                    <form action="">
-                        <label for="">Название</label>
-                        <input type="text">
-                        <label for="">Объект</label>
-                        <input type="text">
-                        <label for="">Цвета</label>
-                        <select name="" id="">
-                            <option value="" selected disabled>Цвета</option>
-                        </select>
-                        <label for="">Толщины</label>
-                        <select name="" id="">
-                            <option value="" selected disabled>Толщины</option>
-                        </select>
-                        <label for="">Ответственный</label>
-                        <select name="" id="">
-                            <option value="" selected disabled>Ответственный</option>
-                        </select>
-                        <label for="">Участники</label>
-                        <select name="" id="">
-                            <option value="" selected disabled>Участники</option>
-                        </select>
-                        <label for="">План по проекту</label>
-                        <input type="text">
-                        <label for="">Дата проекта</label>
-                        <input type="text">
-                        <label for="">Статус</label>
-                        <input type="text">
-                    </form>
+                    <?php 
+                        $settingProject = "SELECT * FROM ProjectMetalCad WHERE ProjectId = $projectId";
+
+                        $result = $conn->query($settingProject);
+
+                        if($result->num_rows>0){
+                            while($row =  $result->fetch_assoc()){
+                                echo '
+
+                                    <form action="">
+                                        <label for="">Название</label>
+                                        <input type="text" id="projectName" value="'.$row['ProjectName'].'" onchange="updateNameProject(this.value)" onkeypress="handleKeyPress(event)">
+                                        <label for="">Объект</label>
+                                        <input type="text" value="'.$row['ProjectObject'].'">
+                                        <label for="">Цвета</label>
+                                        <select name="" id="">
+                                            <option value="" selected disabled>Цвета</option>
+                                        </select>
+                                        <label for="">Толщины</label>
+                                        <select name="" id="">
+                                            <option value="" selected disabled>Толщины</option>
+                                        </select>
+                                        <label for="">Руководитель проекта</label>
+                                        <select name="" id="">
+                                            <option value="" selected disabled>Руководитель проекта</option>
+                                        </select>
+                                        <label for="">Участники</label>
+                                        <select name="" id="">
+                                            <option value="" selected disabled>Участники</option>
+                                        </select>
+                                        <label for="" value="'.$row['ProjectPlan'].'">План по проекту</label>
+                                        <input type="text">
+                                        <label for="">Дата проекта</label>
+                                        <input type="text">
+                                        <label for="">Статус</label>
+                                        <input type="text">
+                                    </form>
+                                
+                                    ';
+                            }
+                        }
+                    ?>
+                    
                 </div>
                 <div class="buttons">
                     <button class="save">Сохранить</button>
@@ -170,5 +185,25 @@ if(isset($_GET['projectId'])) {
     <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-settings.js"></script>
+    <script>
+        function updateNameProject(newPlace) {
+            var ticketId = <?php echo $projectId; ?>;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Можно добавить дополнительную обработку здесь, если нужно
+                }
+            };
+            xhttp.open("GET", "function/update_name_project.php?ticketId=" + ticketId + "&newPlace=" + newPlace, true);
+            xhttp.send();
+        }
+
+        function handleKeyPress(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("projectName").blur();
+            }
+        }
+    </script>
 </body>
 </html>
