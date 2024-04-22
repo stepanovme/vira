@@ -85,6 +85,19 @@
     background-color: #D4474A;
 }
 
+input#thicknessInput, input#responsibleInput, input#colorInput{
+    padding: 12px 22px;
+    background-color: #F6F8FA;
+    border: 1px solid #E0E4E8;
+    color: #6A6A6A;
+    font-weight: 500;
+    border-radius: 7px;
+    outline: none;
+    cursor: auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
     .wrapper>.layout>.content>.buttons{
         flex-direction: column;
