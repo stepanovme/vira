@@ -1644,6 +1644,11 @@ if ($result->num_rows > 0) {
                 fetch('function/send_to_approval.php?ticketId=' + ticketId)
 
                 window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+
+                setTimeout(function() {
+                    window.location.reload()
+                }, 300);
+
             });
         });
     });
@@ -1671,7 +1676,7 @@ if ($result->num_rows > 0) {
                 var ticketId = this.getAttribute('data-ticket-id');
                 fetch('function/approve.php?ticketId=' + ticketId)
 
-                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>'
+                window.location.href = 'metal-cad-project.php?projectId=<?php echo $projectId;?>';
             });
         });
     });
@@ -1740,8 +1745,9 @@ if ($result->num_rows > 0) {
             button.addEventListener('click', function() {
 
                 var ticketId = this.getAttribute('data-ticket-id');
-                fetch('function/complete-work.php?ticketId=' + ticketId)
+                fetch('function/complete-work.php?ticketId=' + ticketId);
 
+                window.location.reload()
             });
         });
     });
