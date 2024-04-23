@@ -141,7 +141,7 @@ if(isset($_GET['projectId'])) {
 
                                     <form action="">
                                         <label for="">Название</label>
-                                        <input type="text" id="projectName" value="'.$row['ProjectName'].'" onchange="updateNameProject(this.value)" onkeypress="handleKeyPress(event)">
+                                        <input type="text" id="projectName" value="'.$row['ProjectName'].'" onchange="updateNameProject(this.value)" onkeypress="handleKeyPressName(event)">
                                         <label for="">Объект</label>
                                         <input type="text" id="projectObject" value="'.$row['ProjectObject'].'" onchange="updateObjectProject(this.value)" onkeypress="handleKeyPress(event)">
                                         <label class="label">Цвет</label>
@@ -159,16 +159,15 @@ if(isset($_GET['projectId'])) {
                                             <input type="text" id="responsibleInput" onclick="toggleResponsibleDropdown()" readonly>
                                             <div id="responsibleDropdown" class="dropdown-content"></div>
                                         </div>
-                                        <label for="">Участники</label>
-                                        <select name="" id="">
-                                            <option value="" selected disabled>Участники</option>
-                                        </select>
-                                        <label for="" value="'.$row['ProjectPlan'].'">План по проекту</label>
-                                        <input type="text">
+                                        <label for="participantsInput">Участники</label>
+                                        <div class="dropdown">
+                                            <input type="text" id="participantsInput" onclick="toggleParticipantsDropdown()" readonly>
+                                            <div id="participantsDropdown" class="dropdown-content"></div>
+                                        </div>
+                                        <label for="">План по проекту</label>
+                                        <input type="text" id="projectPlan" value="'.$row['ProjectPlan'].'" onchange="updatePlanProject(this.value)" onkeypress="handleKeyPressPlan(event)">
                                         <label for="">Дата проекта</label>
-                                        <input type="text">
-                                        <label for="">Статус</label>
-                                        <input type="text">
+                                        <input type="date"  id="projectDate" value="'.date('Y-m-d', strtotime($row['ProjectDateCreated'])).'" onchange="updateDateProject(this.value)" onkeypress="handleKeyPressDate(event)">
                                     </form>
                                 
                                     ';
@@ -201,7 +200,7 @@ if(isset($_GET['projectId'])) {
             xhttp.send();
         }
 
-        function handleKeyPress(event) {
+        function handleKeyPressName(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 document.getElementById("projectName").blur();
@@ -224,6 +223,47 @@ if(isset($_GET['projectId'])) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 document.getElementById("projectObject").blur();
+            }
+        }
+
+        function updatePlanProject(newPlace) {
+            var ticketId = <?php echo $projectId; ?>;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Можно добавить дополнительную обработку здесь, если нужно
+                }
+            };
+            xhttp.open("GET", "function/update_plan_project.php?ticketId=" + ticketId + "&newPlace=" + newPlace, true);
+            xhttp.send();
+        }
+
+        function handleKeyPressPlan(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("projectPlan").blur();
+            }
+        }
+
+        function updateDateProject(newPlace) {
+            var ticketId = <?php echo $projectId; ?>;
+            // Преобразуем значение даты к формату "yyyy-MM-dd"
+            var dateValue = newPlace.split(' ')[0]; // Получаем только дату, отбрасывая время
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    // Дополнительная обработка ответа, если необходимо
+                }
+            };
+            // Отправляем только дату на сервер
+            xhttp.open("GET", "function/update_date_project.php?ticketId=" + ticketId + "&newPlace=" + dateValue, true);
+            xhttp.send();
+        }
+
+        function handleKeyPressDate(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("projectDate").blur();
             }
         }
 
@@ -579,142 +619,157 @@ if(isset($_GET['projectId'])) {
         });
 
 
-        // Функция для получения списка ответственных из БД
-        function getResponsible() {
-            fetch('function/get_responsible.php')
-                .then(response => response.json())
-                .then(responsible => {
-                    // Добавляем ответственных в выпадающий список
-                    const dropdownContent = document.getElementById("responsibleDropdown");
-                    responsible.forEach(person => {
-                        const personOption = document.createElement("div");
-                        const fullName = person.name + ' ' + person.surname; // Конкатенируем имя и фамилию
-                        personOption.textContent = fullName;
-                        personOption.dataset.userId = person.userId; // Добавляем атрибут с userId
-                        personOption.addEventListener("click", () => {
-                            selectResponsible(personOption); // Передаем элемент, а не объект person
-                        });
-                        dropdownContent.appendChild(personOption);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching responsible:', error);
+        // Функция для обновления ответственных лиц проекта
+function updateResponsibles(projectId, responsibleIds) {
+    fetch('function/update_responsibles.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            projectId: projectId,
+            responsibleIds: responsibleIds
+        })
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.error('Error updating responsibles:', error);
+    });
+}
+
+// Функция для получения списка ответственных из БД
+function getResponsible() {
+    fetch('function/get_responsible.php')
+        .then(response => response.json())
+        .then(responsible => {
+            // Добавляем ответственных в выпадающий список
+            const dropdownContent = document.getElementById("responsibleDropdown");
+            responsible.forEach(person => {
+                const personOption = document.createElement("div");
+                const fullName = person.name + ' ' + person.surname; // Конкатенируем имя и фамилию
+                personOption.textContent = fullName;
+                personOption.dataset.userId = person.userId; // Добавляем атрибут с userId
+                personOption.addEventListener("click", () => {
+                    selectResponsible(personOption); // Передаем элемент, а не объект person
                 });
-        }
+                dropdownContent.appendChild(personOption);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching responsible:', error);
+        });
+}
 
-        // Функция для получения уже выбранных ответственных лиц для проекта
-        function getSelectedResponsibles(projectId) {
-            fetch('function/get_selected_responsible.php?projectId=' + projectId)
-                .then(response => response.json())
-                .then(selectedResponsibles => {
-                    const input = document.getElementById("responsibleInput");
-                    const dropdownContent = document.getElementById("responsibleDropdown");
-
-                    selectedResponsibles.forEach(person => {
-                        const personName = person.name + ' ' + person.surname;
-                        const userId = person.userId;
-                        const personOption = dropdownContent.querySelector(`div[data-user-id="${userId}"]`);
-                        
-                        if (personOption) {
-                            // Если ответственный уже в списке, пропускаем
-                            return;
-                        }
-
-                        // Добавляем выбранного ответственного в выпадающий список и помечаем его как выбранного
-                        const selectedOption = document.createElement("div");
-                        selectedOption.textContent = personName;
-                        selectedOption.dataset.userId = userId;
-                        selectedOption.classList.add("selected");
-                        selectedOption.addEventListener("click", () => {
-                            selectResponsible(selectedOption);
-                        });
-                        dropdownContent.appendChild(selectedOption);
-                    });
-
-                    // Обновляем значение input
-                    const selectedNames = selectedResponsibles.map(person => person.name + ' ' + person.surname);
-                    input.value = selectedNames.join(', ');
-
-                    // Обновляем атрибут data-responsible-ids
-                    input.dataset.responsibleIds = selectedResponsibles.map(person => person.userId).join(',');
-                })
-                .catch(error => {
-                    console.error('Error fetching selected responsibles:', error);
-                });
-        }
-
-        // Функция для отображения/скрытия выпадающего списка ответственных
-        function toggleResponsibleDropdown() {
-            const dropdown = document.getElementById("responsibleDropdown");
-            dropdown.classList.toggle("show");
-        }
-
-        // Функция для выбора ответственного
-        function selectResponsible(personOption) {
+// Функция для получения уже выбранных ответственных лиц для проекта
+function getSelectedResponsibles(projectId) {
+    fetch('function/get_selected_responsible.php?projectId=' + projectId)
+        .then(response => response.json())
+        .then(selectedResponsibles => {
             const input = document.getElementById("responsibleInput");
-            let selectedResponsible = input.value.trim().split(',').map(item => item.trim()).filter(item => item !== ''); // Удаляем пустые значения и убираем пробелы вокруг
-
-            const personName = personOption.textContent; // Получаем имя и фамилию из выбранного элемента
-            const userId = personOption.dataset.userId; // Получаем userId из dataset
-
-            // Получаем dropdownContent
             const dropdownContent = document.getElementById("responsibleDropdown");
 
-            // Проверяем, был ли выбран ответственный ранее
-            const index = selectedResponsible.indexOf(personName);
-            if (index !== -1) {
-                // Если ответственный уже выбран, удаляем его из списка выбранных ответственных
-                selectedResponsible.splice(index, 1);
-            } else {
-                // Если ответственный не выбран, добавляем его в список
-                selectedResponsible.push(personName);
-            }
-        
-            // Обновляем значение input
-            input.value = selectedResponsible.join(', '); // Обновляем значение input
+            // Очищаем выпадающий список от старых значений
+            dropdownContent.innerHTML = '';
 
-            // Добавляем userId в data-responsible-ids
-            const responsibleIds = selectedResponsible.map(name => {
-                const option = Array.from(dropdownContent.children).find(child => child.textContent === name);
-                return option.dataset.userId;
+            selectedResponsibles.forEach(person => {
+                const personName = person.name + ' ' + person.surname;
+                const userId = person.userId;
+                const personOption = document.createElement("div");
+                personOption.textContent = personName;
+                personOption.dataset.userId = userId;
+                personOption.classList.add("selected");
+                dropdownContent.appendChild(personOption);
             });
-            input.dataset.responsibleIds = responsibleIds.join(',');
 
-            // Применяем стили к выбранным элементам в выпадающем списке
-            const dropdownOptions = dropdownContent.getElementsByTagName("div");
-            for (let option of dropdownOptions) {
-                if (selectedResponsible.includes(option.textContent.trim())) {
-                    option.classList.add("selected");
-                } else {
-                    option.classList.remove("selected");
-                }
-            }
+            // Обновляем значение input
+            const selectedNames = selectedResponsibles.map(person => person.name + ' ' + person.surname);
+            input.value = selectedNames.join(', ');
+
+            // Обновляем атрибут data-responsible-ids
+            input.dataset.responsibleIds = selectedResponsibles.map(person => person.userId).join(',');
+        })
+        .catch(error => {
+            console.error('Error fetching selected responsibles:', error);
+        });
+}
+
+// Функция для отображения/скрытия выпадающего списка ответственных
+function toggleResponsibleDropdown() {
+    const dropdown = document.getElementById("responsibleDropdown");
+    dropdown.classList.toggle("show");
+}
+
+// Функция для выбора ответственного
+function selectResponsible(personOption) {
+    const input = document.getElementById("responsibleInput");
+    let selectedResponsible = input.value.trim().split(',').map(item => item.trim()).filter(item => item !== ''); // Удаляем пустые значения и убираем пробелы вокруг
+
+    const personName = personOption.textContent; // Получаем имя и фамилию из выбранного элемента
+    const userId = personOption.dataset.userId; // Получаем userId из dataset
+
+    // Получаем dropdownContent
+    const dropdownContent = document.getElementById("responsibleDropdown");
+
+    // Проверяем, был ли выбран ответственный ранее
+    const index = selectedResponsible.indexOf(personName);
+    if (index !== -1) {
+        // Если ответственный уже выбран, удаляем его из списка выбранных ответственных
+        selectedResponsible.splice(index, 1);
+    } else {
+        // Если ответственный не выбран, добавляем его в список
+        selectedResponsible.push(personName);
+    }
+    
+    // Обновляем значение input
+    input.value = selectedResponsible.join(', '); // Обновляем значение input
+
+    // Добавляем userId в data-responsible-ids
+    const responsibleIds = selectedResponsible.map(name => {
+        const option = Array.from(dropdownContent.children).find(child => child.textContent === name);
+        return option.dataset.userId;
+    });
+    input.dataset.responsibleIds = responsibleIds.join(',');
+
+    // Применяем стили к выбранным элементам в выпадающем списке
+    const dropdownOptions = dropdownContent.getElementsByTagName("div");
+    for (let option of dropdownOptions) {
+        if (selectedResponsible.includes(option.textContent.trim())) {
+            option.classList.add("selected");
+        } else {
+            option.classList.remove("selected");
         }
+    }
+}
 
-        // Функция для скрытия выпадающего списка при клике вне его области
-        document.addEventListener("click", function(event) {
-            const dropdown = document.getElementById("responsibleDropdown");
-            const input = document.getElementById("responsibleInput");
-            if (event.target !== dropdown && event.target !== input) {
-                dropdown.classList.remove("show");
-            }
-        });
+// Функция для скрытия выпадающего списка при клике вне его области
+document.addEventListener("click", function(event) {
+    const dropdown = document.getElementById("responsibleDropdown");
+    const input = document.getElementById("responsibleInput");
+    if (event.target !== dropdown && event.target !== input) {
+        dropdown.classList.remove("show");
+    }
+});
 
-        // Вызываем функцию получения списка ответственных при загрузке страницы
-        document.addEventListener("DOMContentLoaded", () => {
-            getResponsible();
+// Вызываем функцию получения списка ответственных при загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+    getResponsible();
 
-            // Получаем ID текущего проекта (замените на ваш метод получения ID проекта)
-            const projectId = <?php echo $projectId; ?>;
-            getSelectedResponsibles(projectId);
-        });
+    // Получаем ID текущего проекта (замените на ваш метод получения ID проекта)
+    const projectId = <?php echo $projectId; ?>;
+    getSelectedResponsibles(projectId);
+});
 
-        // Обработка изменений в атрибуте data-responsible-ids
-        document.getElementById("responsibleInput").addEventListener("change", () => {
-            // Получаем ID текущего проекта (замените на ваш метод получения ID проекта)
-            const projectId = <?php echo $projectId; ?>;
-            handleResponsibleIdsChange(projectId);
-        });
+// Обработка изменений в атрибуте data-responsible-ids
+document.getElementById("responsibleInput").addEventListener("change", () => {
+    // Получаем ID текущего проекта (замените на ваш метод получения ID проекта)
+    const projectId = <?php echo $projectId; ?>;
+    const responsibleIds = document.getElementById("responsibleInput").dataset.responsibleIds;
+    updateResponsibles(projectId, responsibleIds);
+});
+
 
 
         

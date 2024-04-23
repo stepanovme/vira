@@ -85,7 +85,7 @@
     background-color: #D4474A;
 }
 
-input#thicknessInput, input#responsibleInput, input#colorInput{
+input#thicknessInput, input#responsibleInput, input#colorInput, input#participantsInput{
     padding: 12px 22px;
     background-color: #F6F8FA;
     border: 1px solid #E0E4E8;
@@ -96,6 +96,7 @@ input#thicknessInput, input#responsibleInput, input#colorInput{
     cursor: auto;
     margin-bottom: 20px;
     cursor: pointer;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
