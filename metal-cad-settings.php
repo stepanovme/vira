@@ -227,6 +227,10 @@ if(isset($_GET['projectId'])) {
             }
         }
 
+        
+        // Объявляем переменную observer здесь
+        let observer;
+
         // Получение всех цветов из сервера
         function getColors() {
             fetch('function/get_colors.php')
@@ -331,11 +335,11 @@ if(isset($_GET['projectId'])) {
                 selectedColors.push(color);
                 selectedColorIds.push(colorId);
             }
-        
+            
             // Обновляем значение input и атрибут data-id-цвет
             input.value = selectedColors.join(', ').replace(/^, /, ''); // Убираем запятую перед первым элементом
             input.dataset.colorIds = selectedColorIds.join(',');
-        
+            
             // Применяем стили к выбранным элементам в выпадающем списке
             const dropdownContent = document.getElementById("colorDropdown");
             const dropdownOptions = dropdownContent.getElementsByTagName("div");
@@ -362,7 +366,7 @@ if(isset($_GET['projectId'])) {
         }
 
         // Создаем экземпляр MutationObserver
-        const observer = new MutationObserver(mutationsList => {
+        observer = new MutationObserver(mutationsList => {
             for (let mutation of mutationsList) {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'data-color-ids') {
                     const projectId = <?php echo $projectId; ?>; // Замените на реальный ID проекта
@@ -408,8 +412,177 @@ if(isset($_GET['projectId'])) {
             }
         });
 
+        // Функция для получения толщин из БД
+        function getThickness() {
+            fetch('function/get_thickness.php')
+                .then(response => response.json())
+                .then(thicknesses => {
+                    // Добавляем толщины в выпадающий список
+                    const dropdownContent = document.getElementById("thicknessDropdown");
+                    thicknesses.forEach(thickness => {
+                        const thicknessOption = document.createElement("div");
+                        thicknessOption.textContent = thickness.value;
+                        thicknessOption.dataset.id = thickness.id; // Сохраняем id толщины в атрибуте data-id
+                        thicknessOption.addEventListener("click", () => {
+                            selectThickness(thickness.value, thickness.id); // Передаем значение и id толщины в функцию обработки
+                        });
+                        dropdownContent.appendChild(thicknessOption);
+                    });
+
+                    // Получаем ID проекта и запрашиваем толщины проекта
+                    const projectId = <?php echo $projectId; ?>; // Замените на реальный ID проекта
+                    getProjectThicknesses(projectId);
+                })
+                .catch(error => {
+                    console.error('Error fetching thicknesses:', error);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", getThickness);
+
+
+        // Функция для получения толщин проекта из БД
+        function getProjectThicknesses(projectId) {
+            fetch('function/get_project_thicknesses.php?projectId=' + projectId)
+                .then(response => response.json())
+                .then(projectThicknesses => {
+                    fillProjectThicknesses(projectThicknesses);
+                })
+                .catch(error => {
+                    console.error('Error fetching project thicknesses:', error);
+                });
+        }
+
+        // Функция для заполнения выбранных толщин проекта
+        function fillProjectThicknesses(projectThicknesses) {
+            const input = document.getElementById("thicknessInput");
+            let selectedThicknesses = [];
+            let selectedThicknessIds = [];
+
+            // Очищаем предыдущие значения
+            input.value = "";
+            input.removeAttribute("data-thickness-ids");
+
+            // Заполняем выбранные толщины
+            projectThicknesses.forEach(thickness => {
+                selectedThicknesses.push(thickness.value);
+                selectedThicknessIds.push(thickness.id);
+            });
+
+            // Обновляем значение input
+            input.value = selectedThicknesses.join(', ');
+            input.dataset.thicknessIds = selectedThicknessIds.join(',');
+
+            // Применяем стили к выбранным элементам в выпадающем списке
+            const dropdownContent = document.getElementById("thicknessDropdown");
+            const dropdownOptions = dropdownContent.getElementsByTagName("div");
+            for (let option of dropdownOptions) {
+                if (selectedThicknessIds.includes(option.dataset.id)) {
+                    option.classList.add("selected");
+                } else {
+                    option.classList.remove("selected");
+                }
+            }
+        }
+
+        // Создаем экземпляр MutationObserver
+        observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === "data-thickness-ids") {
+                    const projectId = <?php echo $projectId; ?>;
+                    const thicknessIds = mutation.target.dataset.thicknessIds.split(',');
+
+                    // Удаляем все записи для данного проекта
+                    fetch('function/delete_project_thicknesses.php?projectId=' + projectId)
+                        .then(response => response.text())
+                        .then(() => {
+                            // Добавляем новые записи
+                            thicknessIds.forEach(thicknessId => {
+                                fetch('function/add_project_thickness.php', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        projectId: projectId,
+                                        thicknessId: thicknessId
+                                    })
+                                })
+                                .catch(error => {
+                                    console.error('Error adding project thickness:', error);
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error deleting project thicknesses:', error);
+                        });
+                }
+            });
+        });
+
+        // Настройка параметров для наблюдения за изменениями
+        const config = { attributes: true };
+
+        // Начать наблюдение за целевым элементом
+        observer.observe(document.getElementById("thicknessInput"), config);
+
+        // Функция для выбора толщины
+        function selectThickness(thicknessName, thicknessId) {
+            const input = document.getElementById("thicknessInput");
+            let selectedThicknesses = input.value.trim().split(',').filter(thickness => thickness !== ''); // Удаляем пустые значения
+            let selectedThicknessIds = input.dataset.thicknessIds ? input.dataset.thicknessIds.split(',') : []; // Получаем массив выбранных id толщин
+
+            // Проверяем, была ли выбрана толщина ранее
+            const index = selectedThicknesses.findIndex(selectedThickness => selectedThickness.trim() === thicknessName.trim());
+            if (index !== -1) {
+                // Если толщина уже выбрана, удаляем ее из списка выбранных толщин и соответствующий id из массива id
+                selectedThicknesses.splice(index, 1);
+                const idIndex = selectedThicknessIds.indexOf(thicknessId);
+                if (idIndex !== -1) {
+                    selectedThicknessIds.splice(idIndex, 1);
+                }
+            } else {
+                // Если толщина не выбрана, добавляем ее в список и соответствующий id в массив id
+                selectedThicknesses.push(thicknessName);
+                selectedThicknessIds.push(thicknessId);
+            }
+        
+            // Обновляем значение input
+            input.value = selectedThicknesses.join(', '); // Обновляем значение input
+            input.dataset.thicknessIds = selectedThicknessIds.join(','); // Обновляем атрибут data-thickness-ids
+        
+            // Применяем стили к выбранным элементам в выпадающем списке
+            const dropdownContent = document.getElementById("thicknessDropdown");
+            const dropdownOptions = dropdownContent.getElementsByTagName("div");
+            for (let option of dropdownOptions) {
+                if (selectedThicknessIds.includes(option.dataset.id)) { // Проверяем id толщины
+                    option.classList.add("selected");
+                } else {
+                    option.classList.remove("selected");
+                }
+            }
+        }
+
+        // Функция для отображения/скрытия выпадающего списка
+        function toggleThicknessDropdown() {
+            const dropdown = document.getElementById("thicknessDropdown");
+            dropdown.classList.toggle("show");
+        }
+
+        // Функция для скрытия выпадающего списка при клике вне его области
+        document.addEventListener("click", function(event) {
+            const thicknessDropdown = document.getElementById("thicknessDropdown");
+            const thicknessInput = document.getElementById("thicknessInput");
+            if (event.target !== thicknessDropdown && event.target !== thicknessInput) {
+                thicknessDropdown.classList.remove("show");
+            }
+        });
+
+
+
 
         
+
 
     </script>
 </body>
