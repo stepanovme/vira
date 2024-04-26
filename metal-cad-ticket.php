@@ -47,6 +47,7 @@ if ($result->num_rows > 0) {
     $projectId = $row['ProjectId'];
 }
 
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -160,6 +161,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
+                                    $ObjectMessage = $row['TicketMetalCadObject'];
                                     echo '<input type="text" readonly value="'.$row['TicketMetalCadObject'].'">';
                                 }
                             ?>
@@ -246,6 +248,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
+                                    $BrigadeMessage = $row['TicketMetalCadBrigade'];
                                     if($row['TicketMetalCadStatusId'] == 1 || $row['TicketMetalCadStatusId'] == 4){
                                         echo '<input type="text" name="brigade" id="brigade" value="'.$row['TicketMetalCadBrigade'].'" onchange="updateBrigade(this.value)" onkeypress="handleKeyPress(event)">';
                                     } elseif($roleId == 2 || $roleId == 5){
@@ -329,6 +332,7 @@ if ($result->num_rows > 0) {
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
+                                    $QuantityMessage = $row['TicketMetalCadQuantityProduct'];
                                     echo '<input type="text" id="ticketQuantityInput" value="'.$row['TicketMetalCadQuantityProduct'].'" readonly>';
                                 }
                             ?>
@@ -562,11 +566,13 @@ if ($result->num_rows > 0) {
                                                 (SELECT COUNT(*) FROM ProductMetalCad WHERE TicketMetalCadId = $ticketId AND ProductMetalCadManufactured = ProductMetalCadQuantity) AS countFact;
                                             ";
 
+                                $message = "Готово ".$QuantityMessage." изделий для ".$BrigadeMessage." на объект ". $ObjectMessage;
+
                                 $result = $conn->query($sqlCount);
                                 if ($result->num_rows > 0) { 
                                     $row = $result->fetch_assoc();
                                     if(($roleId == 2 || $roleId == 6) && ($row['countManufactured'] == $row['countFact'])){
-                                        echo '<button class="complete-work" data-ticket-id="'.$ticketId.'">Завершить работу</button>';
+                                        echo '<button class="complete-work" data-ticket-id="'.$ticketId.'" onclick="sendMessage('.$ticketId.', \''.htmlspecialchars($message).'\')">Завершить работу</button>';
                                     }
                                 }
                             }
@@ -1439,8 +1445,18 @@ if ($result->num_rows > 0) {
 
     
 
-
-
+    function sendMessage(ticketId, message) {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            console.log(message)
+            if (this.readyState == 4 && this.status == 200) {
+                console.log("Message sent!");
+            }
+        };
+        var url = "function/send_message_vk.php?ticketId=" + ticketId + "&message=" + encodeURIComponent(message);
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
 
     function updateBrigade(newBrigade) {
         var ticketId = <?php echo $ticketId; ?>; // Получаем значение ticketId из PHP
@@ -1746,6 +1762,7 @@ if ($result->num_rows > 0) {
 
                 var ticketId = this.getAttribute('data-ticket-id');
                 fetch('function/complete-work.php?ticketId=' + ticketId);
+                fetch('function/send_message.php');
 
                 window.location.reload()
             });
