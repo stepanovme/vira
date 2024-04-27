@@ -131,8 +131,33 @@ if(isset($_GET['projectId'])) {
 
                 <div class="analyt">
                     <div class="information-project">
+
+                        
+
                         <p class="title">Информация по проекту</p>
-                        <p>Ответственный:<span>Евгений Прищеп</span></p>
+                        <?php
+                            $sql = "SELECT pmc.ProjectName, pmc.ProjectId, pmc.ProjectPlan, pmc.ProjectFact, pmc.ProjectDateCreated, pmc.StatusId, GROUP_CONCAT(u.name, ' ', u.surname) AS responsible_names
+                                    FROM ProjectMetalCad AS pmc
+                                    JOIN ProjectMetalCadResponsible AS pmcr ON pmc.ProjectId = pmcr.ProjectMetalCadId
+                                    JOIN user AS u ON pmcr.userId = u.userId
+                                    WHERE pmcr.ProjectMetalCadId IN (
+                                        SELECT pmcr_inner.ProjectMetalCadId
+                                        FROM ProjectMetalCadResponsible AS pmcr_inner
+                                        WHERE pmcr_inner.userId = $user_id
+                                    )
+                                    GROUP BY pmc.ProjectId, pmc.ProjectName";
+
+
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0 || $result->num_rows == 0) {
+
+                                echo '<div class="slide-list">';
+                                while($row = $result->fetch_assoc()){ 
+                                    echo '<p>Ответственный:<span>'.$row['responsible_names'].'</span></p>';
+                                } 
+                            
+                            }
+                        ?>
                         <p>Дата начала: <span>12.05.2024</span></p>
                         <p>Заявок произведено: <span>30</span></p>
                         <p>План по проекту:<span>100 м2</span></p>

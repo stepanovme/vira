@@ -177,7 +177,6 @@ if(isset($_GET['projectId'])) {
                     
                 </div>
                 <div class="buttons">
-                    <button class="save">Сохранить</button>
                     <button class="delete">Удалить проект</button>
                 </div>
             </div>
@@ -771,6 +770,27 @@ document.getElementById("responsibleInput").addEventListener("change", () => {
 });
 
 
+
+document.querySelector('.delete').addEventListener('click', function() {
+        var projectId = "<?php echo $projectId; ?>";
+        var user_id = "<?php echo $user_id; ?>"; // Получение ProjectObject из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка успешного ответа
+                console.log("Новая строка TicketMetalCad добавлена успешно");
+                
+                window.location.href = 'metal-cad.php';
+                // Перезагрузка страницы или обновление интерфейса по вашему желанию
+            } else if (this.readyState == 4 && this.status != 200) {
+                // Обработка ошибки
+                console.error("Произошла ошибка при добавлении строки TicketMetalCad");
+            }
+        };
+        xhttp.open("GET", "function/delete_project.php?projectId=" + projectId + "&user_id=" + user_id, true);
+        xhttp.send();
+
+    });
 
         
 

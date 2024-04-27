@@ -532,7 +532,7 @@ if (isset($_GET['projectId'])) {
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-project.js"></script>
     <script>
-        document.querySelector('.add-ticket').addEventListener('click', function() {
+    document.querySelector('.add-ticket').addEventListener('click', function() {
         var projectId = this.getAttribute('data-project-id');
         var user_id = "<?php echo $user_id; ?>"; // Получение ProjectObject из PHP
         var xhttp = new XMLHttpRequest();
@@ -550,6 +550,26 @@ if (isset($_GET['projectId'])) {
         xhttp.open("GET", "function/add_ticket.php?projectId=" + projectId + "&user_id=" + user_id, true);
         xhttp.send();
     });
+
+    document.querySelector('.mobile-add-ticket').addEventListener('click', function() {
+        var projectId = this.getAttribute('data-project-id');
+        var user_id = "<?php echo $user_id; ?>"; // Получение ProjectObject из PHP
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Обработка успешного ответа
+                console.log("Новая строка TicketMetalCad добавлена успешно");
+                location.reload();
+                // Перезагрузка страницы или обновление интерфейса по вашему желанию
+            } else if (this.readyState == 4 && this.status != 200) {
+                // Обработка ошибки
+                console.error("Произошла ошибка при добавлении строки TicketMetalCad");
+            }
+        };
+        xhttp.open("GET", "function/add_ticket.php?projectId=" + projectId + "&user_id=" + user_id, true);
+        xhttp.send();
+    });
+
 
     </script>
 </body>
