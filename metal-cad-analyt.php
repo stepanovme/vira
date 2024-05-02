@@ -136,34 +136,65 @@ if(isset($_GET['projectId'])) {
 
                         <p class="title">Информация по проекту</p>
                         <?php
-                            $sql = "SELECT pmc.ProjectName, pmc.ProjectId, pmc.ProjectPlan, pmc.ProjectFact, pmc.ProjectDateCreated, pmc.StatusId, GROUP_CONCAT(u.name, ' ', u.surname) AS responsible_names
-                                    FROM ProjectMetalCad AS pmc
-                                    JOIN ProjectMetalCadResponsible AS pmcr ON pmc.ProjectId = pmcr.ProjectMetalCadId
-                                    JOIN user AS u ON pmcr.userId = u.userId
-                                    WHERE pmcr.ProjectMetalCadId IN (
-                                        SELECT pmcr_inner.ProjectMetalCadId
-                                        FROM ProjectMetalCadResponsible AS pmcr_inner
-                                        WHERE pmcr_inner.userId = $user_id
-                                    )
-                                    GROUP BY pmc.ProjectId, pmc.ProjectName";
+                            $sql = "SELECT u.name, u.surname FROM ProjectMetalCadResponsible pjmcr
+                                    JOIN user u ON pjmcr.userId = u.userId
+                                    WHERE pjmcr.ProjectMetalCadId = $projectId";
 
 
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0 || $result->num_rows == 0) {
 
-                                echo '<div class="slide-list">';
                                 while($row = $result->fetch_assoc()){ 
-                                    echo '<p>Ответственный:<span>'.$row['responsible_names'].'</span></p>';
+                                    echo '<p>Руководитель проекта:<span> '.$row['name'].' '.$row['surname'].'</span></p>';
                                 } 
                             
                             }
                         ?>
-                        <p>Дата начала: <span>12.05.2024</span></p>
-                        <p>Заявок произведено: <span>30</span></p>
-                        <p>План по проекту:<span>100 м2</span></p>
-                        <p>Фактическое по проекту:<span>50 м2</span></p>
-                        <p>План по RAL 7024: <span>100 м2</span></p>
-                        <p>Фактическое по RAL 7024:<span>100 м2</span></p>
+                        <?php
+                            $sql = "SELECT ProjectDateCreated FROM ProjectMetalCad WHERE ProjectId = $projectId";
+
+
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                $row = $result->fetch_assoc();
+                                echo '<p>Дата начала: <span>'.$row['ProjectDateCreated'].'</span></p>';
+                            }
+                        ?>
+                        <?php
+                            $sql = "SELECT COUNT(*) AS count
+                                    FROM TicketMetalCad
+                                    WHERE ProjectId = $projectId;";
+
+
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                $row = $result->fetch_assoc();
+                                echo '<p>Заявок произведено: <span>'.$row['count'].'</span></p>';
+                            }
+                        ?>
+                        <?php
+                            $sql = "SELECT ProjectPlan FROM ProjectMetalCad WHERE ProjectId = $projectId";
+
+
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                $row = $result->fetch_assoc();
+                                echo '<p>План по проекту:<span>'.$row['ProjectPlan'].' м<sup>2</sup></span></p>';
+                            }
+                        ?>
+                        <?php
+                            $sql = "SELECT ProjectFact FROM ProjectMetalCad WHERE ProjectId = $projectId";
+
+
+                            $result = $conn->query($sql);
+                            if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                $row = $result->fetch_assoc();
+                                echo '<p>Фактическое по проекту:<span>'.$row['ProjectFact'].' м<sup>2</sup></span></p>';
+                            }
+                        ?>
+
+                        <!-- <p>План по RAL 7024: <span>100 м2</span></p>
+                        <p>Фактическое по RAL 7024:<span>100 м2</span></p> -->
                     </div>
 
                     <div class="information-bars">
@@ -191,6 +222,18 @@ if(isset($_GET['projectId'])) {
                             </tr>
                         </thead>
                         <tbody>
+
+                            <?php
+                                $sql = "SELECT ProjectFact FROM ProjectMetalCad WHERE ProjectId = $projectId";
+
+
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                    $row = $result->fetch_assoc();
+                                    echo '<p>Фактическое по проекту:<span>'.$row['ProjectFact'].' м<sup>2</sup></span></p>';
+                                }
+                            ?>
+
                             <tr>
                                 <td id="analyt-num-value">1</td>
                                 <td id="analyt-name-value">NEXT 2</td>
