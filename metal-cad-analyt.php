@@ -52,6 +52,34 @@ if(isset($_GET['projectId'])) {
     <title>Аналитика</title>
 </head>
 <body>
+
+    <style>
+        .progress-container {
+            width: 100%;
+            background-color: #A4E7BB;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #59B077;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .progress-text {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+    </style>    
+
     <div class="wrapper">
         <div class="navbar">
             <div class="logo" onclick="window.location.href = 'index.php'">VIRA</div>
@@ -153,12 +181,13 @@ if(isset($_GET['projectId'])) {
                         <?php
                             $sql = "SELECT ProjectDateCreated FROM ProjectMetalCad WHERE ProjectId = $projectId";
 
-
                             $result = $conn->query($sql);
+                            
                             if ($result->num_rows > 0 || $result->num_rows == 0) {
                                 $row = $result->fetch_assoc();
-                                echo '<p>Дата начала: <span>'.$row['ProjectDateCreated'].'</span></p>';
-                            }
+                                $projectDateCreated = date('d.m.Y', strtotime($row['ProjectDateCreated']));
+                                echo '<p>Дата начала: <span>'.$projectDateCreated.'</span></p>';
+                            }                            
                         ?>
                         <?php
                             $sql = "SELECT COUNT(*) AS count
@@ -177,19 +206,31 @@ if(isset($_GET['projectId'])) {
 
 
                             $result = $conn->query($sql);
+                            $projectPlan = 0;
                             if ($result->num_rows > 0 || $result->num_rows == 0) {
                                 $row = $result->fetch_assoc();
                                 echo '<p>План по проекту:<span>'.$row['ProjectPlan'].' м<sup>2</sup></span></p>';
+                                $projectPlan = $row['ProjectPlan'];
                             }
                         ?>
                         <?php
-                            $sql = "SELECT ProjectFact FROM ProjectMetalCad WHERE ProjectId = $projectId";
+                            $sql = "SELECT ProductMetalCad.*, ColorCad.ColorName, ThicknessMetalCad.ThicknessValue
+                                    FROM ProductMetalCad
+                                    JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                                    JOIN ColorCad ON TicketMetalCad.TicketMetalCadColor = ColorCad.ColorId
+                                    JOIN ThicknessMetalCad ON ThicknessMetalCad.ThicknessId = TicketMetalCad.TicketMetalCadThickness
+                                    WHERE TicketMetalCad.ProjectId = $projectId";
 
 
                             $result = $conn->query($sql);
+                            $factPlan = 0;
                             if ($result->num_rows > 0 || $result->num_rows == 0) {
-                                $row = $result->fetch_assoc();
-                                echo '<p>Фактическое по проекту:<span>'.$row['ProjectFact'].' м<sup>2</sup></span></p>';
+                                while($row = $result->fetch_assoc()){
+                                    $factPlan += ($row['ProductMetalCadLength'] * 0.001 * $row['ProductMetalCadSum'] * 0.001) * $row['ProductMetalCadManufactured'];
+                                    // echo $row['ProductMetalCadSum'];
+                                }
+
+                                echo '<p>Фактическое по проекту:<span>'.$factPlan.' м<sup>2</sup></span></p>';
                             }
                         ?>
 
@@ -200,11 +241,10 @@ if(isset($_GET['projectId'])) {
                     <div class="information-bars">
                         <p class="title-information-bars">Выроботка</p>
                         <div class="bar">
-                            <div class="name">
-                                <p>Проекта</p>
-                                <p class="value">80/100 м.пог.</p>
+                            <div class="progress-text" id="progress-text">0 из 0</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
                             </div>
-                            <div class="progress-bar"></div>
                         </div>
                     </div>
                 </div>
@@ -224,23 +264,29 @@ if(isset($_GET['projectId'])) {
                         <tbody>
 
                             <?php
-                                $sql = "SELECT ProjectFact FROM ProjectMetalCad WHERE ProjectId = $projectId";
+                                $sql = "SELECT ProductMetalCad.*, ColorCad.ColorName, ThicknessMetalCad.ThicknessValue
+                                        FROM ProductMetalCad
+                                        JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                                        JOIN ColorCad ON TicketMetalCad.TicketMetalCadColor = ColorCad.ColorId
+                                        JOIN ThicknessMetalCad ON ThicknessMetalCad.ThicknessId = TicketMetalCad.TicketMetalCadThickness
+                                        WHERE TicketMetalCad.ProjectId = $projectId";
 
 
                                 $result = $conn->query($sql);
+                                $num = 0;
                                 if ($result->num_rows > 0 || $result->num_rows == 0) {
-                                    $row = $result->fetch_assoc();
-                                    echo '<p>Фактическое по проекту:<span>'.$row['ProjectFact'].' м<sup>2</sup></span></p>';
+                                    while($row = $result->fetch_assoc()){
+                                        $num = $num + 1;
+                                        echo '<tr>';
+                                        echo '<td id="analyt-num-value">'.$num.'</td>';
+                                        echo '<td id="analyt-name-value">'.$row['ProductMetalCadName'].'</td>';
+                                        echo '<td id="analyt-color-value">'.$row['ColorName'].'</td>';
+                                        echo '<td id="analyt-thikness-value">'.$row['ThicknessValue'].'</td>';
+                                        echo '<td id="analyt-quantity-value">'.$row['ProductMetalCadManufactured'].'</td>';
+                                        echo '</tr>';
+                                    }
                                 }
                             ?>
-
-                            <tr>
-                                <td id="analyt-num-value">1</td>
-                                <td id="analyt-name-value">NEXT 2</td>
-                                <td id="analyt-color-value">RAL 7024</td>
-                                <td id="analyt-thikness-value">0.7</td>
-                                <td id="analyt-quantity-value">200</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -258,13 +304,30 @@ if(isset($_GET['projectId'])) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="analyt-num-value">1</td>
-                                <td id="analyt-name-value">NEXT 2</td>
-                                <td id="analyt-color-value">RAL 7024</td>
-                                <td id="analyt-thikness-value">0.7</td>
-                                <td id="analyt-quantity-value">200</td>
-                            </tr>
+                            <?php
+                                $sql = "SELECT ProductMetalCad.*, ColorCad.ColorName, ThicknessMetalCad.ThicknessValue
+                                        FROM ProductMetalCad
+                                        JOIN TicketMetalCad ON ProductMetalCad.TicketMetalCadId = TicketMetalCad.TicketMetalCadId
+                                        JOIN ColorCad ON TicketMetalCad.TicketMetalCadColor = ColorCad.ColorId
+                                        JOIN ThicknessMetalCad ON ThicknessMetalCad.ThicknessId = TicketMetalCad.TicketMetalCadThickness
+                                        WHERE TicketMetalCad.ProjectId = $projectId AND ProductMetalCad.ProductMetalCadRemains != ProductMetalCad.ProductMetalCadQuantity";
+
+
+                                $result = $conn->query($sql);
+                                $num = 0;
+                                if ($result->num_rows > 0 || $result->num_rows == 0) {
+                                    while($row = $result->fetch_assoc()){
+                                        $num = $num + 1;
+                                        echo '<tr>';
+                                        echo '<td id="analyt-num-value">'.$num.'</td>';
+                                        echo '<td id="analyt-name-value">'.$row['ProductMetalCadName'].'</td>';
+                                        echo '<td id="analyt-color-value">'.$row['ColorName'].'</td>';
+                                        echo '<td id="analyt-thikness-value">'.$row['ThicknessValue'].'</td>';
+                                        echo '<td id="analyt-quantity-value">'.$row['ProductMetalCadRemains'].'</td>';
+                                        echo '</tr>';
+                                    }
+                                }
+                            ?>  
                         </tbody>
                     </table>
                 </div>
@@ -272,8 +335,23 @@ if(isset($_GET['projectId'])) {
         </div>
     </div>
 
+
     <script src="/js/jquery.js"></script>
     <script src="./js/mobile.js"></script>
     <script src="/js/metal-cad-analyt.js"></script>
+    <script>
+        // Функция для обновления прогресс-бара и текста
+        function updateProgress(current, total) {
+        var progressBar = document.getElementById("progress-bar");
+        var progressText = document.getElementById("progress-text");
+        var percentage = Math.floor((current / total) * 100);
+        progressBar.style.width = percentage + "%";
+        // progressBar.textContent = current + " из " + total + " м.пог";
+        progressText.textContent = current + " из " + total + " м.пог.";
+        }
+
+        // Пример обновления прогресса
+        updateProgress(<?php echo $factPlan;?>, <?php echo $projectPlan;?>); // Устанавливаем текущее значение и общее количество
+</script>
 </body>
 </html>
